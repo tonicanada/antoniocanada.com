@@ -1,0 +1,92 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import HorizontalCard from "../components/HorizontalCard.astro";
+import { getCollection } from "astro:content";
+import createSlug from "../lib/createSlug";
+
+const posts = (await getCollection("blog")).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const last_posts = posts.slice(0, 3);
+---
+
+<BaseLayout sideBarActiveItemID="home">
+  <div class="pb-12 mt-5">
+    <div class="text-xl py-1">¡Hola! 👋</div>
+    <div class="text-5xl font-bold">Soy Antonio Cañada</div>
+    <div class="text-3xl py-3 font-bold">
+      Consultor especializado en ERPNext, finanzas empresariales y
+      automatización de procesos
+    </div>
+    <div class="py-2 text-lg space-y-3">
+      <p>
+        Ayudo a empresas a digitalizar su gestión contable, de compras y
+        facturación electrónica con <b>ERPNext</b>.
+      </p>
+      <p>
+        Combino más de 10 años de experiencia liderando áreas administrativas y
+        financieras, con un perfil técnico avanzado en <b
+          >programación, integraciones y automatización</b
+        >.
+      </p>
+      <p>
+        He trabajado con organizaciones de distintos tamaños en <b>Chile</b>, <b
+          >España</b
+        > y otros países, desarrollando soluciones reales para problemas reales.
+      </p>
+    </div>
+
+    <div class="mt-8 flex flex-wrap gap-4">
+      <a class="btn" href="/erpnext">Ver más sobre ERPNext</a>
+      <a href="/contacto" class="btn btn-outline">Contáctame</a>
+    </div>
+  </div>
+
+  <div>
+    <div class="text-3xl w-full font-bold mb-2">My last projects {"</>"}</div>
+  </div>
+
+  <HorizontalCard
+    title="Demo Project 1"
+    img="/post_img.webp"
+    desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    url="#"
+    badge="NEW"
+  />
+  <div class="divider my-0"></div>
+  <HorizontalCard
+    title="Demo Project 2"
+    img="/post_img.webp"
+    desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    url="#"
+  />
+  <div class="divider my-0"></div>
+  <HorizontalCard
+    title="Demo Project 3"
+    img="/post_img.webp"
+    desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    url="#"
+    badge="FOSS"
+  />
+
+  <div>
+    <div class="text-3xl w-full font-bold mb-5 mt-10">Latest from blog</div>
+  </div>
+
+  {
+    last_posts.map((post) => (
+      <>
+        <HorizontalCard
+          title={post.data.title}
+          img={post.data.heroImage}
+          desc={post.data.description}
+          url={"/blog/" + createSlug(post.data.title, post.slug)}
+          target="_self"
+          badge={post.data.badge}
+        />
+        <div class="divider my-0" />
+      </>
+    ))
+  }
+</BaseLayout>

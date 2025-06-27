@@ -1,0 +1,157 @@
+---
+title: "Visualizando el Sistema Solar con NASA Horizons y Three.js"
+description: "Cómo usar la API de NASA Horizons para obtener posiciones planetarias y visualizarlas en una app hecha con Three.js."
+pubDate: 2023-12-14
+tags:
+  ["three.js", "NASA Horizons", "astronomía", "data science", "visualización"]
+heroImage: "/assets/images/blog/solar-system-threejs/portada.webp"
+---
+
+Me encanta estar en constante aprendizaje sobre programación, matemáticas, física, astronomía, etc. Aunque estoy lejos de ser un experto en cualquiera de estas materias, me apasiona aprender sobre ellas. Algo que me da mucha satisfacción es cuando logro conectar ideas o conceptos de distintos mundos. Esta vez, al descubrir la API Horizons de la NASA (de la cual hablaré más adelante), se me ocurrió la idea: ¿y si creo una aplicación web con Three.js donde el usuario pueda seleccionar una fecha y ver reflejadas las posiciones de los planetas? Puedes ver el resultado aquí:
+
+[https://tonicanada.github.io/solar-system-threejs/](https://tonicanada.github.io/solar-system-threejs/)
+
+En este artículo hablaré sobre el proceso de creación de esta app. En uno de los cursos de ciencia de datos que estoy tomando, el instructor siempre dice que es esencial familiarizarse con los datos, y su mantra es: _visualizar, visualizar, visualizar…_ Crear la app me llevó a visualizar el Sistema Solar de una manera que nunca antes había visto. Me sorprendió no conocer muchos conceptos bastante básicos.
+
+## **Conceptos aprendidos al visualizar los datos**
+
+Obviamente, sabía que los planetas orbitan alrededor del Sol, y era consciente de que Mercurio era el más cercano y Plutón el más lejano. Sin embargo, solía pensar que las órbitas estaban en diferentes planos, como en esta imagen:
+
+![Órbitas en distintos planos (representación ficticia)](https://cdn.hashnode.com/res/hashnode/image/upload/v1702836378965/e8a9c3aa-047a-43f8-b0e2-3f7e8933ce30.png)
+
+Al visualizar la app, me di cuenta de que, en realidad, todos los planetas (excepto Plutón) están más o menos en el mismo plano orbital. Investigando encontré una razón: el Sistema Solar se formó a partir de un disco rotante de gas y polvo.
+
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1703435471958/d7a31268-172b-4d00-9f63-573d36ba64e1.png)
+
+No sabía que los planetas más cercanos al Sol tienen órbitas más elípticas y se desplazan más rápido. En esta tabla se ve cuántas órbitas completan por año y el tiempo que demoran en hacerlo:
+
+![](https://miro.medium.com/v2/resize:fit:685/1*aftyh8K4YE5zMgFy4mudOw.png)
+
+También descubrí que Mercurio, Venus, Tierra y Marte están mucho más cerca entre sí (y del Sol) que el resto. Ahora entiendo el título de la película _2001: Odisea del espacio_: “Júpiter y más allá” 😆.
+
+![Órbitas vistas desde arriba.](https://cdn.hashnode.com/res/hashnode/image/upload/v1702836570437/f44b98d3-93c2-4bd3-83de-7c033be9f301.png)
+
+![Órbita entre Marte y el Sol ampliada.](https://cdn.hashnode.com/res/hashnode/image/upload/v1702836595287/79a1adcc-460c-46e4-af12-a7364dd17835.png)
+
+Además, noté que los planetas no siempre pasan por los mismos puntos. En la visualización se ve que las líneas no tienen el mismo grosor (siendo Mercurio el caso más claro), lo cual indica que no siguen siempre la misma elipse.
+
+## **Código utilizado para desarrollar la app**
+
+El [repositorio en GitHub](https://github.com/tonicanada/solar-system-horizons-nasa) tiene dos carpetas: `solar-system-data` (Python) y `solar-system-threejs` (Vite + Three.js). La primera se encarga de obtener datos desde la API Horizons de la NASA, y la segunda visualiza la información.
+
+Al descubrir la [API Horizons de NASA](https://ssd-api.jpl.nasa.gov/doc/horizons.html), me emocioné. Siempre imaginé que debía existir una fuente de posiciones planetarias históricas, pero nunca pensé que fuera tan accesible.
+
+La API puede consultarse por terminal:
+
+```bash
+telnet horizons.jpl.nasa.gov 6775
+```
+
+Aunque este modo es bastante _hacker_, también se puede consultar vía [API HTTP](https://ssd-api.jpl.nasa.gov/doc/horizons.html), que es más cómodo. Cada “objeto” (planeta, estrella, satélite, misión…) tiene un ID. Hay más de 600 objetos disponibles.
+
+![](https://miro.medium.com/v2/resize:fit:700/1*tC2JM-53KpDeIywxZV4S_Q.png)
+
+Se pueden consultar propiedades y posiciones. Aquí un ejemplo de cómo lo hice desde Python:
+
+```python
+def get_planet_positions_from_sun_csv(start_date, end_date, time_step, planet, output_folder):
+
+    url = 'https://ssd.jpl.nasa.gov/api/horizons.api'
+
+    param = {
+        "format": "text",
+        "COMMAND": planets[planet],
+        "OBJ_DATA": "YES",
+        "MAKE_EPHEM": "YES",
+        "EPHEM_TYPE": "VECTORS",
+        "CENTER": "@sun",
+        "START_TIME": f"JD{str(convert_to_juliandate(start_date))}",
+        "STOP_TIME": f"JD{str(convert_to_juliandate(end_date))}",
+        "STEP_SIZE": time_step,
+        "CSV_FORMAT": "YES"
+    }
+
+    ephem_exists = check_start_date_ephem_by_planet(start_date, planet)
+
+    if ephem_exists:
+        response = requests.get(url, params=param)
+        content_txt = response.text
+
+        start = content_txt.find("$$SOE")
+        end = content_txt.find("$$EOE")
+
+        data = content_txt[start + len("$$EOE"):end]
+
+        # Remove the comma at the end of each line
+        cleaned_data = '\n'.join(line.strip(',') for line in data.split('\n'))
+
+        file_path = Path(output_folder) / f"{planet}_{start_date}_{end_date}.csv"
+
+        with open(file_path, 'w', encoding="utf-8") as file:
+            file.write(cleaned_data)
+    else:
+        print(f"No ephemeris for target '{planet}' for date {start_date}")
+```
+
+Usé tiempo juliano porque permite trabajar con fechas a.C. El año 0 JD equivale al 01-01-4713 a.C.
+
+Horizons no tiene datos para todos los planetas antes de cierta fecha. Por eso, en la app, antes del 1600 d.C. solo aparecen Mercurio, Venus y Tierra.
+
+![](https://miro.medium.com/v2/resize:fit:691/1*mynR0Vgkc4YP0KMA9WQ15w.png)
+
+También descubrí la librería [ephem](https://rhodesmill.org/pyephem/) en Python. No la usé en detalle, pero tiene funciones interesantes.
+
+El objetivo del script es generar archivos JSON como este:
+
+```json
+{
+  "1751-01-01": {
+    "Jupiter": [567870505.4387926, 480018874.0493847, -14677624.64057758],
+    "Pluto": [-1659845741.404341, -4084639570.690031, 917754510.7325],
+    "Earth": [-35105686.89957103, 142841146.0037219, 78731.25164704025],
+    "Mercury": [28381752.76056007, -59184524.46478384, -7438604.424046163],
+    "Uranus": [2551258418.697556, -1569295438.133674, -39231201.01378703],
+    "Venus": [11102748.79937587, -108229322.7695824, -2047611.735988766],
+    "Saturn": [-533303296.2827991, -1399738414.371662, 46102475.71358705],
+    "Mars": [-211074066.189805, -112754985.9349335, 2949618.42168083],
+    "Neptune": [-2367922191.058414, 3812768397.208968, -23965999.51064825]
+  },
+  "1751-01-06": {
+    "Jupiter": [564137011.158541, 484586781.3215852, -14611742.24325112],
+    "Pluto": [-1657611697.348931, -4085879026.118621, 917243104.6679108],
+    "Earth": [-47660843.28146335, 139168197.3731036, 76127.27410317957],
+    "Mercury": [41660692.40613102, -46515751.51663856, -7635150.727781702],
+    "Uranus": [2552772489.484175, -1566920187.910375, -39241992.34731734],
+    "Venus": [25894979.39666522, -105708287.6503585, -2871586.917012662],
+    "Saturn": [-529639015.5941727, -1401233985.269415, 45984713.75110489],
+    "Mars": [-205543380.1672792, -120999328.002768, 2638743.832780249],
+    "Neptune": [-2369932753.068549, 3811547211.91458, -23894575.02123165]
+  },
+  "1751-01-11": {
+    "Jupiter": [560369831.7803667, 489125487.5742517, -14544978.99913225],
+    "Pluto": [-1655379598.629253, -4087119800.464841, 916731714.0704236],
+    "Earth": [-59840515.57991014, 134416350.484194, 73357.95135698467],
+    "Mercury": [50772514.64782426, -29272594.4568694, -7074363.546100765],
+    "Uranus": [2554284127.146801, -1564543500.78105, -39252721.40614557],
+    "Venus": [40191050.86081873, -101161595.8786273, -3640538.164681114],
+    "Saturn": [-525970430.4813625, -1402718692.159617, 45866284.8403725],
+    "Mars": [-199637655.1509095, -129022859.8676484, 2323055.78080599],
+    "Neptune": [-2371942596.010034, 3810325122.270596, -23823110.77476954]
+  },
+...
+}
+```
+
+## **App en Three.js**
+
+La app es simple, construida con Vite. Tiene tres archivos principales y varios JSON con los datos. En `script.js` se crean el sol y los planetas como puntos, y se dibujan las órbitas. Una función `updatePositions` actualiza las posiciones según la fecha.
+
+Un detalle interesante fue lograr que los planetas se vean del mismo tamaño sin importar la distancia de la cámara.
+
+También usé [Tweakpane](https://cocopon.github.io/tweakpane/) para que el usuario pueda cambiar la fecha fácilmente. Su implementación está en `menu.js`.
+
+Puedes probar la app online aquí: [https://tonicanada.github.io/solar-system-threejs/](https://tonicanada.github.io/solar-system-threejs/)
+
+![](https://miro.medium.com/v2/resize:fit:400/1*fOmfL4UCkdN7WyHUF80vNQ.png)
+
+¡Espero que te haya parecido interesante! Si fue así, compártelo y sígueme en [LinkedIn](https://www.linkedin.com/in/canadamomblant/), [Twitter](https://twitter.com/toni_canada) o [Facebook](https://www.facebook.com/toni.canada).

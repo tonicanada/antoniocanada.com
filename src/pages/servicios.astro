@@ -1,0 +1,53 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+// Sustituye por el nombre real del componente de compra
+import ProductCard from "../components/ProductCard.astro";
+---
+
+<BaseLayout sideBarActiveItemID="servicios">
+  <div class="pb-12 mt-5">
+    <h1 class="text-4xl font-bold mb-6">Servicios profesionales</h1>
+
+    <p class="text-lg mb-8">
+      Puedes contratar directamente algunos servicios desde aquí, o ponerte en contacto para proyectos personalizados. Todos incluyen acompañamiento y experiencia práctica real con <strong>ERPNext</strong>.
+    </p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Servicios con compra directa -->
+      <ProductCard
+        title="Asesoría ERPNext (1h)"
+        description="Videollamada técnica/funcional para resolver dudas, revisar procesos o apoyar decisiones estratégicas."
+        price="50 €"
+        img="/assets/images/servicios/servicio1.webp"
+        buyButtonLabel="Comprar ahora"
+      />
+
+      <ProductCard
+        title="Auditoría de ERPNext"
+        description="Informe técnico y funcional de tu ERP, con recomendaciones y plan de mejora."
+        price="150 €"
+        img="/assets/images/servicios/servicio2.webp"
+        buyButtonLabel="Comprar auditoría"
+      />
+
+      <!-- Servicios personalizados -->
+      <ProductCard
+        title="Implementación ERPNext"
+        description="Instalación, configuración de módulos clave, carga inicial de datos y capacitación. Adaptado a tu empresa."
+        price="Desde 600 €"
+        img="/assets/images/servicios/servicio3.webp"
+        buyButtonLabel="Solicitar propuesta"
+        contactUrl="/contacto"
+      />
+
+      <ProductCard
+        title="Desarrollo de apps ERPNext"
+        description="Automatización de procesos, creación de Doctypes, flujos inteligentes e integraciones API."
+        price="Desde 350 €"
+        img="/assets/images/servicios/servicio4.webp"
+        buyButtonLabel="Contactar"
+        contactUrl="/contacto"
+      />
+    </div>
+  </div>
+</BaseLayout>

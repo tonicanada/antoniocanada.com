@@ -1,0 +1,181 @@
+---
+title: "Resolviendo el problema del viajante (TSP) con C# y AutoCAD"
+description: "Desde programación lineal entera hasta OR-Tools, una guía completa para abordar el problema TSP con código real."
+pubDate: 2023-01-23
+tags: ["TSP", "optimización", "algoritmos", "AutoCAD", "programación"]
+heroImage: "/assets/images/blog/tsp-autocad/portada.webp"
+---
+
+import Gist from "../../components/Gist.astro";
+
+El **Problema del Viajante (TSP)** es un clásico en la computación y la optimización, planteado de la siguiente manera:
+
+> Dada una lista de ciudades y las distancias entre cada par de ellas, ¿cuál es la ruta más corta que visita cada ciudad exactamente una vez y regresa a la ciudad de origen?
+
+A pesar de lo simple que es describirlo —¡hasta un niño lo entendería!—, aún no existe un algoritmo eficiente que garantice la solución óptima. Es un problema clasificado como **NP-Hard**, lo que significa que no se ha encontrado un algoritmo de tiempo polinomial para resolverlo en todos los casos. Como veremos, una computadora moderna puede encontrar la solución exacta solo hasta aproximadamente 22-24 nodos.
+
+Me resulta inspirador que hoy, con todo nuestro avance tecnológico, sigan existiendo problemas tan sencillos de entender… ¡y tan difíciles de resolver! No hablamos de física cuántica o dinámica de fluidos: solo queremos encontrar la ruta más corta entre unos puntos.
+
+En este artículo vamos a:
+
+- Implementar distintos algoritmos que resuelven el TSP de forma óptima y aproximada.
+- Programarlos en **C#**.
+- Integrarlos como un **plugin de AutoCAD** con interfaz gráfica amigable.
+
+---
+
+## ✨ Interfaz del plugin
+
+El plugin cuenta con una interfaz en forma de ventana con pestañas, desde donde se puede:
+
+- Insertar nodos de ejemplo en el modelo CAD.
+- Seleccionar un algoritmo.
+- Resolver y visualizar la ruta óptima.
+
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1674170747969/5db3f16d-a3af-4e24-afab-ba03f2c7e8a8.png)
+
+Por ejemplo, se pueden insertar 20 nodos y aplicar un algoritmo:
+
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1674170978577/582a7c4c-f936-4698-9828-afbdd53e05b0.jpeg)
+
+---
+
+## 🧠 Introducción a los algoritmos TSP
+
+La solución más ingenua es la **fuerza bruta**: probar todas las rutas posibles. Su complejidad es \(O(n!)\), exactamente \((n-1)!/2\), considerando rutas simétricas. Es decir, 1 → 2 → 3 → 1 es equivalente a 1 → 3 → 2 → 1.
+
+Como esto no escala bien, en este artículo exploramos:
+
+- 🧮 Dos métodos para solución **óptima**:
+
+  - **Programación Lineal Entera (ILP)**
+  - **Programación Dinámica (DP)**
+
+- 🌀 Dos algoritmos de **aproximación**:
+
+  - **Double Tree (2T)**
+  - **Christofides (1.5T)**
+
+- 🚀 Finalmente, el uso de [**Google OR-Tools**](https://developers.google.com/optimization/routing/tsp), una librería gratuita de optimización combinatoria muy poderosa.
+
+---
+
+## 🔍 Soluciones óptimas
+
+Explicamos con profundidad:
+
+- Cómo modelar el problema TSP como un problema de programación lineal.
+- Dos formas de eliminar subtours: mediante subconjuntos o usando variables de tiempo (Miller–Tucker–Zemlin).
+- Cómo programarlo en C# usando Google OR-Tools.
+
+<Gist id="tonicanada/f592b0f0b23c0f182ae925ba1ecd05b3" />
+
+También implementamos el enfoque de programación dinámica con memoización y bottom-up, usando la recurrencia clásica para TSP:
+
+<Gist id="tonicanada/a89ac1d62efe3903dbf8fb056b3c1c8e" />
+
+Comparando tiempos:
+
+<table style="
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.95rem;
+">
+  <thead>
+    <tr style="background-color: #f8f8f8;">
+      <th style="width: 33.33%; padding: 0.3em; border: 1px solid #ccc; text-align: center;">$n$</th>
+      <th style="width: 33.33%; padding: 0.3em; border: 1px solid #ccc; text-align: center;">$n!$</th>
+      <th style="width: 33.33%; padding: 0.3em; border: 1px solid #ccc; text-align: center;">$n^2 \cdot 2^n$</th>
+    </tr>
+  </thead>
+  <tbody>
+    {[
+      [3, "6", "72"],
+      [4, "24", "256"],
+      [5, "120", "800"],
+      [6, "720", "2,304"],
+      [7, "5,040", "6,272"],
+      [8, "40,320", "16,384"],
+      [9, "362,880", "41,472"],
+      [10, "3,628,800", "102,400"],
+      [11, "39,916,800", "247,808"],
+      [12, "479,001,600", "589,824"],
+      [13, "6,227,020,800", "1,384,448"],
+      [14, "87,178,291,200", "3,211,264"],
+      [15, "1,307,674,368,000", "7,372,800"]
+    ].map(([n, fact, approx]) => (
+      <tr>
+        <td style="padding: 0.25em; border: 1px solid #ccc; text-align: right;">{n}</td>
+        <td style="padding: 0.25em; border: 1px solid #ccc; text-align: right;">{fact}</td>
+        <td style="padding: 0.25em; border: 1px solid #ccc; text-align: right;">{approx}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+
+---
+
+## ⚖️ Algoritmos de aproximación
+
+Dado que los métodos óptimos no escalan, recurrimos a aproximaciones:
+
+### 🌲 Double-Tree (2T)
+
+Pasos:
+
+1. Obtener un Árbol Recubridor Mínimo (MST)
+2. Duplicar todas sus aristas
+3. Buscar un ciclo Euleriano
+4. Acortar el recorrido removiendo nodos duplicados
+
+Worst-case: 2x óptimo
+
+<Gist id="tonicanada/51a61bbe54aca1b81f9b38a41fe139ec" />
+
+### 🔄 Christofides (1.5T)
+
+Pasos:
+
+1. MST
+2. Obtener nodos de grado impar (S)
+3. Hallar el emparejamiento perfecto mínimo (en S)
+4. Unir con el MST → Grafo Euleriano
+5. Encontrar tour Euleriano y acortarlo
+
+Worst-case: 1.5x óptimo
+
+<Gist id="tonicanada/698d03eca99bbe85aab093e7397bb3db" />
+
+---
+
+## 🛠️ Google OR-Tools
+
+[OR-Tools](https://developers.google.com/optimization) ofrece una potente implementación del TSP con estrategias como:
+
+- `CHRISTOFIDES`
+- `PATH_CHEAPEST_ARC`
+- `GLOBAL_CHEAPEST_ARC`
+
+Ejemplo con 50 nodos y distintas estrategias:
+
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1674179438175/138b8409-dc21-48af-b199-458e1d2e4850.jpeg)
+
+Con 500 nodos: solución en 3.19 s. Con 1,000 nodos: 13.47 s. ¡Nada mal!
+
+Además, OR-Tools permite resolver problemas de rutas de vehículos (VRP), una extensión natural del TSP.
+
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1674179502301/952a4a6a-1615-41b7-9946-474817356c15.png)
+
+<Gist id="tonicanada/3a4ed03a57c5846f6dd3f36456784671" />
+
+---
+
+## 📦 Código fuente
+
+El código completo está disponible en este [repositorio de GitHub](https://github.com/tonicanada/TspCadPlugin).
+
+Si te gustó este artículo, por favor dale a 👏 y compártelo. Puedes seguirme en mi [LinkedIn](https://www.linkedin.com/in/canadamomblant/), [Twitter](https://twitter.com/toni_canada), [Facebook](https://www.facebook.com/toni.canada) o [Medium](https://medium.com/@tonicanada).
+
+¡Gracias por leer!

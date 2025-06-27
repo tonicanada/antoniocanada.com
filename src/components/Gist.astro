@@ -1,0 +1,35 @@
+---
+const { id } = Astro.props;
+const [user, gistId] = id.split('/');
+const gistScriptUrl = `https://gist.github.com/${user}/${gistId}.js`;
+const gistUrl = `https://gist.github.com/${user}/${gistId}`;
+---
+
+<iframe
+  style="width: 100%; border: none; min-height: 600px;"
+  srcdoc={`<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_blank">
+  </head>
+  <body style="margin:0;">
+    <script src="${gistScriptUrl}"></script>
+  </body>
+</html>`}>
+</iframe>
+
+<div style="
+  text-align: center;
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: #777;
+">
+  <a
+    href={gistUrl}
+    target="_blank"
+    rel="noopener noreferrer"
+    style="text-decoration: none; color: inherit;"
+  >
+    Ver código en GitHub Gist →
+  </a>
+</div>

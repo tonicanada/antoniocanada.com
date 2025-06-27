@@ -1,0 +1,140 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import TimeLineElement from "../components/cv/TimeLine.astro";
+---
+
+<BaseLayout title="CV de Antonio Cañada" sideBarActiveItemID="cv">
+  <!-- Perfil -->
+  <div class="mb-5">
+    <div class="text-3xl w-full font-bold">Perfil</div>
+  </div>
+  <div class="mb-10 text-justify text-base leading-relaxed text-gray-800">
+    Profesional con más de 10 años de experiencia liderando áreas contables,
+    presupuestarias y de cumplimiento normativo. Especializado en la
+    implementación de sistemas ERP, automatización de procesos administrativos y
+    desarrollo de soluciones a medida. Tras una etapa profesional en Chile como
+    Gerente de Finanzas en el sector construcción, he regresado a España con el
+    objetivo de seguir aportando mi experiencia financiera y tecnológica a
+    organizaciones que buscan escalar con eficiencia y control.
+  </div>
+
+  <!-- Educación -->
+  <div class="mb-5">
+    <div class="text-3xl w-full font-bold">Educación</div>
+  </div>
+  <div class="time-line-container grid gap-4 mb-10">
+    <TimeLineElement
+      title="MBA - Doble grado Tulane University y Universidad de Chile"
+      subtitle="2019 – 2020 · Santiago de Chile"
+    />
+    <TimeLineElement
+      title="Ingeniería de Caminos, Canales y Puertos"
+      subtitle="2003 – 2010 · Universitat Politècnica de Catalunya, Barcelona"
+    />
+  </div>
+
+  <!-- Experiencia -->
+  <div class="mb-5">
+    <div class="text-3xl w-full font-bold">Experiencia</div>
+  </div>
+  <div class="time-line-container mb-10">
+    <TimeLineElement
+      title="Asesor Contable y Desarrollador de ERP"
+      subtitle="04/2025 – Presente · Freelance · Barcelona"
+    >
+      Consultoría contable y financiera para pymes. Automatización de flujos de
+      trabajo, implementación de ERPNext, generación de reportes financieros y
+      cumplimiento fiscal. Desarrollo de integraciones con sistemas externos
+      como Google Workspace (Drive, Gmail, Sheets), plataformas tributarias como
+      el Servicio de Impuestos Internos (SII) en Chile, y canales de
+      comunicación como WhatsApp Business. Diseño de soluciones personalizadas
+      que conectan ERPNext con herramientas de inteligencia artificial para la
+      clasificación de datos, análisis financiero y búsqueda avanzada de
+      documentos mediante lenguaje natural.
+    </TimeLineElement>
+
+    <TimeLineElement
+      title="Gerente de Administración y Finanzas"
+      subtitle='08/2014 – 04/2025 · <a href="https://www.tecton.cl" target="_blank" class="hover:underline">Constructora Tecton S.p.A.</a> · Santiago, Chile'
+    >
+      Cofundador y responsable de toda la estructura financiera del grupo.
+      Diseño de sistema de control de costos, implementación de ERPNext
+      personalizado, liderazgo de equipo contable y tecnológico, relación con
+      auditores y accionistas.
+    </TimeLineElement>
+
+    <TimeLineElement
+      title="Ingeniero de Oficina Técnica y Proyectista"
+      subtitle="2009 – 2014 · España y Chile"
+    >
+      Trabajé en empresas del sector construcción e ingeniería como <strong
+        >Prointec</strong
+      >, <strong>Novantia Integral</strong> y <strong>Moldar</strong>,
+      participando en el desarrollo de presupuestos, planificación de obras,
+      documentación técnica y gestión de proyectos. Esta etapa me permitió
+      adquirir un pensamiento estructurado, orientado al detalle y con capacidad
+      de análisis, que hoy aplico al diseño e implementación de sistemas ERP y
+      procesos financieros.
+    </TimeLineElement>
+  </div>
+
+  <!-- Voluntariado -->
+  <div class="mb-5">
+    <div class="text-3xl w-full font-bold">Voluntariado</div>
+  </div>
+  <TimeLineElement
+    title="Encargado de Finanzas · Iglesia Centro"
+    subtitle="09/2014 – Presente · Santiago, Chile"
+  >
+    Responsable de estructura financiera y administrativa de la iglesia desde su
+    fundación. Implementación de procesos contables y formación a equipos.
+  </TimeLineElement>
+
+  <!-- Certificaciones -->
+  <div class="mb-5 mt-10">
+    <div class="text-3xl w-full font-bold">Certificaciones</div>
+  </div>
+  <ul class="list-disc mx-6 mb-10 grid gap-2">
+    <li>
+      <a
+        href="https://www.youtube.com/playlist?list=PLpGDePOeqo4ZHvTGpQGpdgwSCiGEouOie"
+        target="_blank"
+        class="hover:underline"
+      >
+        Curso de Contabilidad con ERPNext (autor, en desarrollo) – YouTube ·
+        2024
+      </a>
+    </li>
+
+    <li>
+      Formación técnica en Python, automatización de procesos y desarrollo
+      backend · 2021–2024
+    </li>
+    <li>
+      Desarrollo de soluciones ERP personalizadas e integraciones con APIs REST
+    </li>
+    <li>
+      Aplicación de inteligencia artificial (RAG, LLMs, FAISS) para análisis
+      financiero y búsqueda documental
+    </li>
+  </ul>
+
+  <!-- Habilidades -->
+  <div class="mb-5">
+    <div class="text-3xl w-full font-bold">Habilidades</div>
+  </div>
+  <ul class="list-disc md:columns-3 columns-2 mx-6 text-base">
+    <li>Contabilidad Financiera</li>
+    <li>ERPNext</li>
+    <li>Automatización de procesos</li>
+    <li>Python</li>
+    <li>SQL</li>
+    <li>Javascript</li>
+    <li>Linux</li>
+    <li>Google Workspace</li>
+    <li>Gestión de equipos</li>
+    <li>Transformación digital</li>
+    <li>IFRS</li>
+    <li>Excel avanzado</li>
+  </ul>
+</BaseLayout>
