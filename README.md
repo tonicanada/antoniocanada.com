@@ -39,7 +39,7 @@ Cada push a `main` se despliega automáticamente.
 
 ## 📬 Contacto
 
-- 💼 [LinkedIn](https://www.linkedin.com/in/antoniocanadamomblant/)
+- 💼 [LinkedIn](https://www.linkedin.com/in/antoniocanada/)
 - 📧 contacto [arroba] antoniocanada [punto] com
 
 ---
