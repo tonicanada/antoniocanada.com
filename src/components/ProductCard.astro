@@ -25,22 +25,14 @@ const {
     <span class="text-gray-800 font-medium">{price}</span>
     {
       stripeUrl ? (
-        <form method="POST" action="/api/checkout" class="inline">
-          <input
-            type="hidden"
-            name="asunto"
-            value={new URLSearchParams(stripeUrl.split("?")[1]).get("asunto")}
-          />
-          <input
-            type="hidden"
-            name="precio"
-            value={new URLSearchParams(stripeUrl.split("?")[1]).get("precio")}
-          />
+        <form method="POST" action="/api/checkout">
+          <input type="hidden" name="asunto" value="asesoria_inicial" />
+          <input type="hidden" name="precio" value="50" />
           <button
             type="submit"
-            class="text-sm bg-blue-600 text-white hover:bg-blue-700 font-medium py-2 px-4 rounded transition"
+            class="bg-blue-600 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700 transition"
           >
-            {buyButtonLabel}
+            Pagar ahora
           </button>
         </form>
       ) : contactUrl ? (

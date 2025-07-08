@@ -1,34 +1,15 @@
 import type { APIRoute } from "astro";
 import Stripe from "stripe";
 
-const stripe = new Stripe(import.meta.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2023-10-16",
-});
+const stripe = new Stripe(import.meta.env.STRIPE_SECRET_KEY!, {});
 
-export const POST: APIRoute = async ({ request, redirect }) => {
-  const contentType = request.headers.get("content-type") || "";
-  let asunto = "";
-  let precioStr = "";
+export const POST: APIRoute = async ({ request }) => {
+  const formData = await request.formData();
+  const asunto = formData.get("asunto")?.toString();
+  const precio = Number(formData.get("precio"));
 
-  if (contentType.includes("application/x-www-form-urlencoded")) {
-    const bodyText = await request.text();
-    const params = new URLSearchParams(bodyText);
-    asunto = params.get("asunto") ?? "";
-    precioStr = params.get("precio") ?? "";
-  } else {
-    return new Response("Unsupported content type", { status: 400 });
-  }
-
-  console.log("asunto:", asunto);
-  console.log("precioStr:", precioStr);
-
-  if (!asunto || !precioStr) {
-    return new Response("Parámetros inválidos", { status: 400 });
-  }
-
-  const precio = Number(precioStr);
-  if (isNaN(precio) || precio <= 0) {
-    return new Response("Precio no válido", { status: 400 });
+  if (!asunto || !precio) {
+    return new Response("Faltan campos obligatorios", { status: 400 });
   }
 
   const session = await stripe.checkout.sessions.create({
@@ -38,17 +19,17 @@ export const POST: APIRoute = async ({ request, redirect }) => {
       {
         price_data: {
           currency: "eur",
+          unit_amount: precio * 100,
           product_data: {
-            name: decodeURIComponent(asunto.replace(/_/g, " ")),
+            name: asunto.replace(/_/g, " "),
           },
-          unit_amount: Math.round(precio * 100),
         },
         quantity: 1,
       },
     ],
-    success_url: `https://antoniocanada.com/gracias`,
-    cancel_url: `https://antoniocanada.com/cancelado`,
+    success_url: `${import.meta.env.PUBLIC_BASE_URL}/gracias`,
+    cancel_url: `${import.meta.env.PUBLIC_BASE_URL}/cancelado`,
   });
 
-  return redirect(session.url!, 303);
+  return Response.redirect(session.url!, 303);
 };
