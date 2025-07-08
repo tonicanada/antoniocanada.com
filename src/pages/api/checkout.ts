@@ -10,6 +10,8 @@ export const POST: APIRoute = async ({ request }) => {
   const asunto = formData.get("asunto")?.toString();
   const precio = Number(formData.get("precio"));
 
+  console.log("➡️ FormData recibido:", { asunto, precio });
+
   if (!asunto || !precio) {
     return new Response("Faltan campos obligatorios", { status: 400 });
   }
@@ -34,10 +36,28 @@ export const POST: APIRoute = async ({ request }) => {
       cancel_url: `${import.meta.env.PUBLIC_BASE_URL}/cancelado`,
     });
 
-    return Response.redirect(session.url!, 303);
+    console.log("✅ Sesión de Stripe creada:", session.url);
+
+    // ✅ Redirigimos usando HTML con meta refresh
+    return new Response(`
+      <!DOCTYPE html>
+      <html lang="es">
+        <head>
+          <meta charset="UTF-8">
+          <meta http-equiv="refresh" content="0; URL='${session.url}'" />
+          <title>Redirigiendo a Stripe...</title>
+        </head>
+        <body>
+          <p>Redirigiendo a Stripe, por favor espera...</p>
+        </body>
+      </html>
+    `, {
+      status: 200,
+      headers: { "Content-Type": "text/html" },
+    });
 
   } catch (error) {
-    console.error(error);
+    console.error("❌ Error creando sesión de Stripe:", error);
     return new Response("Error al crear la sesión de Stripe", { status: 500 });
   }
 };
