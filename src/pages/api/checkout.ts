@@ -1,3 +1,5 @@
+export const prerender = false;
+
 import type { APIRoute } from "astro";
 import Stripe from "stripe";
 
@@ -7,13 +9,18 @@ const stripe = new Stripe(import.meta.env.STRIPE_SECRET_KEY!, {
 
 export const POST: APIRoute = async ({ request }) => {
   const formData = await request.formData();
+
   const asunto = formData.get("asunto")?.toString();
-  const precio = Number(formData.get("precio"));
+  const precioRaw = formData.get("precio")?.toString();
+  const emailRaw = formData.get("email");
 
-  console.log("➡️ FormData recibido:", { asunto, precio });
+  const precio = precioRaw ? Number(precioRaw) : NaN;
+  const email = emailRaw && typeof emailRaw === "string" ? emailRaw : undefined;
 
-  if (!asunto || !precio) {
-    return new Response("Faltan campos obligatorios", { status: 400 });
+  console.log("➡️ FormData recibido:", { asunto, precio, email });
+
+  if (!asunto || !precio || isNaN(precio)) {
+    return new Response("Faltan campos obligatorios o precio inválido", { status: 400 });
   }
 
   try {
@@ -24,7 +31,7 @@ export const POST: APIRoute = async ({ request }) => {
         {
           price_data: {
             currency: "eur",
-            unit_amount: precio * 100,
+            unit_amount: Math.round(precio * 100),
             product_data: {
               name: asunto.replace(/_/g, " "),
             },
@@ -34,11 +41,11 @@ export const POST: APIRoute = async ({ request }) => {
       ],
       success_url: `${import.meta.env.PUBLIC_BASE_URL}/gracias`,
       cancel_url: `${import.meta.env.PUBLIC_BASE_URL}/cancelado`,
+      ...(email && { customer_email: email }),
     });
 
     console.log("✅ Sesión de Stripe creada:", session.url);
 
-    // ✅ Redirigimos usando HTML con meta refresh
     return new Response(`
       <!DOCTYPE html>
       <html lang="es">
