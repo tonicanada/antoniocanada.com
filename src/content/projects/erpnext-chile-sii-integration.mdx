@@ -1,0 +1,82 @@
+---
+title: "Integración de ERPNext con el SII de Chile"
+description: "Automatización del ingreso de facturas electrónicas desde XML del SII a ERPNext, conectando correo, Google Drive y el ERP para eliminar tareas repetitivas y errores humanos."
+image: "/assets/images/projects/erpnext-chile-sii-integration/portada.webp"
+tags:
+  [
+    "ERPNext",
+    "SII",
+    "facturación electrónica",
+    "Chile",
+    "Google Drive",
+  ]
+publishDate: "2024-08-01"
+github: ""
+demo: ""
+---
+
+Este proyecto fue desarrollado para automatizar completamente el ingreso de **facturas electrónicas (DTE)** desde los archivos XML del SII de Chile hacia el ERP **ERPNext**, reduciendo al mínimo el trabajo manual en el área contable.
+
+---
+
+import Mermaid from "../../components/Mermaid.jsx";
+
+## 🧩 ¿Qué problema resuelve?
+
+- Las facturas llegan como archivos XML al correo (desde el proveedor o el propio SII)
+- El proceso de descarga, clasificación y carga en el ERP es lento, repetitivo y propenso a errores
+- Muchas facturas deben enlazarse a órdenes de compra, centros de costo, bodegas o proyectos
+
+---
+
+## ⚙️ ¿Qué hace esta integración?
+
+<Mermaid
+  client:only="react"
+  code={`flowchart TD
+  A[Consulta periódica SII\npor documentos recibidos] --> B[Creación inicial\nPreInvoices en ERPNext]
+  C[Consulta periódica\ncasilla email XML] --> D[Guardado XML en\nGoogle Drive por empresa/mes]
+  E[Consulta periódica\nGoogle Drive XML] --> F[Parsear XML\ny obtener detalle]
+  F --> G[Buscar PreInvoice\ny agregar detalle XML]
+  G --> H[Adjuntar XML a PreInvoice]
+  H --> I{¿Coincide con reglas?}
+  I -- Sí --> J[Creación automática\nPurchase Invoice - PINV]
+  I -- No --> K[PreInvoice pendiente\nrevisión manual]
+  B --> G
+  D --> E
+`}
+/>
+
+- Lee correos con XML adjuntos en bandejas compartidas
+- Detecta automáticamente a qué empresa y mes corresponde el documento
+- Sube el XML a Google Drive en una ruta organizada por empresa/mes
+- Extrae los datos del XML y crea una **PreInvoice** en ERPNext
+- Aplica reglas definidas por empresa para convertir automáticamente la PreInvoice en una **Purchase Invoice**
+- Identifica duplicados y maneja referencias a órdenes de compra
+- Adjunta el XML original al documento contable creado
+
+---
+
+## 🧠 Tecnologías usadas
+
+- **ERPNext** (Custom App con DocTypes, hooks, scripts Python)
+- **Google Drive API** y **Gmail API**
+- **Logs centralizados en Google Sheets**
+
+> En el futuro se espera incorporar componentes de IA como FAISS y LLMs para sugerir ítems contables en base a descripciones. Esto se encuentra en evaluación para una versión posterior.
+
+---
+
+## 📌 Resultados
+
+- Procesamiento automático de **cientos de facturas mensuales**
+- Cero intervención humana en el 90% de los casos
+- Trazabilidad completa: desde el XML recibido hasta el asiento contable en el ERP
+
+---
+
+## 💡 Publicación del código
+
+Este proyecto está siendo adaptado para su publicación como **open source**. Una versión pública estará disponible próximamente con documentación y ejemplos de uso.
+
+🔒 Por ahora el código es privado, pero si estás trabajando en una implementación similar, **contáctame** y estaré encantado de ayudarte o colaborar.

@@ -1,0 +1,168 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+const url = new URL(Astro.request.url);
+const asunto = url.searchParams.get("asunto");
+const precio = url.searchParams.get("precio");
+
+function asuntoLegible(slug) {
+  return slug
+    ? slug
+        .split("_")
+        .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+        .join(" ")
+    : "";
+}
+---
+
+<BaseLayout sideBarActiveItemID="contacto">
+  <section class="py-20 bg-white">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6">
+      <h1 class="text-4xl font-bold mb-10 text-center">Contáctame</h1>
+
+      <form
+        action="https://formspree.io/f/xwpbjdky"
+        method="POST"
+        class="bg-white p-8 rounded-lg shadow-sm border
+        border-gray-200 space-y-6"
+      >
+        <!-- Fila con Nombre y Email -->
+        <div class="flex flex-col md:flex-row gap-6">
+          <div class="w-full md:w-1/2">
+            <label
+              for="name"
+              class="block text-sm font-semibold text-gray-800 mb-1"
+              >Tu nombre</label
+            >
+            <input
+              type="text"
+              name="name"
+              id="name"
+              required
+              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-neutral-500"
+            />
+          </div>
+
+          <div class="w-full md:w-1/2">
+            <label
+              for="email"
+              class="block text-sm font-semibold text-gray-800 mb-1"
+              >Tu correo</label
+            >
+            <input
+              type="email"
+              name="email"
+              id="email"
+              required
+              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-neutral-500"
+            />
+          </div>
+        </div>
+
+        <div class="mt-6">
+          <label
+            for="asunto"
+            class="block text-sm font-semibold text-gray-800 mb-1">Asunto</label
+          >
+          <select
+            name="asunto"
+            id="asunto"
+            required
+            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-neutral-500"
+          >
+            <option value="">Selecciona una opción</option>
+            <option value="asesoria">Asesoría inicial (1h)</option>
+            <option value="diagnostico_procesos">Diagnóstico de procesos</option
+            >
+            <option value="implementacion_erpnext"
+              >Implementación ERPNext</option
+            >
+            <option value="desarrollo_apps"
+              >Automatización y personalización</option
+            >
+            <option value="otro">Otro</option>
+          </select>
+        </div>
+
+        <!-- Campo de Mensaje amplio -->
+        <div class="mt-6">
+          <label
+            for="message"
+            class="block text-sm font-semibold text-gray-800 mb-1"
+            >Mensaje</label
+          >
+          <textarea
+            name="message"
+            id="message"
+            required
+            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-neutral-500 min-h-[250px]"
+          >
+            Hola Antonio, me interesa contratar el servicio {
+              asuntoLegible(asunto)
+            }. Quedo atento a tu contacto para coordinar la fecha.
+          </textarea>
+        </div>
+
+        <input
+          type="hidden"
+          name="_redirect"
+          value="https://antoniocanada.com/gracias"
+        />
+
+        <button
+          type="submit"
+          class="w-full bg-black text-white font-semibold py-2 px-4 rounded hover:bg-neutral-800 transition"
+        >
+          Enviar mensaje
+        </button>
+        {
+          (() => {
+            return (
+              asunto &&
+              precio && (
+                <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded mb-6">
+                  <p class="text-sm">
+                    Estás solicitando el servicio{" "}
+                    <strong>{asunto.replaceAll("_", " ")}</strong>.<br />
+                    Precio: <strong>{precio} €</strong>.<br />
+                    Por favor, déjame tus datos y me pondré en contacto contigo
+                    para coordinar fecha y forma de pago.
+                  </p>
+                </div>
+              )
+            );
+          })()
+        }
+      </form>
+
+      <div class="mt-10 text-center">
+        <p class="text-gray-500 mb-3">O si prefieres, háblame por WhatsApp:</p>
+        <a
+          href="https://wa.me/34626764393"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 text-white bg-green-600 px-5 py-2 rounded hover:bg-green-700 transition"
+        >
+          📱 Contactar por WhatsApp
+        </a>
+      </div>
+    </div>
+  </section>
+  <script type="module">
+    function actualizarAsuntoDesdeURL() {
+      const params = new URLSearchParams(window.location.search);
+      const asunto = params.get("asunto");
+      const select = document.getElementById("asunto");
+      if (asunto && select) {
+        const option = Array.from(select.options).find(
+          (opt) => opt.value === asunto
+        );
+        if (option) {
+          select.value = asunto;
+        }
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", actualizarAsuntoDesdeURL);
+    document.addEventListener("astro:after-swap", actualizarAsuntoDesdeURL);
+  </script>
+</BaseLayout>

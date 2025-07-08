@@ -4,11 +4,17 @@ import HorizontalCard from "../components/HorizontalCard.astro";
 import { getCollection } from "astro:content";
 import createSlug from "../lib/createSlug";
 
+// Últimos posts del blog
 const posts = (await getCollection("blog")).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
-
 const last_posts = posts.slice(0, 3);
+
+// Últimos proyectos
+const projects = (await getCollection("projects")).sort(
+  (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf()
+);
+const last_projects = projects.slice(0, 3);
 ---
 
 <BaseLayout sideBarActiveItemID="home">
@@ -35,6 +41,12 @@ const last_posts = posts.slice(0, 3);
           >España</b
         > y otros países, desarrollando soluciones reales para problemas reales.
       </p>
+      <p>
+        Además de mi trabajo como consultor, me apasionan la programación, las
+        matemáticas y la ciencia. En este blog también comparto artículos y
+        proyectos personales sobre estos temas, que complementan mi enfoque
+        técnico y creativo en la resolución de problemas empresariales.
+      </p>
     </div>
 
     <div class="mt-8 flex flex-wrap gap-4">
@@ -44,34 +56,30 @@ const last_posts = posts.slice(0, 3);
   </div>
 
   <div>
-    <div class="text-3xl w-full font-bold mb-2">My last projects {"</>"}</div>
+    <div class="text-3xl w-full font-bold mb-2">Mis últimos proyectos</div>
   </div>
 
-  <HorizontalCard
-    title="Demo Project 1"
-    img="/post_img.webp"
-    desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-    url="#"
-    badge="NEW"
-  />
-  <div class="divider my-0"></div>
-  <HorizontalCard
-    title="Demo Project 2"
-    img="/post_img.webp"
-    desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-    url="#"
-  />
-  <div class="divider my-0"></div>
-  <HorizontalCard
-    title="Demo Project 3"
-    img="/post_img.webp"
-    desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-    url="#"
-    badge="FOSS"
-  />
+  {
+    last_projects.map((project) => (
+      <>
+        <HorizontalCard
+          title={project.data.title}
+          img={project.data.image}
+          desc={project.data.description}
+          url={"/projects/" + createSlug(project.data.title, project.slug)}
+          target="_self"
+          tags={project.data.tags}
+        />
+        <div class="divider my-0" />
+      </>
+    ))
+  }
+
+  <!-- Espaciado extra para separar visualmente los proyectos del blog -->
+  <div class="my-20"></div>
 
   <div>
-    <div class="text-3xl w-full font-bold mb-5 mt-10">Latest from blog</div>
+    <div class="text-3xl w-full font-bold mb-5">Lo último del blog</div>
   </div>
 
   {
@@ -84,6 +92,7 @@ const last_posts = posts.slice(0, 3);
           url={"/blog/" + createSlug(post.data.title, post.slug)}
           target="_self"
           badge={post.data.badge}
+          tags={post.data.tags}
         />
         <div class="divider my-0" />
       </>

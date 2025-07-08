@@ -2,11 +2,14 @@ import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
 import tailwind from "@astrojs/tailwind";
 import sitemap from "@astrojs/sitemap";
+import react from "@astrojs/react";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 
 export default defineConfig({
+  output: "static",
   integrations: [
+    react(),
     mdx({
       remarkPlugins: [remarkMath],
       rehypePlugins: [rehypeKatex],
@@ -17,8 +20,8 @@ export default defineConfig({
   markdown: {
     syntaxHighlight: "shiki",
     shikiConfig: {
-      theme: "one-light", // Puedes cambiarlo por github-dark, nord, etc.
-      wrap: true
-    }
-  }
+      theme: "one-light",
+      wrap: true,
+    },
+  },
 });

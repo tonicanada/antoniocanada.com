@@ -9,44 +9,52 @@ import ProductCard from "../components/ProductCard.astro";
     <h1 class="text-4xl font-bold mb-6">Servicios profesionales</h1>
 
     <p class="text-lg mb-8">
-      Puedes contratar directamente algunos servicios desde aquí, o ponerte en contacto para proyectos personalizados. Todos incluyen acompañamiento y experiencia práctica real con <strong>ERPNext</strong>.
+      Puedes contratar directamente algunos servicios desde aquí, o ponerte en
+      contacto para proyectos personalizados. Todos incluyen acompañamiento y
+      experiencia práctica real con <strong>ERPNext</strong> y herramientas modernas
+      de automatización.
     </p>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <!-- Servicios con compra directa -->
+      <!-- Asesoría inicial -->
       <ProductCard
-        title="Asesoría ERPNext (1h)"
-        description="Videollamada técnica/funcional para resolver dudas, revisar procesos o apoyar decisiones estratégicas."
+        title="Asesoría inicial (1h)"
+        description="Videollamada para resolver dudas, explorar si ERPNext u otras herramientas son adecuadas para tu empresa, y orientarte en los próximos pasos."
         price="50 €"
         img="/assets/images/servicios/servicio1.webp"
-        buyButtonLabel="Comprar ahora"
+        buyButtonLabel="Agendar sesión"
+        stripeUrl="/api/checkout?asunto=asesoria_inicial&precio=50"
       />
 
+      <!-- Diagnóstico de procesos -->
       <ProductCard
-        title="Auditoría de ERPNext"
-        description="Informe técnico y funcional de tu ERP, con recomendaciones y plan de mejora."
-        price="150 €"
-        img="/assets/images/servicios/servicio2.webp"
-        buyButtonLabel="Comprar auditoría"
+        title="Diagnóstico de procesos"
+        description="Entrevista + informe con recomendaciones para digitalizar y automatizar tu empresa. Ideal si aún no sabes si ERPNext es para ti."
+        price="80 €"
+        img="/assets/images/servicios/servicio5.webp"
+        buyButtonLabel="Solicitar diagnóstico"
+        contactUrl="/contacto?asunto=diagnostico_procesos&precio=80"
+        stripeUrl="/api/checkout?asunto=diagnostico_procesos&precio=50"
       />
 
-      <!-- Servicios personalizados -->
+      <!-- Implementación ERPNext -->
       <ProductCard
         title="Implementación ERPNext"
-        description="Instalación, configuración de módulos clave, carga inicial de datos y capacitación. Adaptado a tu empresa."
-        price="Desde 600 €"
+        description="Instalación, configuración inicial y capacitación adaptada a tu empresa. Desde cero y con acompañamiento."
+        price="A medida"
         img="/assets/images/servicios/servicio3.webp"
         buyButtonLabel="Solicitar propuesta"
-        contactUrl="/contacto"
+        contactUrl="/contacto?asunto=implementacion_erpnext"
       />
 
+      <!-- Automatización ERPNext -->
       <ProductCard
-        title="Desarrollo de apps ERPNext"
-        description="Automatización de procesos, creación de Doctypes, flujos inteligentes e integraciones API."
+        title="Automatización y personalización ERPNext"
+        description="Creamos módulos a medida, automatizamos tareas repetitivas y conectamos ERPNext con tus otras herramientas. Ideal si ya usas ERPNext y quieres ir más allá."
         price="Desde 350 €"
         img="/assets/images/servicios/servicio4.webp"
         buyButtonLabel="Contactar"
-        contactUrl="/contacto"
+        contactUrl="/contacto?asunto=desarrollo_apps"
       />
     </div>
   </div>
