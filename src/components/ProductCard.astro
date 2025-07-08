@@ -8,6 +8,17 @@ const {
   contactUrl = null,
   stripeUrl = null,
 } = Astro.props;
+
+// Limpiamos precio (por ejemplo "50 €" → 50)
+const numericPrice = parseInt(price.toString().replace(/[^\d]/g, ""));
+
+// Convertimos el título en asunto_slug → "asesoria_inicial"
+const asuntoSlug = title
+  .toLowerCase()
+  .normalize("NFD")
+  .replace(/[\u0300-\u036f]/g, "") // quitar tildes
+  .replace(/\s+/g, "_") // espacios por guiones bajos
+  .replace(/[^\w_]/g, ""); // quitar símbolos
 ---
 
 <div
@@ -24,15 +35,15 @@ const {
   >
     <span class="text-gray-800 font-medium">{price}</span>
     {
-      stripeUrl ? (
+      stripeUrl && numericPrice ? (
         <form method="POST" action="/api/checkout">
-          <input type="hidden" name="asunto" value="asesoria_inicial" />
-          <input type="hidden" name="precio" value="50" />
+          <input type="hidden" name="asunto" value={asuntoSlug} />
+          <input type="hidden" name="precio" value={numericPrice.toString()} />
           <button
             type="submit"
             class="bg-blue-600 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700 transition"
           >
-            Pagar ahora
+            {buyButtonLabel}
           </button>
         </form>
       ) : contactUrl ? (

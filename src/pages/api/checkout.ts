@@ -1,3 +1,10 @@
+import type { APIRoute } from "astro";
+import Stripe from "stripe";
+
+const stripe = new Stripe(import.meta.env.STRIPE_SECRET_KEY!, {
+  apiVersion: "2022-11-15",
+});
+
 export const POST: APIRoute = async ({ request }) => {
   const formData = await request.formData();
   const asunto = formData.get("asunto")?.toString();
@@ -27,7 +34,6 @@ export const POST: APIRoute = async ({ request }) => {
       cancel_url: `${import.meta.env.PUBLIC_BASE_URL}/cancelado`,
     });
 
-    // ✅ Redirigimos al usuario al checkout
     return Response.redirect(session.url!, 303);
 
   } catch (error) {
