@@ -1,0 +1,61 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const asunto = "diagnostico_procesos";
+const precio = 80;
+---
+
+<BaseLayout title="Diagnóstico de procesos">
+  <div class="max-w-3xl mx-auto py-10 px-4">
+    <h1 class="text-3xl font-bold mb-4">Diagnóstico de procesos</h1>
+
+    <p class="mb-6 text-lg text-gray-700">
+      Entrevista online en profundidad para entender cómo funciona tu empresa y
+      detectar oportunidades de mejora. Luego recibirás un informe personalizado
+      con recomendaciones concretas para digitalizar y automatizar.
+    </p>
+
+    <ul class="list-disc pl-6 mb-6 text-gray-600">
+      <li>Entrevista 1 a 1 (60 minutos)</li>
+      <li>Revisión de procesos actuales</li>
+      <li>Informe PDF con diagnóstico y plan de acción</li>
+      <li>Reunión de cierre si lo necesitas</li>
+    </ul>
+
+    <p class="text-2xl font-semibold mb-4">Precio: 80 €</p>
+
+    <form method="POST" action="/api/checkout" class="space-y-4 max-w-md">
+      <input type="hidden" name="asunto" value={asunto} />
+      <input type="hidden" name="precio" value={precio.toString()} />
+
+      <input
+        type="email"
+        name="email"
+        required
+        placeholder="Tu correo electrónico"
+        class="w-full border px-3 py-2 rounded"
+      />
+
+      <input
+        type="text"
+        name="nombre"
+        placeholder="Tu nombre (opcional)"
+        class="w-full border px-3 py-2 rounded"
+      />
+
+      <input
+        type="tel"
+        name="celular"
+        placeholder="Tu celular (opcional)"
+        class="w-full border px-3 py-2 rounded"
+      />
+
+      <button
+        type="submit"
+        class="bg-black text-white font-semibold py-2 px-6 rounded hover:bg-gray-900 transition"
+      >
+        Pagar
+      </button>
+    </form>
+  </div></BaseLayout
+>

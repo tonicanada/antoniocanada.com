@@ -1,0 +1,40 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const asunto = "asesoria_inicial";
+const precio = 50;
+---
+
+<BaseLayout title="Asesoría inicial (1h)">
+  <div class="max-w-3xl mx-auto py-10 px-4">
+    <h1 class="text-3xl font-bold mb-4">Asesoría inicial (1h)</h1>
+
+    <p class="mb-6 text-lg text-gray-700">
+      En esta sesión personalizada resolveremos tus dudas y exploraremos juntos si ERPNext u otras herramientas son adecuadas para tu empresa. También definiremos próximos pasos concretos.
+    </p>
+
+    <ul class="list-disc pl-6 mb-6 text-gray-600">
+      <li>Duración: 60 minutos</li>
+      <li>Modalidad: videollamada (Meet o Zoom)</li>
+      <li>Incluye resumen posterior por correo</li>
+    </ul>
+
+    <p class="text-2xl font-semibold mb-4">Precio: 50 €</p>
+
+    <form method="POST" action="/api/checkout" class="space-y-4 max-w-md">
+      <input type="hidden" name="asunto" value={asunto} />
+      <input type="hidden" name="precio" value={precio.toString()} />
+
+      <input type="email" name="email" required placeholder="Tu correo" class="w-full border px-3 py-2 rounded" />
+      <input type="text" name="nombre" placeholder="Tu nombre (opcional)" class="w-full border px-3 py-2 rounded" />
+      <input type="tel" name="celular" placeholder="Tu celular (opcional)" class="w-full border px-3 py-2 rounded" />
+
+      <button
+        type="submit"
+        class="bg-black text-white font-semibold py-2 px-6 rounded hover:bg-gray-900 transition"
+      >
+        Pagar y agendar
+      </button>
+    </form>
+  </div>
+</BaseLayout>

@@ -4,63 +4,26 @@ const {
   description,
   price,
   img = "/default.webp",
-  buyButtonLabel = "Comprar",
-  contactUrl = null,
-  stripeUrl = null,
+  slug,
 } = Astro.props;
-
-// Limpiamos precio (por ejemplo "50 €" → 50)
-const numericPrice = parseInt(price.toString().replace(/[^\d]/g, ""));
-
-// Convertimos el título en asunto_slug → "asesoria_inicial"
-const asuntoSlug = title
-  .toLowerCase()
-  .normalize("NFD")
-  .replace(/[\u0300-\u036f]/g, "") // quitar tildes
-  .replace(/\s+/g, "_") // espacios por guiones bajos
-  .replace(/[^\w_]/g, ""); // quitar símbolos
 ---
 
-<div
-  class="flex flex-col justify-between h-full border rounded-lg shadow p-6 bg-white"
->
+<div class="flex flex-col justify-between h-full border rounded-lg shadow p-6 bg-white">
   <div>
     <img src={img} alt={title} class="w-full h-40 object-cover rounded mb-4" />
     <h2 class="text-xl font-semibold mb-2">{title}</h2>
     <p class="mb-4 text-gray-700">{description}</p>
   </div>
 
-  <div
-    class="flex items-center justify-between mt-auto pt-4 border-t border-gray-200"
-  >
-    <span class="text-gray-800 font-medium">{price}</span>
-    {
-      stripeUrl && numericPrice ? (
-        <form method="POST" action="/api/checkout">
-          <input type="hidden" name="asunto" value={asuntoSlug} />
-          <input type="hidden" name="precio" value={numericPrice.toString()} />
-          <button
-            type="submit"
-            class="bg-blue-600 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700 transition"
-          >
-            {buyButtonLabel}
-          </button>
-        </form>
-      ) : contactUrl ? (
-        <a
-          href={contactUrl}
-          class="text-sm bg-white border border-gray-400 hover:bg-gray-100 text-gray-800 font-medium py-2 px-4 rounded transition"
-        >
-          {buyButtonLabel}
-        </a>
-      ) : (
-        <button
-          class="text-sm bg-white border border-gray-400 text-gray-800 font-medium py-2 px-4 rounded cursor-not-allowed opacity-60"
-          disabled
-        >
-          {buyButtonLabel}
-        </button>
-      )
-    }
+  <hr class="my-4" />
+
+  <div class="flex items-center justify-between pt-2">
+    <span class="text-gray-900 font-semibold">{price}</span>
+    <a
+      href={`/servicios/${slug}`}
+      class="text-sm border border-gray-400 hover:bg-gray-100 text-gray-800 font-medium py-2 px-4 rounded transition"
+    >
+      Saber más
+    </a>
   </div>
 </div>
