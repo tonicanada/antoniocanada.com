@@ -5,10 +5,22 @@ const {
   price,
   img = "/default.webp",
   slug,
+  badgeImage = "",
 } = Astro.props;
 ---
 
-<div class="flex flex-col justify-between h-full border rounded-lg shadow p-6 bg-white">
+<a
+  href={`/${slug}`}
+  class="block relative flex flex-col justify-between h-full border rounded-lg shadow p-6 bg-white hover:shadow-lg hover:scale-[1.01] transition"
+>
+  {badgeImage && (
+    <img
+      src={badgeImage}
+      alt="Nuevo"
+      class="absolute top-0 left-0 w-20 h-20 z-10"
+    />
+  )}
+
   <div>
     <img src={img} alt={title} class="w-full h-40 object-cover rounded mb-4" />
     <h2 class="text-xl font-semibold mb-2">{title}</h2>
@@ -17,13 +29,8 @@ const {
 
   <hr class="my-4" />
 
-  <div class="flex items-center justify-between pt-2">
-    <span class="text-gray-900 font-semibold">{price}</span>
-    <a
-      href={`/servicios/${slug}`}
-      class="text-sm border border-gray-400 hover:bg-gray-100 text-gray-800 font-medium py-2 px-4 rounded transition"
-    >
-      Saber más
-    </a>
+  <div class="flex items-center justify-between pt-2 text-sm text-gray-700">
+    <span class="font-semibold text-base text-gray-900">{price}</span>
+    <span class="text-sm text-gray-500">Ver más →</span>
   </div>
-</div>
+</a>

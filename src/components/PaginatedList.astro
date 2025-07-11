@@ -1,0 +1,55 @@
+---
+import HorizontalCard from "./HorizontalCard.astro";
+import { getCollection } from "astro:content";
+import createSlug from "../lib/createSlug";
+
+export interface Props {
+  urlPrefix: string;
+  title?: string;
+  page: any;
+  cardProps: (entry: any) => {
+    title: string;
+    desc: string;
+    img: string;
+    url: string;
+    target?: string;
+    badge?: string;
+    tags?: string[];
+  };
+}
+
+const { urlPrefix, title = "Entradas", page, cardProps } = Astro.props;
+---
+
+<div class="mb-5">
+  <div class="text-3xl w-full font-bold">{title}</div>
+</div>
+
+{page.data.length === 0 ? (
+  <div class="bg-base-200 border-l-4 border-secondary w-full p-4 min-w-full">
+    <p class="font-bold">¡Lo siento!</p>
+    <p>Aún no hay contenido disponible. ¡Vuelve pronto!</p>
+  </div>
+) : (
+  <ul>
+    {page.data.map((entry) => {
+      const props = cardProps(entry);
+      return (
+        <>
+          <HorizontalCard {...props} />
+          <div class="divider my-0" />
+        </>
+      );
+    })}
+  </ul>
+)}
+
+<div class="flex justify-between">
+  {page.url.prev ? (
+    <a href={page.url.prev} class="btn btn-ghost my-10 mx-5">← Anterior</a>
+  ) : <div />}
+
+  {page.url.next ? (
+    <a href={page.url.next} class="btn btn-ghost my-10 mx-5">Siguiente →</a>
+  ) : <div />}
+</div>

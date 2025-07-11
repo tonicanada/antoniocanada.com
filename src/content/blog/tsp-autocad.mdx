@@ -1,9 +1,9 @@
 ---
 title: "Resolviendo el problema del viajante (TSP) con C# y AutoCAD"
 description: "Desde programación lineal entera hasta OR-Tools, una guía completa para abordar el problema TSP con código real."
-pubDate: 2023-01-23
+publishDate: 2023-01-23
 tags: ["TSP", "optimización", "algoritmos", "AutoCAD", "programación"]
-heroImage: "/assets/images/blog/tsp-autocad/portada.webp"
+image: "/assets/images/blog/tsp-autocad/portada.webp"
 ---
 
 import Gist from "../../components/Gist.astro";
@@ -76,17 +76,25 @@ También implementamos el enfoque de programación dinámica con memoización y 
 
 Comparando tiempos:
 
-<table style="
+<table
+  style="
   width: 100%;
   border-collapse: collapse;
   font-variant-numeric: tabular-nums;
   font-size: 0.95rem;
-">
+"
+>
   <thead>
     <tr style="background-color: #f8f8f8;">
-      <th style="width: 33.33%; padding: 0.3em; border: 1px solid #ccc; text-align: center;">$n$</th>
-      <th style="width: 33.33%; padding: 0.3em; border: 1px solid #ccc; text-align: center;">$n!$</th>
-      <th style="width: 33.33%; padding: 0.3em; border: 1px solid #ccc; text-align: center;">$n^2 \cdot 2^n$</th>
+      <th style="width: 33.33%; padding: 0.3em; border: 1px solid #ccc; text-align: center;">
+        $n$
+      </th>
+      <th style="width: 33.33%; padding: 0.3em; border: 1px solid #ccc; text-align: center;">
+        $n!$
+      </th>
+      <th style="width: 33.33%; padding: 0.3em; border: 1px solid #ccc; text-align: center;">
+        $n^2 \cdot 2^n$
+      </th>
     </tr>
   </thead>
   <tbody>
@@ -103,17 +111,22 @@ Comparando tiempos:
       [12, "479,001,600", "589,824"],
       [13, "6,227,020,800", "1,384,448"],
       [14, "87,178,291,200", "3,211,264"],
-      [15, "1,307,674,368,000", "7,372,800"]
+      [15, "1,307,674,368,000", "7,372,800"],
     ].map(([n, fact, approx]) => (
       <tr>
-        <td style="padding: 0.25em; border: 1px solid #ccc; text-align: right;">{n}</td>
-        <td style="padding: 0.25em; border: 1px solid #ccc; text-align: right;">{fact}</td>
-        <td style="padding: 0.25em; border: 1px solid #ccc; text-align: right;">{approx}</td>
+        <td style="padding: 0.25em; border: 1px solid #ccc; text-align: right;">
+          {n}
+        </td>
+        <td style="padding: 0.25em; border: 1px solid #ccc; text-align: right;">
+          {fact}
+        </td>
+        <td style="padding: 0.25em; border: 1px solid #ccc; text-align: right;">
+          {approx}
+        </td>
       </tr>
     ))}
   </tbody>
 </table>
-
 
 ---
 

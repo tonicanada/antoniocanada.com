@@ -4,9 +4,15 @@ import HorizontalCard from "../components/HorizontalCard.astro";
 import { getCollection } from "astro:content";
 import createSlug from "../lib/createSlug";
 
+// Últimos cursos
+const courses = (await getCollection("courses")).sort(
+  (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf()
+);
+const last_courses = courses.slice(0, 3);
+
 // Últimos posts del blog
 const posts = (await getCollection("blog")).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+  (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf()
 );
 const last_posts = posts.slice(0, 3);
 
@@ -51,7 +57,7 @@ const last_projects = projects.slice(0, 3);
 
     <div class="mt-8 flex flex-wrap gap-4">
       <a class="btn" href="/erpnext">Ver más sobre ERPNext</a>
-      <a href="/contacto" class="btn btn-outline">Contáctame</a>
+      <a href="/contact" class="btn btn-outline">Contáctame</a>
     </div>
   </div>
 
@@ -79,6 +85,29 @@ const last_projects = projects.slice(0, 3);
   <div class="my-20"></div>
 
   <div>
+    <div class="text-3xl w-full font-bold mb-2">Mis últimos cursos</div>
+  </div>
+
+  {
+    courses.map((course) => (
+      <>
+        <HorizontalCard
+          title={course.data.title}
+          img={course.data.image}
+          desc={course.data.description}
+          url={"/courses/" + createSlug(course.data.title, course.slug)}
+          target="_self"
+          tags={course.data.tags}
+        />
+        <div class="divider my-0" />
+      </>
+    ))
+  }
+
+  <!-- Espaciado extra para separar visualmente los proyectos del blog -->
+  <div class="my-20"></div>
+
+  <div>
     <div class="text-3xl w-full font-bold mb-5">Lo último del blog</div>
   </div>
 
@@ -87,7 +116,7 @@ const last_projects = projects.slice(0, 3);
       <>
         <HorizontalCard
           title={post.data.title}
-          img={post.data.heroImage}
+          img={post.data.image}
           desc={post.data.description}
           url={"/blog/" + createSlug(post.data.title, post.slug)}
           target="_self"

@@ -5,7 +5,7 @@ import sitemap from "@astrojs/sitemap";
 import react from "@astrojs/react";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
-import vercel from "@astrojs/vercel/static";
+import vercel from "@astrojs/vercel";
 
 export default defineConfig({
   output: "static",

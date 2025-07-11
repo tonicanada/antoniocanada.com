@@ -1,9 +1,9 @@
 ---
 title: "Cómo creé mi primera librería en PIP"
 description: "Experiencia paso a paso creando una librería Python y publicándola en PyPI, con ejemplos de uso reales."
-pubDate: 2023-04-04
+publishDate: 2023-04-04
 tags: ["python", "pip", "librerías", "automatización", "educación"]
-heroImage: "/assets/images/blog/mi-primera-libreria-pip/portada.webp"
+image: "/assets/images/blog/mi-primera-libreria-pip/portada.webp"
 ---
 
 La primera vez que vi a mi jefe ejecutar comandos en una terminal Linux, quedé totalmente inspirado. Acostumbrado a usar Windows toda la vida, me sorprendió que en esa terminal lo que le decías al computador, se cumplía **al pie de la letra**. Es decir, si escribías que querías borrar todos los archivos… ¡los borraba! Incluso si eso implicaba que luego no pudieras volver a encender la máquina.
