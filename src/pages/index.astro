@@ -1,130 +1,87 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-import HorizontalCard from "../components/HorizontalCard.astro";
-import { getCollection } from "astro:content";
-import createSlug from "../lib/createSlug";
-
-// Últimos cursos
-const courses = (await getCollection("courses")).sort(
-  (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf()
-);
-const last_courses = courses.slice(0, 3);
-
-// Últimos posts del blog
-const posts = (await getCollection("blog")).sort(
-  (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf()
-);
-const last_posts = posts.slice(0, 3);
-
-// Últimos proyectos
-const projects = (await getCollection("projects")).sort(
-  (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf()
-);
-const last_projects = projects.slice(0, 3);
+import HeroSection from "../components/HeroSection.astro";
+import UltimosPosts from "../components/UltimosPosts.astro";
+import Sidebar from "../components/SideBar.astro";
+import RelativityBackground from "../components/RelativityBackground";
 ---
 
-<BaseLayout sideBarActiveItemID="home">
-  <div class="pb-12 mt-5">
-    <div class="text-xl py-1">¡Hola! 👋</div>
-    <div class="text-5xl font-bold">Soy Antonio Cañada</div>
-    <div class="text-3xl py-3 font-bold">
-      Consultor especializado en ERPNext, finanzas empresariales y
-      automatización de procesos
+<html lang="es" data-theme="lofi">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Antonio Cañada</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+
+  <body class="relative min-h-screen bg-white text-gray-900">
+    <RelativityBackground client:load />
+
+    <div class="drawer lg:drawer-open">
+      <input id="my-drawer" type="checkbox" class="drawer-toggle" />
+
+      <!-- Contenido principal -->
+      <div class="drawer-content flex flex-col h-screen">
+        <!-- Botón de abrir sidebar en móviles -->
+        <label
+          for="my-drawer"
+          class="btn btn-primary drawer-button lg:hidden w-fit fixed top-4 left-4 z-30"
+        >
+          ☰
+        </label>
+
+        <main
+          class="flex-1 h-full overflow-y-auto snap-y snap-mandatory scroll-smooth"
+        >
+          <!-- Primera sección -->
+          <section
+            id="hero"
+            class="h-screen flex items-center justify-center px-6 snap-start"
+          >
+            <HeroSection />
+            <div
+              id="scroll-indicator"
+              class="absolute bottom-6 left-1/2 -translate-x-1/2 lg:left-[calc(50%+10rem)] lg:-translate-x-1/2 text-gray-500 animate-bounce text-2xl transition-opacity duration-500"
+            >
+              <a href="#contenido" aria-label="Desliza hacia abajo">↓</a>
+            </div>
+          </section>
+
+          <!-- Segunda sección -->
+          <section
+            id="contenido"
+            class="h-screen px-6 py-12 snap-start overflow-y-auto"
+          >
+            <div class="max-w-4xl mx-auto space-y-12">
+              <UltimosPosts />
+            </div>
+          </section>
+        </main>
+      </div>
+
+      <!-- Sidebar dentro de drawer-side -->
+      <div class="drawer-side absolute top-0 bottom-0 h-screen z-20">
+        <label for="my-drawer" class="drawer-overlay"></label>
+        <Sidebar sideBarActiveItemID="home" />
+      </div>
     </div>
-    <div class="py-2 text-lg space-y-3">
-      <p>
-        Ayudo a empresas a digitalizar su gestión contable, de compras y
-        facturación electrónica con <b>ERPNext</b>.
-      </p>
-      <p>
-        Combino más de 10 años de experiencia liderando áreas administrativas y
-        financieras, con un perfil técnico avanzado en <b
-          >programación, integraciones y automatización</b
-        >.
-      </p>
-      <p>
-        He trabajado con organizaciones de distintos tamaños en <b>Chile</b>, <b
-          >España</b
-        > y otros países, desarrollando soluciones reales para problemas reales.
-      </p>
-      <p>
-        Además de mi trabajo como consultor, me apasionan la programación, las
-        matemáticas y la ciencia. En este blog también comparto artículos y
-        proyectos personales sobre estos temas, que complementan mi enfoque
-        técnico y creativo en la resolución de problemas empresariales.
-      </p>
-    </div>
+  </body>
 
-    <div class="mt-8 flex flex-wrap gap-4">
-      <a class="btn" href="/erpnext">Ver más sobre ERPNext</a>
-      <a href="/contact" class="btn btn-outline">Contáctame</a>
-    </div>
-  </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const indicator = document.getElementById("scroll-indicator");
+      const target = document.getElementById("contenido");
 
-  <div>
-    <div class="text-3xl w-full font-bold mb-2">Mis últimos proyectos</div>
-  </div>
+      if (!indicator || !target) return; // aseguramos que ambos existen
 
-  {
-    last_projects.map((project) => (
-      <>
-        <HorizontalCard
-          title={project.data.title}
-          img={project.data.image}
-          desc={project.data.description}
-          url={"/projects/" + createSlug(project.data.title, project.slug)}
-          target="_self"
-          tags={project.data.tags}
-        />
-        <div class="divider my-0" />
-      </>
-    ))
-  }
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            indicator.style.opacity = entry.isIntersecting ? "0" : "1";
+          });
+        },
+        { threshold: 0.1 }
+      );
 
-  <!-- Espaciado extra para separar visualmente los proyectos del blog -->
-  <div class="my-20"></div>
-
-  <div>
-    <div class="text-3xl w-full font-bold mb-2">Mis últimos cursos</div>
-  </div>
-
-  {
-    courses.map((course) => (
-      <>
-        <HorizontalCard
-          title={course.data.title}
-          img={course.data.image}
-          desc={course.data.description}
-          url={"/courses/" + createSlug(course.data.title, course.slug)}
-          target="_self"
-          tags={course.data.tags}
-        />
-        <div class="divider my-0" />
-      </>
-    ))
-  }
-
-  <!-- Espaciado extra para separar visualmente los proyectos del blog -->
-  <div class="my-20"></div>
-
-  <div>
-    <div class="text-3xl w-full font-bold mb-5">Lo último del blog</div>
-  </div>
-
-  {
-    last_posts.map((post) => (
-      <>
-        <HorizontalCard
-          title={post.data.title}
-          img={post.data.image}
-          desc={post.data.description}
-          url={"/blog/" + createSlug(post.data.title, post.slug)}
-          target="_self"
-          badge={post.data.badge}
-          tags={post.data.tags}
-        />
-        <div class="divider my-0" />
-      </>
-    ))
-  }
-</BaseLayout>
+      observer.observe(target);
+    });
+  </script>
+</html>

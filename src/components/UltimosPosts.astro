@@ -1,0 +1,85 @@
+---
+import HorizontalCard from "./HorizontalCard.astro";
+import createSlug from "../lib/createSlug";
+import { getCollection } from "astro:content";
+
+// Carga los contenidos
+const allProjects = await getCollection("projects");
+const allCourses = await getCollection("courses");
+const allPosts = await getCollection("blog");
+
+// Ordena y corta
+const last_projects = allProjects
+  .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
+  .slice(0, 3);
+const courses = allCourses
+  .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
+  .slice(0, 3);
+const last_posts = allPosts
+  .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
+  .slice(0, 3);
+---
+
+<!-- Últimos proyectos -->
+<div class="mb-8">
+  <h2 class="text-2xl font-bold flex items-center gap-2 mb-4">
+    <span>🌿</span> Mis últimos proyectos
+  </h2>
+  <div class="space-y-4">
+    {
+      last_projects.map((project) => (
+        <HorizontalCard
+          title={project.data.title}
+          img={project.data.image}
+          desc={project.data.description}
+          url={"/projects/" + createSlug(project.data.title, project.slug)}
+          target="_self"
+          tags={project.data.tags}
+        />
+      ))
+    }
+  </div>
+</div>
+
+<!-- Últimos cursos -->
+<div class="mb-8">
+  <h2 class="text-2xl font-bold flex items-center gap-2 mb-4">
+    <span>📚</span> Mis últimos cursos
+  </h2>
+  <div class="space-y-4">
+    {
+      courses.map((course) => (
+        <HorizontalCard
+          title={course.data.title}
+          img={course.data.image}
+          desc={course.data.description}
+          url={"/courses/" + createSlug(course.data.title, course.slug)}
+          target="_self"
+          tags={course.data.tags}
+        />
+      ))
+    }
+  </div>
+</div>
+
+<!-- Últimos posts del blog -->
+<div>
+  <h2 class="text-2xl font-bold flex items-center gap-2 mb-4">
+    <span>📝</span> Lo último del blog
+  </h2>
+  <div class="space-y-4">
+    {
+      last_posts.map((post) => (
+        <HorizontalCard
+          title={post.data.title}
+          img={post.data.image}
+          desc={post.data.description}
+          url={"/blog/" + createSlug(post.data.title, post.slug)}
+          target="_self"
+          badge={post.data.badge}
+          tags={post.data.tags}
+        />
+      ))
+    }
+  </div>
+</div>

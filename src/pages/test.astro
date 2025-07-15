@@ -1,16 +1,8 @@
 ---
+// src/pages/test.astro
+import BaseLayout from "../layouts/BaseLayout.astro";
 ---
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Prueba Checkout</title>
-  </head>
-  <body style="padding: 2rem;">
-    <h1>Prueba de pago</h1>
-    <form method="POST" action="/api/checkout">
-      <input type="hidden" name="asunto" value="asesoria_inicial" />
-      <input type="hidden" name="precio" value="50" />
-      <button type="submit">Ir a Stripe</button>
-    </form>
-  </body>
-</html>
+
+<BaseLayout>
+  <p class="text-xl">Hola desde test</p>
+</BaseLayout>
