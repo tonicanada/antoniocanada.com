@@ -11,15 +11,19 @@ const {
 
 <a
   href={`/${slug}`}
-  class="block relative flex flex-col justify-between h-full border rounded-lg shadow p-6 bg-white hover:shadow-lg hover:scale-[1.01] transition"
+  class="relative z-0 block flex flex-col justify-between h-full border rounded-lg shadow p-6 bg-white hover:shadow-lg hover:scale-[1.01] transition overflow-hidden"
 >
-  {badgeImage && (
-    <img
-      src={badgeImage}
-      alt="Nuevo"
-      class="absolute top-0 left-0 w-20 h-20 z-10"
-    />
-  )}
+  {
+    badgeImage && (
+      <div class="absolute top-0 left-0 w-20 h-20 z-0 pointer-events-none overflow-hidden">
+        <img
+          src={badgeImage}
+          alt="Nuevo"
+          class="w-full h-full object-contain"
+        />
+      </div>
+    )
+  }
 
   <div>
     <img src={img} alt={title} class="w-full h-40 object-cover rounded mb-4" />

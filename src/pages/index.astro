@@ -20,16 +20,24 @@ import RelativityBackground from "../components/RelativityBackground";
 
       <!-- Contenido principal -->
       <div class="drawer-content flex flex-col h-screen">
-        <!-- Botón de abrir sidebar en móviles -->
-        <label
-          for="my-drawer"
-          class="btn btn-primary drawer-button lg:hidden w-fit fixed top-4 left-4 z-30"
+        <!-- Navbar superior móvil -->
+        <div
+          class="sticky lg:hidden top-0 z-30 flex h-16 w-full justify-center bg-opacity-90 backdrop-blur transition-all duration-100 bg-base-100 text-base-content shadow-sm"
         >
-          ☰
-        </label>
-
-        <!-- Espaciador para móviles debajo del botón hamburguesa -->
-        <div class="lg:hidden h-[4rem] w-full"></div>
+          <div class="navbar">
+            <div class="navbar-start">
+              <label for="my-drawer" class="btn btn-square btn-ghost drawer-button">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-5 h-5 stroke-current">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              </label>
+            </div>
+            <div class="navbar-center">
+              <!-- <a class="btn btn-ghost normal-case text-xl" href="/">Antonio Cañada</a> -->
+            </div>
+            <div class="navbar-end"></div>
+          </div>
+        </div>
 
         <main
           class="flex-1 h-full overflow-y-auto snap-y snap-mandatory scroll-smooth"
@@ -61,7 +69,7 @@ import RelativityBackground from "../components/RelativityBackground";
       </div>
 
       <!-- Sidebar dentro de drawer-side -->
-      <div class="drawer-side absolute top-0 bottom-0 h-screen z-20">
+      <div class="drawer-side absolute top-0 bottom-0 h-screen z-40">
         <label for="my-drawer" class="drawer-overlay"></label>
         <Sidebar sideBarActiveItemID="home" />
       </div>
@@ -73,7 +81,7 @@ import RelativityBackground from "../components/RelativityBackground";
       const indicator = document.getElementById("scroll-indicator");
       const target = document.getElementById("contenido");
 
-      if (!indicator || !target) return; // aseguramos que ambos existen
+      if (!indicator || !target) return;
 
       const observer = new IntersectionObserver(
         (entries) => {
