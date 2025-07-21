@@ -20,7 +20,9 @@ export const POST: APIRoute = async ({ request }) => {
   console.log("➡️ FormData recibido:", { asunto, precio, email });
 
   if (!asunto || !precio || isNaN(precio)) {
-    return new Response("Faltan campos obligatorios o precio inválido", { status: 400 });
+    return new Response("Faltan campos obligatorios o precio inválido", {
+      status: 400,
+    });
   }
 
   try {
@@ -34,11 +36,15 @@ export const POST: APIRoute = async ({ request }) => {
             unit_amount: Math.round(precio * 100),
             product_data: {
               name: asunto.replace(/_/g, " "),
+              // Opcional: usar un código fiscal de producto (tax_code) para mejor clasificación
+              // Puedes buscar el adecuado en https://stripe.com/tax/tax-codes
+              tax_code: "txcd_10103001", // SaaS uso comercial (puedes cambiarlo según el servicio)
             },
           },
           quantity: 1,
         },
       ],
+      automatic_tax: { enabled: true }, // 👉 habilita cálculo automático del IVA
       success_url: `${import.meta.env.PUBLIC_BASE_URL}/gracias`,
       cancel_url: `${import.meta.env.PUBLIC_BASE_URL}/cancelado`,
       ...(email && { customer_email: email }),
@@ -46,7 +52,8 @@ export const POST: APIRoute = async ({ request }) => {
 
     console.log("✅ Sesión de Stripe creada:", session.url);
 
-    return new Response(`
+    return new Response(
+      `
       <!DOCTYPE html>
       <html lang="es">
         <head>
@@ -58,11 +65,12 @@ export const POST: APIRoute = async ({ request }) => {
           <p>Redirigiendo a Stripe, por favor espera...</p>
         </body>
       </html>
-    `, {
-      status: 200,
-      headers: { "Content-Type": "text/html" },
-    });
-
+    `,
+      {
+        status: 200,
+        headers: { "Content-Type": "text/html" },
+      }
+    );
   } catch (error) {
     console.error("❌ Error creando sesión de Stripe:", error);
     return new Response("Error al crear la sesión de Stripe", { status: 500 });
