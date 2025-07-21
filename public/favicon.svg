@@ -1,12 +1,15 @@
-<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-  <polygon fill="black" points="100,0 190,50 190,150 100,200 10,150 10,50"/>
-  <text x="50%" y="47%" text-anchor="middle" dominant-baseline="central"
-        font-family="Arial Black, sans-serif"
-        font-size="130"
-        fill="white"
-        stroke="white"
-        stroke-width="3"
-        letter-spacing="1">
-    A
-  </text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-5 -5 110 110">
+  <!-- Hexágono exterior -->
+  <polygon 
+    points="50,0 93.3,25 93.3,75 50,100 6.7,75 6.7,25" 
+    fill="none" 
+    stroke="black" 
+    stroke-width="4" 
+    stroke-linejoin="round"
+  />
+  
+  <!-- Líneas internas para formar el cubo -->
+  <line x1="6.7" y1="25" x2="50" y2="50" stroke="black" stroke-width="4" stroke-linecap="round"/>
+  <line x1="93.3" y1="25" x2="50" y2="50" stroke="black" stroke-width="4" stroke-linecap="round"/>
+  <line x1="50" y1="50" x2="50" y2="100" stroke="black" stroke-width="4" stroke-linecap="round"/>
 </svg>
