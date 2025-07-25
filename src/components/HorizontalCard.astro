@@ -1,5 +1,5 @@
 ---
-const { title, img, desc, url, badge, tags, target = "_blank" } = Astro.props;
+const { title, img, desc, url, badge, tags } = Astro.props;
 import { Image } from "astro:assets";
 const tag_url = "/tags";
 ---
@@ -7,7 +7,7 @@ const tag_url = "/tags";
 <div
   class="rounded-lg bg-white/80 backdrop-blur-md border border-white/30 shadow-md hover:shadow-xl transition-transform duration-300 hover:scale-[102%]"
 >
-  <a href={url} target={target}>
+  <a href={url}>
     <div class="hero-content flex-col md:flex-row">
       {
         img && (
