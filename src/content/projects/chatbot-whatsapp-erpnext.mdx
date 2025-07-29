@@ -1,0 +1,90 @@
+---
+title: "Chatbot de WhatsApp conectado a ERPNext"
+description: "Permite consultar tu ERP por WhatsApp, usando lenguaje natural. El chatbot interpreta mensajes con OpenAI y ejecuta consultas o tareas en ERPNext automáticamente."
+image: "/assets/images/projects/chatbot-whatsapp-erpnext/portada.webp"
+tags: ["ERPNext", "WhatsApp", "OpenAI", "automatización", "chatbot"]
+publishDate: "2025-06-04"
+github: "https://github.com/tonicanada/chatbot-whatsapp-erpnext"
+demo: ""
+---
+
+Este proyecto demuestra cómo es posible conectar el sistema ERP **ERPNext** con **WhatsApp**, permitiendo que cualquier usuario autorizado pueda **consultar información o ejecutar tareas administrativas mediante mensajes en lenguaje natural**.
+
+---
+
+## 🧩 ¿Qué problema resuelve?
+
+- Muchas tareas administrativas simples requieren ingresar al ERP, buscar menús y aplicar filtros, lo que quita tiempo y requiere capacitación.
+- No todos los usuarios tienen acceso cómodo o frecuente al ERP, especialmente en terreno o fuera del horario laboral.
+- Las consultas repetitivas, como balances, pagos pendientes o reportes básicos, podrían resolverse automáticamente.
+
+---
+
+## ⚙️ ¿Qué hace este chatbot?
+
+<img src="/assets/images/projects/chatbot-whatsapp-erpnext/flujo-engranajes.png" alt="Flujo de integración WhatsApp y ERPNext" style="margin: 1rem 0; border-radius: 12px;" />
+
+- Recibe mensajes por WhatsApp (API oficial de Meta).
+- Usa **OpenAI** para interpretar lo que el usuario desea hacer.
+- Genera un comando estructurado que se ejecuta en **ERPNext** mediante su API o conexión directa.
+- Si la tarea es larga, el usuario recibe actualizaciones hasta obtener el resultado final.
+- Devuelve respuestas amigables directamente en WhatsApp.
+
+---
+
+## 🧠 Tecnologías usadas
+
+- **ERPNext** (API REST y consultas directas)
+- **OpenAI** (GPT para interpretación semántica)
+- **WhatsApp Business API** (Meta for Developers)
+- **Flask**, **Socket.IO**, **Docker**
+- **FAISS** (opcional para base de conocimiento tipo FAQ)
+
+---
+
+## 📌 Ejemplos de uso
+
+- “¿Cuál es el saldo de clientes este mes?”
+- “Muestra las facturas pendientes de la empresa Demo”
+- “Genera el reporte de compras por proyecto”
+- “¿Cuántos ítems no han sido recepcionados aún?”
+- “¿Cuál fue el gasto total en el centro de costo Obras 2024?”
+
+> Todas estas consultas se pueden hacer por WhatsApp y obtener una respuesta sin necesidad de abrir el ERP.
+
+---
+
+## 💡 Código fuente
+
+👉 [Repositorio en GitHub: tonicanada/chatbot-whatsapp-erpnext](https://github.com/tonicanada/chatbot-whatsapp-erpnext)
+
+Incluye:
+- Servicio de recepción de mensajes
+- Servicio de interpretación con OpenAI
+- Servicio ejecutor que se conecta con ERPNext
+
+---
+
+## 🚀 Resultados
+
+- Ahorro de tiempo en tareas administrativas repetitivas
+- Mayor accesibilidad a la información clave desde dispositivos móviles
+- Posibilidad de extender la solución con más acciones, reportes y seguridad por usuario
+
+---
+
+## 🛡️ Licencia
+
+Este software está licenciado bajo [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/).
+
+Puedes **ver, compartir y clonar** este repositorio, pero **no usarlo con fines comerciales** ni **crear versiones modificadas** sin autorización expresa.
+
+© 2025 Antonio Cañada Momblant
+
+---
+
+## 🤝 ¿Te interesa?
+
+¿Te gustaría implementar algo así en tu empresa?
+
+💬 Escríbeme desde el [formulario de contacto](https://antoniocanada.com/contact) o directamente por WhatsApp: [+34 626 764 393](https://wa.me/34626764393)
