@@ -6,10 +6,11 @@ export default function (title: string, staticSlug: string) {
     title
       .trim()
       .toLowerCase()
-      .normalize('NFD') // descompone letras con tilde (ó -> o + ´)
-      .replace(/[\u0300-\u036f]/g, '') // elimina tildes y acentos
-      .replace(/\s+/g, '-')
-      .replace(/[^\w-]/g, '') // ahora no eliminará letras válidas con tilde
-      .replace(/^-+|-+$/g, '')
-  )
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/\s+/g, '-')           // convierte espacios a guiones
+      .replace(/[^\w-]/g, '')         // elimina símbolos
+      .replace(/--+/g, '-')           // <- esta línea elimina guiones duplicados
+      .replace(/^-+|-+$/g, '')        // elimina guiones iniciales/finales
+  );
 }
