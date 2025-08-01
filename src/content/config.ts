@@ -61,10 +61,12 @@ const blogCollection = defineCollection({ schema: blogSchema });
 const storeCollection = defineCollection({ schema: storeSchema });
 const projectCollection = defineCollection({ schema: projectSchema });
 const courseCollection = defineCollection({ schema: courseSchema });
+const erpnextCollection = defineCollection({ schema: blogSchema });
 
 export const collections = {
   blog: blogCollection,
   store: storeCollection,
   projects: projectCollection,
   courses: courseCollection,
+  erpnext: erpnextCollection,
 };

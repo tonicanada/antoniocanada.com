@@ -8,8 +8,9 @@ export async function getStaticPaths() {
   const blog = await getCollection("blog");
   const courses = await getCollection("courses");
   const projects = await getCollection("projects");
+  const erpnext = await getCollection("erpnext");
 
-  const all = [...blog, ...courses, ...projects];
+  const all = [...blog, ...courses, ...projects, ...erpnext];
 
   const allTags = new Set(all.flatMap((item) => item.data.tags || []));
 
@@ -20,16 +21,12 @@ export async function getStaticPaths() {
 
 const { tag } = Astro.params;
 
-// Obtener y filtrar por tag
-const blog = (await getCollection("blog")).filter((entry) =>
-  entry.data.tags?.includes(tag)
-);
-const courses = (await getCollection("courses")).filter((entry) =>
-  entry.data.tags?.includes(tag)
-);
-const projects = (await getCollection("projects")).filter((entry) =>
-  entry.data.tags?.includes(tag)
-);
+const sections = [
+  { name: "Cursos", slug: "courses", entries: (await getCollection("courses")).filter((e) => e.data.tags?.includes(tag)) },
+  { name: "Proyectos", slug: "projects", entries: (await getCollection("projects")).filter((e) => e.data.tags?.includes(tag)) },
+  { name: "Artículos del Blog", slug: "blog", entries: (await getCollection("blog")).filter((e) => e.data.tags?.includes(tag)) },
+  { name: "Artículos sobre ERPNext", slug: "erpnext", entries: (await getCollection("erpnext")).filter((e) => e.data.tags?.includes(tag)) },
+];
 ---
 
 <BaseLayout title={`Tag: ${tag}`} sideBarActiveItemID="tags">
@@ -39,79 +36,33 @@ const projects = (await getCollection("projects")).filter((entry) =>
     </h1>
 
     {
-      courses.length > 0 && (
-        <>
-          <h2 class="text-2xl font-semibold mt-10 mb-4">Cursos</h2>
-          {
-            courses.map((entry) => (
-              <>
-                <HorizontalCard
-                  title={entry.data.title}
-                  desc={entry.data.description}
-                  img={entry.data.image}
-                  url={`/courses/${createSlug(entry.data.title, entry.slug)}`}
-                  target="_self"
-                  badge={entry.data.badge}
-                  tags={entry.data.tags}
-                />
-                <div class="divider my-0" />
-              </>
-            ))
-          }
-        </>
-      )
+      sections.map(({ name, slug, entries }) => (
+        entries.length > 0 && (
+          <>
+            <h2 class="text-2xl font-semibold mt-10 mb-4">{name}</h2>
+            {
+              entries.map((entry) => (
+                <>
+                  <HorizontalCard
+                    title={entry.data.title}
+                    desc={entry.data.description}
+                    img={entry.data.image}
+                    url={`/${slug}/${createSlug(entry.data.title, entry.slug)}`}
+                    target="_self"
+                    badge={entry.data.badge}
+                    tags={entry.data.tags}
+                  />
+                  <div class="divider my-0" />
+                </>
+              ))
+            }
+          </>
+        )
+      ))
     }
 
     {
-      projects.length > 0 && (
-        <>
-          <h2 class="text-2xl font-semibold mt-10 mb-4">Proyectos</h2>
-          {
-            projects.map((entry) => (
-              <>
-                <HorizontalCard
-                  title={entry.data.title}
-                  desc={entry.data.description}
-                  img={entry.data.image}
-                  url={`/projects/${createSlug(entry.data.title, entry.slug)}`}
-                  target="_self"
-                  badge={entry.data.badge}
-                  tags={entry.data.tags}
-                />
-                <div class="divider my-0" />
-              </>
-            ))
-          }
-        </>
-      )
-    }
-
-    {
-      blog.length > 0 && (
-        <>
-          <h2 class="text-2xl font-semibold mt-10 mb-4">Artículos del Blog</h2>
-          {
-            blog.map((entry) => (
-              <>
-                <HorizontalCard
-                  title={entry.data.title}
-                  desc={entry.data.description}
-                  img={entry.data.image}
-                  url={`/blog/${createSlug(entry.data.title, entry.slug)}`}
-                  target="_self"
-                  badge={entry.data.badge}
-                  tags={entry.data.tags}
-                />
-                <div class="divider my-0" />
-              </>
-            ))
-          }
-        </>
-      )
-    }
-
-    {
-      courses.length === 0 && projects.length === 0 && blog.length === 0 && (
+      sections.every(({ entries }) => entries.length === 0) && (
         <p>No se encontró contenido con esta etiqueta.</p>
       )
     }
