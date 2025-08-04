@@ -14,6 +14,8 @@ const {
   includeSidebar = true,
   sideBarActiveItemID,
   ogType,
+  backgroundUrl,
+  backgroundClasses = "brightness-[0.4]",
 } = Astro.props;
 ---
 
@@ -30,12 +32,42 @@ const {
     {TRANSITION_API && <ViewTransitions />}
   </head>
   <body>
+    <!-- 🔽 BACKGROUND (video o imagen) -->
+    <slot name="background" />
+
     <div class="bg-base-100 drawer lg:drawer-open">
+      {
+        backgroundUrl && (
+          <div class="fixed top-0 right-0 bottom-0 left-0 lg:left-64 z-0 pointer-events-none">
+            {backgroundUrl.endsWith(".mp4") ? (
+              <video
+                autoplay
+                muted
+                loop
+                playsinline
+                class={`w-full h-full object-cover object-center ${backgroundClasses}`}
+              >
+                <source src={backgroundUrl} type="video/mp4" />
+              </video>
+            ) : (
+              <img
+                src={backgroundUrl}
+                alt=""
+                class={`w-full h-full object-cover object-center ${backgroundClasses}`}
+              />
+            )}
+            <div class="absolute inset-0 bg-white/80 backdrop-blur-sm" />
+          </div>
+        )
+      }
+
       <input id="my-drawer" type="checkbox" class="drawer-toggle" />
       <div class="drawer-content bg-base-100">
         <Header title={SITE_TITLE} />
         <div class="md:flex md:justify-center">
-          <main class="px-4 py-10 max-w-[900px] mx-auto [&_ul>li]:leading-tight">
+          <main
+            class="px-4 py-10 max-w-[900px] mx-auto [&_ul>li]:leading-tight"
+          >
             <slot />
           </main>
         </div>
