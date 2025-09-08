@@ -1,6 +1,10 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import ProductCard from "../components/ProductCard.astro";
+import { getCollection } from "astro:content";
+import createSlug from "../lib/createSlug";
+
+const courses = await getCollection("courses");
 ---
 
 <BaseLayout sideBarActiveItemID="courses">
@@ -8,29 +12,23 @@ import ProductCard from "../components/ProductCard.astro";
     <h1 class="text-4xl font-bold mb-6">Cursos y bootcamps</h1>
 
     <p class="text-lg mb-8">
-      Formación práctica y directa para aprender a trabajar con <strong
-        >ERPNext</strong
-      > y sus herramientas relacionadas.
+      Formación práctica y directa para aprender a trabajar con <strong>ERPNext</strong>
+      y sus herramientas relacionadas.
     </p>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <ProductCard
-        title="Bootcamp ERPNext (septiembre 2025)"
-        description="Curso intensivo de 3 sesiones online para aprender a extender ERPNext desde cero. Instalación, apps, scripts, hooks, multitenancy y más."
-        price="50 €"
-        img="/assets/images/courses/bootcamp-erpnext/portada.webp"
-        slug="courses/bootcamp-erpnext-septiembre-2025"
-        badgeImage="/assets/images/new_badge.png"
-      />
-
-      <ProductCard
-        title="Curso de Contabilidad Básica Aplicada a ERPNext"
-        description="Curso práctico para entender los principios de contabilidad y cómo se aplican directamente en ERPNext. Ideal para emprendedores y administradores."
-        price="Gratis"
-        img="/assets/images/courses/curso-contabilidad-erpnext/portada.webp"
-        slug="courses/curso-de-contabilidad-basica-aplicada-a-erpnext"
-        badgeImage=""
-      />
+      {
+        courses.map((course) => (
+          <ProductCard
+            title={course.data.title}
+            description={course.data.description}
+            price={course.data.price ?? ""}
+            img={course.data.image}
+            slug={"courses/" + createSlug(course.data.title, course.slug)}
+            badgeImage={course.data.badgeImage ?? ""}
+          />
+        ))
+      }
     </div>
   </div>
 </BaseLayout>

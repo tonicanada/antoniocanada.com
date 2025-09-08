@@ -1,0 +1,85 @@
+---
+title: "Integración de ERPNext con Wherex"
+description: "Conexión bidireccional entre ERPNext y Wherex para automatizar solicitudes de materiales, licitaciones y órdenes de compra, manteniendo trazabilidad y control en todo el ciclo."
+image: "/assets/images/projects/erpnext-chile-wherex-integration/portada.webp"
+tags:
+  [
+    "ERPNext",
+    "Wherex",
+    "Chile",
+    "sourcing",
+    "licitaciones",
+    "automatización",
+    "API",
+  ]
+publishDate: "2025-09-08"
+github: ""
+demo: ""
+---
+
+Este proyecto conecta **ERPNext** con la plataforma de **Wherex**, ampliamente utilizada en Chile para procesos de licitación y compras. 
+
+La integración es bidireccional: los requerimientos de materiales nacen en ERPNext, se licitan en Wherex, y las adjudicaciones vuelven automáticamente al ERP para convertirse en **órdenes de compra**, listas para validación y envío.
+
+---
+
+import Mermaid from "../../components/Mermaid.jsx";
+
+## 🧩 ¿Qué problema resuelve?
+
+- Muchas empresas trabajan con ERPNext para la gestión interna, pero usan **Wherex** para licitaciones con proveedores  
+- Sin integración, los equipos deben **reingresar manualmente** la información en ambos sistemas, generando retrasos y posibles errores  
+- Además, es difícil mantener trazabilidad entre la **solicitud de materiales, la licitación, la adjudicación y la orden de compra**  
+
+---
+
+## ⚙️ ¿Qué hace esta integración?
+
+<div class="flex justify-center my-6">
+  <Mermaid
+    client:only="react"
+    code={`flowchart TD
+    A[Material Request\ncreado en ERPNext] --> B[Envío automático a Wherex]
+    B --> C[Licitación en Wherex]
+    C --> D[Ofertas de múltiples proveedores]
+    D --> E[Adjudicación a proveedor]
+    E --> F[Hook en ERPNext\ncrea Orden de Compra]
+    F --> G[Validación por Manager en ERPNext]
+    G --> H[Botón: Enviar OC a Wherex]
+  `}
+  />
+</div>
+
+
+- Desde **ERPNext**, el usuario crea un **Material Request**  
+- Este se envía automáticamente a **Wherex**, donde entra en proceso de licitación  
+- Los proveedores presentan sus ofertas en Wherex  
+- Al adjudicar, Wherex notifica a ERPNext y mediante un **hook** se genera automáticamente la **Orden de Compra**  
+- El manager de la empresa valida la Orden de Compra dentro de ERPNext  
+- Una vez aprobada, se envía de vuelta a **Wherex** con un solo clic  
+
+---
+
+## 🧠 Tecnologías usadas
+
+- **ERPNext** (Custom App con DocTypes, hooks y botones personalizados)  
+- **Wherex API** (REST, integración bidireccional)  
+- **Python** para lógica de negocio y validación  
+
+---
+
+## 📌 Resultados
+
+- **Flujo 100% integrado** entre ERPNext y Wherex  
+- Reducción de reprocesos y errores de digitación  
+- Mayor trazabilidad: cada **Material Request** queda enlazado con su licitación y Orden de Compra  
+- Mayor control: las órdenes de compra pasan siempre por validación de un manager antes de enviarse  
+
+---
+
+## 💡 Adaptabilidad
+
+Este proyecto fue desarrollado a medida para **Constructora Tecton**, pero el modelo es **replicable y adaptable a otras empresas** que utilicen ERPNext junto a Wherex o plataformas de compras similares.  
+
+¿Tu empresa quiere integrar sus procesos de compras con ERPNext?  
+💬 [Contáctame](/contact) y vemos cómo hacerlo posible.
