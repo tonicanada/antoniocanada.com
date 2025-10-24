@@ -1,30 +1,10 @@
+// src/pages/bootcamp-erpnext-2025-sala.astro
 ---
-export const prerender = true;
+import { redirect } from "astro:redirect";
+
+// ⚙️ URL real del Meet (manténla como variable de entorno)
+const MEET_URL = import.meta.env.PUBLIC_BOOTCAMP_NOV2025_MEET_URL!;
+
+// Redirige inmediatamente
+redirect(MEET_URL);
 ---
-
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Bootcamp ERPNext 2025 — Acceso a la sala</title>
-
-    <!-- 🔄 Redirección automática -->
-    <meta http-equiv="refresh" content="0; url=https://meet.google.com/vzc-cpea-pxj" />
-
-    <meta name="robots" content="noindex, nofollow" />
-  </head>
-
-  <body class="flex items-center justify-center min-h-screen bg-white text-gray-800 text-center">
-    <main>
-      <h1 class="text-2xl font-semibold mb-3">Redirigiendo a la sala del Bootcamp...</h1>
-      <p>
-        Si no se abre automáticamente, haz clic aquí:
-        <a
-          href="https://meet.google.com/vzc-cpea-pxj"
-          class="text-blue-600 underline font-medium"
-        >
-          Abrir en Google Meet
-        </a>
-      </p>
-    </main>
-  </body>
-</html>
