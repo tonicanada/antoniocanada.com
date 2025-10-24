@@ -5,11 +5,8 @@ tags: ["ERPNext", "bootcamp", "formación"]
 publishDate: "2025-09-11"
 image: "/assets/images/courses/bootcamp-erpnext/portada.webp"
 ---
-import CountrySelect from "../../components/CountrySelect.astro";
 
 <section class="py-5 bg-white">
-
-{" "}
 
 <p class="text-lg mb-8 text-center">
   “¿Quieres aprender ERPNext y programarlo a tu medida? En este bootcamp online
@@ -17,19 +14,33 @@ import CountrySelect from "../../components/CountrySelect.astro";
   con buenas prácticas y despliegue real.”
 </p>
 
-{" "}
-
 <div class="bg-gray-50 p-6 rounded-md border border-gray-200 mb-10">
-  <ul class="space-y-2 text-gray-700">
-    <li>✅ 3 sesiones online (1 hora y media cada una)</li>
-    <li>✅ Acceso a grabación + materiales</li>
-    <li>✅ Precio especial lanzamiento: 50 € (plazas limitadas)</li>
-    <li>📍 Modalidad: online en vivo (vía Google Meet)</li>
-    <li>📅 Fecha: último trimestre de 2025 (por definir)</li>
+  <ul class="space-y-2 text-gray-700 leading-relaxed">
+    <li>✅ 3 sesiones online (90 min cada una)</li>
+    <li>✅ Acceso a las grabaciones y materiales del bootcamp</li>
+    <li>✅ <strong>Edición de lanzamiento:</strong> <strong>USD 50</strong> (plazas limitadas)</li>
+    <li>📍 Modalidad: online en vivo (Google Meet)</li>
+    <li>📅 <strong>Martes 25, Miércoles 26 y Jueves 27 de noviembre de 2025</strong></li>
   </ul>
-</div>
 
-{" "}
+<div class="mt-5 text-gray-700 text-center">
+  <p class="font-semibold text-base mb-2">🕒 Horario</p>
+  <div class="flex flex-wrap justify-center gap-x-4 gap-y-1 text-sm sm:text-base mb-2">
+    <span>🇪🇸 <strong>España:</strong> 17:00–18:30</span>
+    <span>🇨🇱 <strong>Chile:</strong> 13:00–14:30</span>
+    <span>🇦🇷 <strong>Argentina:</strong> 13:00–14:30</span>
+    <span>🇧🇴 <strong>Bolivia:</strong> 12:00–13:30</span>
+    <span>🇵🇪 <strong>Perú:</strong> 11:00–12:30</span>
+    <span>🇨🇴 <strong>Colombia:</strong> 11:00–12:30</span>
+    <span>🇲🇽 <strong>CDMX:</strong> 10:00–11:30</span>
+    <span>🇬🇹 <strong>Guatemala:</strong> 10:00–11:30</span>
+  </div>
+
+  <p class="text-gray-600 text-sm italic">
+    🌎 Abierto a participantes de todo el mundo — ¡reserva tu plaza desde donde estés!
+  </p>
+</div>
+</div>
 
 <div class="mb-8 max-w-3xl mx-auto">
   <div class="aspect-w-16 aspect-h-9">
@@ -37,7 +48,7 @@ import CountrySelect from "../../components/CountrySelect.astro";
       width="560"
       height="315"
       src="https://www.youtube.com/embed/2Kijvd9p6oo?si=a4CvfJ_sLUwO1OHU"
-      title="YouTube video player"
+      title="Video Bootcamp ERPNext"
       frameborder="0"
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
       referrerpolicy="strict-origin-when-cross-origin"
@@ -46,14 +57,12 @@ import CountrySelect from "../../components/CountrySelect.astro";
   </div>
 </div>
 
-{" "}
-
 <h2 class="text-2xl font-semibold mb-4">¿Qué aprenderás?</h2>
 <ul class="list-disc pl-6 mb-10 text-gray-700">
-  <li>Introducción a ERPNext: recorrido por demo</li>
-  <li>Instalación en local</li>
-  <li>Creación e instalación de tu propia App</li>
-  <li>Exploración y creación de Doctypes</li>
+  <li>Introducción a ERPNext y recorrido por la demo</li>
+  <li>Instalación en entorno local</li>
+  <li>Creación e instalación de tu primera App</li>
+  <li>Exploración y creación de DocTypes</li>
   <li>Client y Server Scripts</li>
   <li>Hooks y Schedulers</li>
   <li>Integración de endpoints</li>
@@ -61,92 +70,33 @@ import CountrySelect from "../../components/CountrySelect.astro";
   <li>Fixtures y control de versiones</li>
 </ul>
 
-<h2 class="text-2xl font-semibold mb-4">Reserva tu plaza</h2>
-<p class="text-gray-600 mb-6">
-  Completa este formulario para reservar tu lugar en el bootcamp. No requiere
-  pago en este momento: te avisaremos cuando se abran las inscripciones
-  oficiales para completar la inscripción (precio especial lanzamiento: 50 €).
+<h2 class="text-2xl font-semibold mb-4 text-center">Reserva tu plaza</h2>
+<p class="text-gray-600 mb-6 text-center">
+  <strong>Precio lanzamiento — USD 50</strong>
+  <br />
+  Paga con Stripe y asegura tu cupo. Al completar el pago recibirás
+  automáticamente el correo de confirmación con el enlace a la sala y el
+  calendario.
 </p>
 
 <form
-  action="https://formspree.io/f/mgvlqydp"
+  action="/api/create-checkout-session-bootcamp"
   method="POST"
-  class="bg-white p-6 rounded-md border border-gray-200 space-y-6"
+  class="text-center mb-10"
 >
-  <div class="flex flex-col md:flex-row gap-4">
-    <div class="w-full md:w-1/2">
-      <label for="name" class="block text-sm font-medium text-gray-800 mb-1">
-        Nombre
-      </label>
-      <input
-        type="text"
-        name="name"
-        id="name"
-        required
-        class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
-      />
-    </div>
-    <div class="w-full md:w-1/2">
-      <label for="email" class="block text-sm font-medium text-gray-800 mb-1">
-        Correo
-      </label>
-      <input
-        type="email"
-        name="email"
-        id="email"
-        required
-        class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
-      />
-    </div>
-  </div>
-
-  <div>
-    <label for="perfil" class="block text-sm font-medium text-gray-800 mb-1">
-      Perfil
-    </label>
-    <select
-      name="perfil"
-      id="perfil"
-      required
-      class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
-    >
-      <option value="">Selecciona una opción</option>
-      <option value="programador">Programador/a</option>
-      <option value="empresario">Empresario/a técnico</option>
-      <option value="ambos">Ambos</option>
-      <option value="otro">Otro</option>
-    </select>
-  </div>
-
-  <CountrySelect />
-
-  <div>
-    <label for="expectativas" class="block text-sm font-medium text-gray-800 mb-1">
-      (Opcional) ¿Hay algo específico que te gustaría aprender en el bootcamp?
-    </label>
-    <textarea
-      name="expectativas"
-      id="expectativas"
-      rows="3"
-      placeholder="Ej: Integraciones, DevOps, casos reales…"
-      class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
-    ></textarea>
-  </div>
-
-  <input type="hidden" name="curso" value="Bootcamp ERPNext 2025 – Reserva de plaza" />
-  <input type="hidden" name="_redirect" value="https://antoniocanada.com/mensaje-enviado" />
-
-  <div class="pt-2">
-    <button
-      type="submit"
-      class="w-full bg-black text-white text-sm font-semibold py-1.5 px-4 rounded hover:bg-neutral-800 transition leading-none"
-    >
-      Reservar mi plaza
-    </button>
-  </div>
+  <button
+    type="submit"
+    class="bg-black text-white text-base font-semibold px-6 py-3 rounded hover:bg-neutral-800 transition"
+  >
+    💳 Pagar USD 50 con Stripe
+  </button>
+  <p class="mt-3 text-sm text-gray-500">
+    Pago seguro con Stripe · Cupos limitados · Sin reembolsos
+  </p>
 </form>
 
-<p class="text-center text-lg font-semibold mt-10">
-  ¡Cupos limitados!
+<p class="text-center text-lg font-semibold mt-10 text-green-700">
+  🚀 ¡Comienza a dominar ERPNext desde dentro!
 </p>
+
 </section>

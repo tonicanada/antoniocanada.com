@@ -22,9 +22,26 @@ import Footer from "../components/Footer.astro";
 
       <!-- Contenido principal -->
       <div class="drawer-content flex flex-col h-screen">
+
+        <!-- 🔔 Banner Móvil (fijo arriba) -->
+        <div
+          class="block lg:hidden fixed top-0 left-0 right-0 z-40 bg-yellow-100 border-b border-yellow-300 text-center py-2 px-4"
+        >
+          <p class="text-sm text-gray-900 font-medium">
+            🚀 <span class="font-semibold">Bootcamp ERPNext 2025</span> – Aprende
+            a programar tu primera app en 3×90’
+            <a
+              href="/courses/bootcamp-erpnext-proxima-edicion-2025"
+              class="ml-1 inline-block bg-black text-white px-2 py-1 rounded hover:bg-gray-800 transition"
+            >
+              Reserva tu plaza
+            </a>
+          </p>
+        </div>
+
         <!-- Navbar superior móvil -->
         <div
-          class="sticky lg:hidden top-0 z-30 flex h-16 w-full justify-center bg-opacity-90 backdrop-blur transition-all duration-100 bg-base-100 text-base-content shadow-sm"
+          class="sticky lg:hidden top-0 z-30 flex h-16 w-full justify-center bg-opacity-90 backdrop-blur transition-all duration-100 bg-base-100 text-base-content shadow-sm mt-10"
         >
           <div class="navbar">
             <div class="navbar-start">
@@ -42,20 +59,19 @@ import Footer from "../components/Footer.astro";
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     stroke-width="2"
-                    d="M4 6h16M4 12h16M4 18h16"></path>
+                    d="M4 6h16M4 12h16M4 18h16"
+                  ></path>
                 </svg>
               </label>
             </div>
-            <div class="navbar-center">
-              <!-- <a class="btn btn-ghost normal-case text-xl" href="/">Antonio Cañada</a> -->
-            </div>
+            <div class="navbar-center"></div>
             <div class="navbar-end"></div>
           </div>
         </div>
 
-        <!-- 🔔 Banner solo en el área principal -->
+        <!-- 🔔 Banner Desktop -->
         <div
-          class="bg-yellow-100 border-b border-yellow-300 text-center py-2 px-4"
+          class="hidden lg:block bg-yellow-100 border-b border-yellow-300 text-center py-2 px-4"
         >
           <p class="text-sm md:text-base text-gray-900 font-medium">
             🚀 <span class="font-semibold">Bootcamp ERPNext 2025</span> – Aprende
@@ -70,7 +86,7 @@ import Footer from "../components/Footer.astro";
         </div>
 
         <main
-          class="flex-1 h-full overflow-y-auto snap-y snap-mandatory scroll-smooth"
+          class="flex-1 h-full overflow-y-auto snap-y snap-mandatory scroll-smooth mt-16 lg:mt-0"
         >
           <!-- Primera sección -->
           <section

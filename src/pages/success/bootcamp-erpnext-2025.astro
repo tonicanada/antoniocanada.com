@@ -1,0 +1,136 @@
+---
+import Footer from "../../components/Footer.astro";
+import RelativityBackground from "../../components/RelativityBackground";
+---
+
+<html lang="es" data-theme="lofi">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Bootcamp ERPNext 2025 — Inscripción confirmada</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+
+  <body class="relative min-h-screen bg-white text-gray-900 overflow-hidden">
+    <!-- 🔹 Fondo animado -->
+    <RelativityBackground client:load class="absolute inset-0 -z-10 opacity-40" />
+
+    <main class="max-w-2xl mx-auto px-6 py-20 text-center relative z-10">
+      <h1 class="text-3xl font-semibold mb-4 text-green-600">
+        ✅ ¡Inscripción confirmada!
+      </h1>
+
+      <p class="text-lg text-gray-700 mb-6">
+        Gracias por unirte al <strong>Bootcamp ERPNext 2025</strong> 🎓 Tu pago se ha
+        procesado correctamente y tu plaza está reservada.
+      </p>
+
+      <div
+        class="bg-gray-50 border border-gray-200 shadow-sm rounded-lg p-6 text-left mb-10 backdrop-blur-sm"
+      >
+        <h2 class="text-xl font-semibold mb-3 text-center">
+          📅 Detalles del Bootcamp
+        </h2>
+
+        <ul class="space-y-1 text-gray-700 text-sm leading-relaxed">
+          <li>
+            <strong>Fechas:</strong> Martes 25, Miércoles 26 y Jueves 27 de noviembre
+            de 2025
+          </li>
+          <li>
+            <strong>Horario:</strong> 17:00–18:30 (España) · 13:00 (Chile/Argentina)
+            · 11:00 (Perú/Colombia) · 10:00 (Guatemala/México)
+          </li>
+          <li><strong>Modalidad:</strong> Online en vivo por Google Meet</li>
+          <li>
+            <strong>Grabaciones y materiales:</strong> Disponibles tras la finalización del curso
+          </li>
+        </ul>
+
+        <!-- 🔗 Copiar enlace de acceso -->
+        <div class="text-center mt-6">
+          <button
+            id="copyMeetBtn"
+            data-meet="https://antoniocanada.com/bootcamp-erpnext-2025-sala-8r3jhf"
+            class="inline-block bg-blue-600 text-white font-semibold px-6 py-3 rounded hover:bg-blue-700 transition"
+          >
+            🔗 Copiar enlace de acceso
+          </button>
+
+          <p class="mt-2 text-xs text-gray-500">
+            (Este enlace privado siempre te llevará al acceso actualizado del Bootcamp)
+          </p>
+        </div>
+
+        <!-- 🗓️ Calendarios -->
+        <div class="text-center mt-8 space-y-3">
+          <a
+            href="https://calendar.google.com/calendar/u/0/r?cid=https%3A%2F%2Fantoniocanada.com%2Fassets%2Fdownloads%2Fbootcamp_erpnext_2025.ics"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-block bg-red-600 text-white font-semibold px-5 py-3 rounded hover:bg-red-700 transition"
+          >
+            📆 Agregar las 3 sesiones a Google Calendar
+          </a>
+
+          <a
+            href="/assets/downloads/bootcamp_erpnext_2025.ics"
+            download
+            class="inline-block bg-black text-white font-semibold px-5 py-3 rounded hover:bg-neutral-800 transition"
+          >
+            🍎 Descargar .ICS (Apple / Outlook)
+          </a>
+
+          <p class="mt-2 text-xs text-gray-500">
+            Añade el evento fácilmente a tu calendario preferido (Google, Apple u
+            Outlook).
+          </p>
+        </div>
+      </div>
+
+      <!-- 📧 Avisos sobre el correo -->
+      <p class="text-gray-600 mb-3">
+        En unos minutos recibirás un correo 📧 con todos los detalles, incluyendo el
+        enlace de acceso y los materiales de preparación.
+      </p>
+
+      <p class="text-gray-500 text-sm">
+        Si no lo ves en tu bandeja de entrada, revisa la carpeta de
+        <strong>Spam</strong> o <strong>Promociones</strong> y márcalo como
+        “No es spam” para futuras comunicaciones.
+      </p>
+
+      <p class="text-gray-500 text-sm">
+        Si aun así no lo recibes, puedes escribirme desde el
+        <a href="/contact" class="underline">formulario de contacto</a>.
+      </p>
+    </main>
+
+    <Footer />
+
+    <!-- Script: copiar enlace con feedback -->
+    <script is:inline>
+      (function () {
+        const btn = document.getElementById("copyMeetBtn");
+        if (!btn) return;
+        const meetUrl = btn.getAttribute("data-meet");
+
+        btn.addEventListener("click", async () => {
+          try {
+            await navigator.clipboard.writeText(meetUrl);
+            const prev = btn.textContent;
+            btn.textContent = "✅ Enlace copiado";
+            btn.disabled = true;
+            setTimeout(() => {
+              btn.textContent = prev;
+              btn.disabled = false;
+            }, 1500);
+          } catch (err) {
+            console.error("Error copiando enlace:", err);
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,42 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Antonio Cañada//Bootcamp ERPNext 2025//ES
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Bootcamp ERPNext 2025
+X-WR-TIMEZONE:Europe/Madrid
+
+BEGIN:VEVENT
+UID:bootcamp-erpnext-2025-1@antoniocanada.com
+DTSTAMP:20251024T100000Z
+DTSTART;TZID=Europe/Madrid:20251125T170000
+DTEND;TZID=Europe/Madrid:20251125T183000
+SUMMARY:Bootcamp ERPNext 2025 — Sesión 1
+DESCRIPTION:Primera sesión del Bootcamp ERPNext 2025.\n\nAccede a la sala desde:\nhttps://antoniocanada.com/bootcamp-erpnext-2025-sala-8r3jhf\n\n(Este enlace redirige siempre a la sala actual del Bootcamp)
+LOCATION:https://antoniocanada.com/bootcamp-erpnext-2025-sala-8r3jhf
+ORGANIZER;CN=Antonio Cañada:mailto:toni.cm@gmail.com
+END:VEVENT
+
+BEGIN:VEVENT
+UID:bootcamp-erpnext-2025-2@antoniocanada.com
+DTSTAMP:20251024T100000Z
+DTSTART;TZID=Europe/Madrid:20251126T170000
+DTEND;TZID=Europe/Madrid:20251126T183000
+SUMMARY:Bootcamp ERPNext 2025 — Sesión 2
+DESCRIPTION:Segunda sesión del Bootcamp ERPNext 2025.\n\nAccede a la sala desde:\nhttps://antoniocanada.com/bootcamp-erpnext-2025-sala-8r3jhf\n\n(Este enlace redirige siempre a la sala actual del Bootcamp)
+LOCATION:https://antoniocanada.com/bootcamp-erpnext-2025-sala-8r3jhf
+ORGANIZER;CN=Antonio Cañada:mailto:toni.cm@gmail.com
+END:VEVENT
+
+BEGIN:VEVENT
+UID:bootcamp-erpnext-2025-3@antoniocanada.com
+DTSTAMP:20251024T100000Z
+DTSTART;TZID=Europe/Madrid:20251127T170000
+DTEND;TZID=Europe/Madrid:20251127T183000
+SUMMARY:Bootcamp ERPNext 2025 — Sesión 3
+DESCRIPTION:Tercera sesión del Bootcamp ERPNext 2025.\n\nAccede a la sala desde:\nhttps://antoniocanada.com/bootcamp-erpnext-2025-sala-8r3jhf\n\n(Este enlace redirige siempre a la sala actual del Bootcamp)
+LOCATION:https://antoniocanada.com/bootcamp-erpnext-2025-sala-8r3jhf
+ORGANIZER;CN=Antonio Cañada:mailto:toni.cm@gmail.com
+END:VEVENT
+
+END:VCALENDAR
