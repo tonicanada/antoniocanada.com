@@ -41,7 +41,7 @@ import Footer from "../components/Footer.astro";
 
         <!-- Navbar superior móvil -->
         <div
-          class="sticky lg:hidden top-0 z-30 flex h-16 w-full justify-center bg-opacity-90 backdrop-blur transition-all duration-100 bg-base-100 text-base-content shadow-sm mt-10"
+          class="sticky lg:hidden top-[48px] z-30 flex h-16 w-full justify-center bg-opacity-90 backdrop-blur transition-all duration-100 bg-base-100 text-base-content shadow-sm"
         >
           <div class="navbar">
             <div class="navbar-start">
@@ -64,8 +64,6 @@ import Footer from "../components/Footer.astro";
                 </svg>
               </label>
             </div>
-            <div class="navbar-center"></div>
-            <div class="navbar-end"></div>
           </div>
         </div>
 
@@ -85,8 +83,9 @@ import Footer from "../components/Footer.astro";
           </p>
         </div>
 
+        <!-- Contenido principal -->
         <main
-          class="flex-1 h-full overflow-y-auto snap-y snap-mandatory scroll-smooth mt-16 lg:mt-0"
+          class="flex-1 h-full overflow-y-auto snap-y snap-mandatory scroll-smooth pt-[112px] lg:pt-0"
         >
           <!-- Primera sección -->
           <section
