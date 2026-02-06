@@ -52,18 +52,16 @@ import Footer from "../components/Footer.astro";
         </div>
 
         <!-- Contenido principal -->
-        <main
-          class="flex-1 h-full overflow-y-auto snap-y snap-mandatory scroll-smooth pt-16 lg:pt-0"
-        >
+        <main class="flex-1 overflow-y-auto scroll-smooth lg:snap-y lg:snap-mandatory">
           <!-- Primera sección -->
           <section
             id="hero"
-            class="h-screen flex items-center justify-center px-6 snap-start"
+            class="relative min-h-[calc(100dvh-4rem)] lg:h-screen flex items-center justify-center px-6 py-8 lg:py-0 lg:snap-start"
           >
             <HeroSection />
             <div
               id="scroll-indicator"
-              class="absolute bottom-6 left-1/2 -translate-x-1/2 lg:left-[calc(50%+10rem)] lg:-translate-x-1/2 text-gray-500 animate-bounce text-2xl transition-opacity duration-500"
+              class="absolute inset-x-0 bottom-6 flex justify-center text-gray-500 animate-bounce text-2xl transition-opacity duration-500"
             >
               <a href="#contenido" aria-label="Desliza hacia abajo">↓</a>
             </div>
@@ -72,7 +70,7 @@ import Footer from "../components/Footer.astro";
           <!-- Segunda sección -->
           <section
             id="contenido"
-            class="h-screen px-6 py-12 snap-start overflow-y-auto"
+            class="px-6 py-12 lg:h-screen lg:overflow-y-auto lg:snap-start"
           >
             <div class="max-w-4xl mx-auto space-y-12">
               <UltimosPosts />

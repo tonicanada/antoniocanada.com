@@ -5,38 +5,47 @@ const tag_url = "/tags";
 ---
 
 <div
-  class="rounded-lg bg-white/80 backdrop-blur-md border border-white/30 shadow-md hover:shadow-xl transition-transform duration-300 hover:scale-[102%]"
+  class="relative overflow-hidden rounded-lg bg-white/80 backdrop-blur-md border border-white/30 shadow-md hover:shadow-xl transition-transform duration-300 hover:scale-[102%]"
 >
-  <a href={url}>
-    <div class="hero-content flex-col md:flex-row">
-      {
-        img && (
-          <Image
-            src={img}
-            width={750}
-            height={422}
-            format="webp"
-            alt={title}
-            class="max-w-full md:max-w-[13rem] h-[120px] object-cover rounded-lg"
-          />
-        )
-      }
-      <div class="grow w-full">
-        <h1 class="text-xl font-bold">
-          {title}
-          {badge && <div class="badge badge-secondary mx-2">{badge}</div>}
-        </h1>
-        <p class="py-1 text-1xl">{desc}</p>
-        <div class="card-actions justify-end">
-          {
-            tags?.map((tag) => (
-              <a href={`${tag_url}/${tag}`} class="badge badge-outline">
-                {tag}
-              </a>
-            ))
-          }
-        </div>
+  {/* Link "stretched" sin anidar <a> dentro de <a> (los tags siguen siendo enlaces). */}
+  <a
+    href={url}
+    class="absolute inset-0 z-10 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+    aria-label={`Ir a ${title}`}
+  />
+  {/* Hacemos que el contenido no “capture” el click; así el link stretched funciona en toda la card.
+      Los links de tags vuelven a habilitar eventos con pointer-events-auto. */}
+  <div class="hero-content relative z-0 flex-col md:flex-row pointer-events-none">
+    {
+      img && (
+        <Image
+          src={img}
+          width={750}
+          height={422}
+          format="webp"
+          alt={title}
+          class="max-w-full md:max-w-[13rem] h-[120px] object-cover rounded-lg"
+        />
+      )
+    }
+    <div class="grow w-full min-w-0">
+      <h1 class="text-xl font-bold">
+        {title}
+        {badge && <div class="badge badge-secondary mx-2">{badge}</div>}
+      </h1>
+      <p class="py-1 text-1xl">{desc}</p>
+      <div class="card-actions justify-end flex-wrap gap-2">
+        {
+          tags?.map((tag) => (
+            <a
+              href={`${tag_url}/${tag}`}
+              class="badge badge-outline relative pointer-events-auto z-20"
+            >
+              {tag}
+            </a>
+          ))
+        }
       </div>
     </div>
-  </a>
+  </div>
 </div>
