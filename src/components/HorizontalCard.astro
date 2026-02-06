@@ -10,12 +10,12 @@ const tag_url = "/tags";
   {/* Link "stretched" sin anidar <a> dentro de <a> (los tags siguen siendo enlaces). */}
   <a
     href={url}
-    class="absolute inset-0 z-10 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+    class="absolute inset-0 z-0 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
     aria-label={`Ir a ${title}`}
   />
   {/* Hacemos que el contenido no “capture” el click; así el link stretched funciona en toda la card.
       Los links de tags vuelven a habilitar eventos con pointer-events-auto. */}
-  <div class="hero-content relative z-0 flex-col md:flex-row pointer-events-none">
+  <div class="hero-content relative z-10 flex-col md:flex-row pointer-events-none">
     {
       img && (
         <Image
