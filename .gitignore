@@ -1,22 +1,77 @@
-# build output
-dist/
-.cache
-# dependencies
+# =========================
+# Node / JavaScript
+# =========================
 node_modules/
 
-# logs
+# Logs
+logs/
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+lerna-debug.log*
 
+# Runtime data / pid
+pids/
+*.pid
+*.seed
+*.pid.lock
 
-# environment variables
-.env
-.env.production
+# Caches
+.cache/
+.eslintcache
+.stylelintcache
+.parcel-cache/
+.npm/
+.pnpm-store/
+.yarn/
+.turbo/
+.nx/
 
-# macOS-specific files
-.DS_Store
+# Build outputs (common)
+dist/
+build/
+out/
+.output/
+.next/
+.nuxt/
+.svelte-kit/
+.vite/
+coverage/
+*.tsbuildinfo
 
-# Astro
+# =========================
+# Astro / deployments
+# =========================
 .astro/
+.vercel/
+.netlify/
+
+# =========================
+# Environment / secrets
+# =========================
+.env
+.env.*
+!.env.example
+!.env.sample
+
+# =========================
+# OS / editor
+# =========================
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/launch.json
+!.vscode/tasks.json
+
+.idea/
+*.iml
+
+*.swp
+*.swo
+*~
