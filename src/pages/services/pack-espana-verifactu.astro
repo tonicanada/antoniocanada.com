@@ -1,0 +1,37 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ServiceLeadForm from "../../components/ServiceLeadForm.astro";
+---
+
+<BaseLayout title="Pack España: ERPNext + Contabilidad + Veri*Factu">
+  <div class="max-w-3xl mx-auto py-10 px-4">
+    <h1 class="text-3xl font-bold mb-4">
+      Pack España: ERPNext + Contabilidad + Veri*Factu
+    </h1>
+
+    <p class="mb-6 text-lg text-gray-700">
+      ERPNext listo para España: plan contable e impuestos + emisión con Veri*Factu y PDF con QR validable.
+      Implementación y acompañamiento.
+    </p>
+
+    <ul class="list-disc pl-6 mb-6 text-gray-600">
+      <li>Contabilidad e impuestos adaptados a España</li>
+      <li>Emisión con Veri*Factu</li>
+      <li>PDF con QR validable</li>
+      <li>Implementación guiada y acompañamiento</li>
+    </ul>
+
+    <p class="text-xl font-semibold mb-6">A medida</p>
+
+    <div class="mb-6 rounded-md border border-amber-200 bg-amber-50 p-4 text-amber-900">
+      <p class="font-semibold">
+        Programa de primeras implantaciones (cupos limitados).
+      </p>
+      <p class="mt-1 text-sm">
+        Las primeras empresas entran con condiciones preferentes a cambio de feedback durante el arranque.
+      </p>
+    </div>
+
+    <ServiceLeadForm servicio="pack-espana-verifactu" />
+  </div>
+</BaseLayout>

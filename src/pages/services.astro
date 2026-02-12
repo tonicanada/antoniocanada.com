@@ -8,27 +8,36 @@ import ProductCard from "../components/ProductCard.astro";
     <h1 class="text-4xl font-bold mb-6">Servicios profesionales</h1>
 
     <p class="text-lg mb-8">
-      Puedes explorar en detalle cada servicio y decidir si quieres contratarlo
-      directamente o agendar una reunión previa. Todos incluyen acompañamiento y
-      experiencia práctica real con <strong>ERPNext</strong> y herramientas modernas
-      de automatización.
+      Explora los servicios disponibles. Si estás empezando o tienes dudas,
+      agenda una
+      <strong>consulta inicial gratuita</strong>: revisamos tu caso y te
+      propongo una ruta concreta (implementación, automatización, integraciones
+      o formación) según tus objetivos.
     </p>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <ProductCard
-        title="Asesoría inicial (1h)"
-        description="Videollamada para resolver dudas, explorar si ERPNext u otras herramientas son adecuadas para tu empresa, y orientarte en los próximos pasos."
-        price="50 €"
+        title="Consulta inicial"
+        description="Primera reunión para entender tu caso, resolver dudas y proponerte el mejor siguiente paso según tu situación (ERPNext, automatización, integraciones, formación o migración desde otro sistema)."
+        price="Gratis"
         img="/assets/images/services/servicio1.webp"
-        slug="services/asesoria-inicial"
+        slug="services/consulta-inicial"
       />
 
       <ProductCard
-        title="Diagnóstico de procesos"
-        description="Entrevista + informe con recomendaciones para digitalizar y automatizar tu empresa. Ideal si aún no sabes si ERPNext es para ti."
-        price="80 €"
+        title="Estudio de procesos + Blueprint ERP (por sector)"
+        description="Estudio personalizado de procesos y necesidades de tu empresa. Incluye entregable: blueprint/roadmap con módulos, automatizaciones y plan por fases. Recomendado tras la consulta inicial."
+        price="300 €"
         img="/assets/images/services/servicio2.webp"
         slug="services/diagnostico-procesos"
+      />
+
+      <ProductCard
+        title="Pack España: ERPNext + Contabilidad + Veri*Factu"
+        description="ERPNext listo para España: plan contable e impuestos + emisión con Veri*Factu y PDF con QR validable. Implementación y acompañamiento."
+        price="A medida"
+        img="/assets/images/services/servicio6.webp"
+        slug="services/pack-espana-verifactu"
       />
 
       <ProductCard
@@ -40,19 +49,19 @@ import ProductCard from "../components/ProductCard.astro";
       />
 
       <ProductCard
-        title="Capacitación técnica en ERPNext y desarrollo"
-        description="Formación 1:1 o grupal en Frappe, personalización de ERPNext, programación de módulos, y otras herramientas técnicas relacionadas. Ideal para desarrolladores o equipos técnicos que quieran especializarse."
-        price="A convenir"
-        img="/assets/images/services/servicio5.webp"
-        slug="services/capacitacion-tecnica-erpnext"
+        title="Automatización y personalización ERPNext"
+        description="Creamos módulos a medida, automatizamos tareas repetitivas y conectamos ERPNext con tus otras herramientas. Ideal si ya usas ERPNext y quieres ir más allá."
+        price="A medida"
+        img="/assets/images/services/servicio4.webp"
+        slug="services/automatizacion-erpnext"
       />
 
       <ProductCard
-        title="Automatización y personalización ERPNext"
-        description="Creamos módulos a medida, automatizamos tareas repetitivas y conectamos ERPNext con tus otras herramientas. Ideal si ya usas ERPNext y quieres ir más allá."
-        price="Desde 350 €"
-        img="/assets/images/services/servicio4.webp"
-        slug="services/automatizacion-erpnext"
+        title="Capacitación técnica en ERPNext y desarrollo"
+        description="Formación 1:1 o grupal en Frappe, personalización de ERPNext, programación de módulos, y otras herramientas técnicas relacionadas. Ideal para desarrolladores o equipos técnicos que quieran especializarse."
+        price="A medida"
+        img="/assets/images/services/servicio5.webp"
+        slug="services/capacitacion-tecnica-erpnext"
       />
     </div>
   </div>

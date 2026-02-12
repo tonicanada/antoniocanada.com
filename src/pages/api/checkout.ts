@@ -7,25 +7,54 @@ const stripe = new Stripe(import.meta.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2022-11-15",
 });
 
+type CheckoutProduct = {
+  amountEur: number;
+  name: string;
+  taxCode?: string;
+};
+
+const PRODUCT_CATALOG: Record<string, CheckoutProduct> = {
+  estudio_procesos_blueprint_erp: {
+    amountEur: 300,
+    name: "Estudio de procesos + Blueprint ERP (por sector)",
+    taxCode: "txcd_10103001",
+  },
+};
+
 export const POST: APIRoute = async ({ request }) => {
+  const url = new URL(request.url);
+  const wantsJson = url.searchParams.get("json") === "1";
   const formData = await request.formData();
 
   const asunto = formData.get("asunto")?.toString();
   const precioRaw = formData.get("precio")?.toString();
   const emailRaw = formData.get("email");
 
-  const precio = precioRaw ? Number(precioRaw) : NaN;
+  const catalogItem = asunto ? PRODUCT_CATALOG[asunto] : undefined;
+  const precio = catalogItem?.amountEur ?? (precioRaw ? Number(precioRaw) : NaN);
   const email = emailRaw && typeof emailRaw === "string" ? emailRaw : undefined;
 
   console.log("➡️ FormData recibido:", { asunto, precio, email });
 
   if (!asunto || !precio || isNaN(precio)) {
-    return new Response("Faltan campos obligatorios o precio inválido", {
-      status: 400,
-    });
+    if (wantsJson) {
+      return new Response(
+        JSON.stringify({ error: "Faltan campos obligatorios o precio inválido" }),
+        { status: 400, headers: { "Content-Type": "application/json" } }
+      );
+    }
+    return new Response("Faltan campos obligatorios o precio inválido", { status: 400 });
   }
 
   try {
+    const baseUrl = import.meta.env.PUBLIC_BASE_URL;
+    const successUrl = `${baseUrl}/gracias?servicio=${encodeURIComponent(asunto)}`;
+
+    const productName =
+      catalogItem?.name ?? asunto.replace(/_/g, " ");
+    const taxCode =
+      catalogItem?.taxCode ?? "txcd_10103001";
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       mode: "payment",
@@ -35,22 +64,27 @@ export const POST: APIRoute = async ({ request }) => {
             currency: "eur",
             unit_amount: Math.round(precio * 100),
             product_data: {
-              name: asunto.replace(/_/g, " "),
-              // Opcional: usar un código fiscal de producto (tax_code) para mejor clasificación
-              // Puedes buscar el adecuado en https://stripe.com/tax/tax-codes
-              tax_code: "txcd_10103001", // SaaS uso comercial (puedes cambiarlo según el servicio)
+              name: productName,
+              tax_code: taxCode,
             },
           },
           quantity: 1,
         },
       ],
       automatic_tax: { enabled: true }, // 👉 habilita cálculo automático del IVA
-      success_url: `${import.meta.env.PUBLIC_BASE_URL}/gracias`,
-      cancel_url: `${import.meta.env.PUBLIC_BASE_URL}/cancelado`,
+      success_url: successUrl,
+      cancel_url: `${baseUrl}/cancelado`,
       ...(email && { customer_email: email }),
     });
 
     console.log("✅ Sesión de Stripe creada:", session.url);
+
+    if (wantsJson) {
+      return new Response(JSON.stringify({ url: session.url }), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
 
     return new Response(
       `
@@ -73,6 +107,12 @@ export const POST: APIRoute = async ({ request }) => {
     );
   } catch (error) {
     console.error("❌ Error creando sesión de Stripe:", error);
+    if (wantsJson) {
+      return new Response(JSON.stringify({ error: "Error al crear la sesión de Stripe" }), {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
     return new Response("Error al crear la sesión de Stripe", { status: 500 });
   }
 };

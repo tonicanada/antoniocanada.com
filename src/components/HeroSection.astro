@@ -1,3 +1,10 @@
+---
+const agendarUrl =
+  import.meta.env.PUBLIC_AGENDAR_URL ||
+  import.meta.env.PUBLIC_GOOGLE_CALENDAR_BOOKING_URL ||
+  "/agendar";
+---
+
 <section
   class="relative w-full min-h-[90vh] flex items-center justify-center px-6 overflow-hidden"
 >
@@ -29,32 +36,54 @@
         financieras, con una visión integral que combina gestión, automatización
         y desarrollo de software. He trabajado con organizaciones en <strong
           >Chile</strong
-        >, <strong>España</strong> y otros países, implementando soluciones concretas
+        >, <strong>España</strong>, <strong>Bolivia</strong> y otros países, implementando soluciones concretas
         a desafíos reales mediante programación y consultoría especializada.
       </p>
       <p>
-        Más allá del rol profesional, me apasionan la <strong
-          >programación</strong
-        >, las <strong>matemáticas</strong> y la <strong>ciencia</strong>. En
-        este blog comparto también proyectos personales y artículos técnicos que
-        reflejan mi forma de pensar y resolver: rigurosa, creativa y orientada
-        al impacto.
+        Además, soy fundador de <strong>Bizmotion</strong>, con el objetivo de
+        potenciar y hacer crecer empresas de forma ordenada, mediante sistemas
+        adaptados a sus necesidades (ERPNext, automatización e integraciones).
+      </p>
+      <p>
+        Más allá del rol profesional, me apasionan las <strong>matemáticas</strong>,
+        la <strong>programación</strong> y la <strong>ciencia</strong>. En este
+        blog comparto también proyectos personales y artículos técnicos que
+        reflejan mi forma de pensar y resolver: rigurosa, creativa y orientada al
+        impacto.
       </p>
     </div>
 
-    <div class="mt-4 flex justify-center gap-4 flex-wrap">
+    <div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 w-full max-w-xl mx-auto items-stretch">
+      <a
+        href={agendarUrl}
+        class="px-4 py-2 text-sm sm:text-base bg-black text-white rounded-md hover:bg-gray-900 transition w-full text-center flex items-center justify-center leading-snug focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+      >
+        Agendar llamada (15–20 min)
+      </a>
+      <a
+        href="/services"
+        class="px-4 py-2 text-sm sm:text-base border border-black text-black rounded-md hover:bg-gray-100 transition w-full text-center flex items-center justify-center leading-snug focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+      >
+        Ver servicios
+      </a>
       <a
         href="/erpnext"
-        class="px-4 py-2 text-sm sm:text-base bg-black text-white rounded-md hover:bg-gray-800 transition w-full sm:w-auto text-center"
+        class="px-4 py-2 text-sm sm:text-base border border-gray-400 text-gray-900 rounded-md hover:bg-gray-50 transition w-full text-center flex items-center justify-center leading-snug focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 focus-visible:ring-offset-white"
       >
-        Ver más sobre ERPNext
-      </a>
-      <a
-        href="/contact"
-        class="px-4 py-2 text-sm sm:text-base border border-black text-black rounded-md hover:bg-gray-100 transition w-full sm:w-auto text-center"
-      >
-        Contáctame
+        ERPNext
       </a>
     </div>
+
+    <p class="mt-3 text-center text-sm text-gray-600">
+      ¿Prefieres escribir?
+      <a
+        href="/contact"
+        class="underline underline-offset-2 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
+        aria-label="¿Prefieres escribir? Contáctame"
+      >
+        {" "}
+        Contáctame
+      </a>
+    </p>
   </div>
 </section>

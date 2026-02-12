@@ -1,5 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const bookingUrl = import.meta.env.PUBLIC_GOOGLE_CALENDAR_BOOKING_URL;
 ---
 
 <BaseLayout title="¡Gracias por tu compra!">
@@ -8,8 +10,19 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     <p class="text-lg text-gray-700 mb-8">
       Gracias por confiar en mis servicios. Recibirás un correo con los detalles de tu compra.
     </p>
-    <a href="/" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">
-      Volver al inicio
-    </a>
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+      <a
+        href={bookingUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-900"
+      >
+        Agendar en Google Calendar
+      </a>
+
+      <a href="/" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">
+        Volver al inicio
+      </a>
+    </div>
   </section>
 </BaseLayout>

@@ -1,0 +1,27 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ServiceLeadForm from "../../components/ServiceLeadForm.astro";
+---
+
+<BaseLayout title="Consulta inicial">
+  <div class="max-w-3xl mx-auto py-10 px-4">
+    <h1 class="text-3xl font-bold mb-4">Consulta inicial</h1>
+
+    <p class="mb-6 text-lg text-gray-700">
+      Primera reunión para entender tu caso, resolver dudas y proponerte el mejor siguiente paso según tu situación:
+      ERPNext, automatización, integraciones, formación o migración desde otro sistema.
+    </p>
+
+    <ul class="list-disc pl-6 mb-6 text-gray-600">
+      <li>Revisión rápida de tu contexto y objetivos</li>
+      <li>Recomendación del mejor camino y prioridades</li>
+      <li>Gratis</li>
+    </ul>
+
+    <ServiceLeadForm
+      servicio="consulta-inicial"
+      heading="Agenda tu consulta inicial"
+      subheading="Déjame tus datos y tu objetivo principal; luego podrás elegir un horario en mi agenda."
+    />
+  </div>
+</BaseLayout>

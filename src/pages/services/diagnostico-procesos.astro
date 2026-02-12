@@ -1,61 +1,40 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import ServiceLeadForm from "../../components/ServiceLeadForm.astro";
 
-const asunto = "diagnostico_procesos";
-const precio = 80;
+const asunto = "estudio_procesos_blueprint_erp";
+const precio = 300;
 ---
 
-<BaseLayout title="Diagnóstico de procesos">
+<BaseLayout title="Estudio de procesos + Blueprint ERP (por sector)">
   <div class="max-w-3xl mx-auto py-10 px-4">
-    <h1 class="text-3xl font-bold mb-4">Diagnóstico de procesos</h1>
+    <h1 class="text-3xl font-bold mb-4">
+      Estudio de procesos + Blueprint ERP (por sector)
+    </h1>
 
     <p class="mb-6 text-lg text-gray-700">
-      Entrevista online en profundidad para entender cómo funciona tu empresa y
-      detectar oportunidades de mejora. Luego recibirás un informe personalizado
-      con recomendaciones concretas para digitalizar y automatizar.
+      Estudio personalizado de procesos y necesidades de tu empresa. Incluye
+      entregable: blueprint/roadmap con módulos, automatizaciones y plan por
+      fases. Recomendado tras la consulta inicial.
     </p>
 
     <ul class="list-disc pl-6 mb-6 text-gray-600">
-      <li>Entrevista 1 a 1 (60 minutos)</li>
-      <li>Revisión de procesos actuales</li>
-      <li>Informe PDF con diagnóstico y plan de acción</li>
-      <li>Reunión de cierre si lo necesitas</li>
+      <li>Entrevista 1:1 y levantamiento de necesidades</li>
+      <li>Blueprint/roadmap por fases (prioridades y alcance)</li>
+      <li>Módulos sugeridos y automatizaciones recomendadas</li>
+      <li>Entregable para alinear el plan de implementación</li>
     </ul>
 
-    <p class="text-2xl font-semibold mb-4">Precio: 80 €</p>
+    <p class="text-2xl font-semibold mb-4">Precio: {precio} €</p>
 
-    <form method="POST" action="/api/checkout" class="space-y-4 max-w-md">
-      <input type="hidden" name="asunto" value={asunto} />
-      <input type="hidden" name="precio" value={precio.toString()} />
-
-      <input
-        type="email"
-        name="email"
-        required
-        placeholder="Tu correo electrónico"
-        class="w-full border px-3 py-2 rounded"
-      />
-
-      <input
-        type="text"
-        name="nombre"
-        placeholder="Tu nombre (opcional)"
-        class="w-full border px-3 py-2 rounded"
-      />
-
-      <input
-        type="tel"
-        name="celular"
-        placeholder="Tu celular (opcional)"
-        class="w-full border px-3 py-2 rounded"
-      />
-
-      <button
-        type="submit"
-        class="bg-black text-white font-semibold py-2 px-6 rounded hover:bg-gray-900 transition"
-      >
-        Pagar
-      </button>
-    </form>
-  </div></BaseLayout
->
+    <ServiceLeadForm
+      servicio="diagnostico-procesos"
+      heading="Antes de pagar"
+      subheading="Déjame tus datos y el objetivo del estudio; luego pasarás a pago seguro con Stripe."
+      ctaLabel="Pagar con Stripe"
+      submitMode="stripe"
+      stripeAsunto={asunto}
+      stripePrecio={precio}
+    />
+  </div>
+</BaseLayout>

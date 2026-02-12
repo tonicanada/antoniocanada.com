@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import ServiceLeadForm from "../../components/ServiceLeadForm.astro";
 ---
 
 <BaseLayout title="Implementación ERPNext">
@@ -18,11 +19,6 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
       <li>Soporte post implementación</li>
     </ul>
 
-    <a
-      href="/contact?asunto=implementacion_erpnext"
-      class="inline-block border border-gray-400 hover:bg-gray-100 text-gray-800 font-medium py-2 px-6 rounded transition"
-    >
-      Solicitar propuesta
-    </a>
+    <ServiceLeadForm servicio="implementacion-erpnext" />
   </div>
 </BaseLayout>

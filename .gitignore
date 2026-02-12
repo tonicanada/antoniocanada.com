@@ -51,10 +51,20 @@ coverage/
 # =========================
 # Environment / secrets
 # =========================
+.direnv/
+.envrc
 .env
 .env.*
 !.env.example
 !.env.sample
+
+# Common secret/key files
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
 
 # =========================
 # OS / editor

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import ServiceLeadForm from "../../components/ServiceLeadForm.astro";
 ---
 
 <BaseLayout sideBarActiveItemID="services">
@@ -26,11 +27,6 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
       💬 Las sesiones se adaptan al nivel del equipo y al proyecto en curso. Si estás formando un equipo técnico o quieres especializarte en ERPNext, esta opción es ideal.
     </p>
 
-    <a
-      href="/contact?asunto=capacitacion_tecnica_erpnext"
-      class="inline-block border border-gray-400 hover:bg-gray-100 text-gray-800 font-medium py-2 px-6 rounded transition"
-    >
-      Contactar
-    </a>
+    <ServiceLeadForm servicio="capacitacion-tecnica-erpnext" />
   </div>
 </BaseLayout>

@@ -1,10 +1,12 @@
 ---
 title: "Bootcamp ERPNext – Edición 2025"
-description: "Resumen del Bootcamp ERPNext 2025: 3 sesiones intensivas donde vimos instalación, desarrollo de apps, DocTypes, scripts y buenas prácticas para programar y extender ERPNext. Próximamente disponible en formato grabado."
+description: "Resumen del Bootcamp ERPNext 2025: 3 sesiones intensivas donde vimos instalación, desarrollo de apps, DocTypes, scripts y buenas prácticas para programar y extender ERPNext. Grabaciones disponibles."
 tags: ["ERPNext", "bootcamp", "formación"]
 publishDate: "2025-09-11"
 image: "/assets/images/courses/bootcamp-erpnext/portada.webp"
 ---
+
+import ServiceLeadForm from "../../components/ServiceLeadForm.astro";
 
 <section class="py-5 bg-white">
 
@@ -62,28 +64,25 @@ image: "/assets/images/courses/bootcamp-erpnext/portada.webp"
   Grabaciones y próximas ediciones
 </h2>
 
+<p class="text-gray-700 mb-2 text-center max-w-2xl mx-auto">
+  ✅ Las grabaciones del Bootcamp ERPNext – Edición 2025 ya están disponibles.
+</p>
 <p class="text-gray-600 mb-6 text-center max-w-2xl mx-auto">
-  El bootcamp ERPNext – Edición 2025 ya ha terminado y estoy preparando la
-  versión grabada para que puedas acceder a todo el contenido aunque no hayas
-  podido asistir en vivo. En breve estarán disponibles las grabaciones y
-  materiales como curso online.
+  Precio: <strong>125 €</strong>. Completa tus datos para que sepa quién eres y
+  te redirijo al pago seguro con Stripe.
 </p>
 
-<p class="text-gray-700 mb-6 text-center max-w-2xl mx-auto">
-  Si quieres que te avise cuando las grabaciones estén disponibles o cuando abra
-  una nueva edición en vivo, puedes dejarme tu correo desde la página de contacto.
-</p>
-
-<div class="text-center mb-10">
-  <a
-    href="/contact"
-    class="inline-block bg-black text-white text-base font-semibold px-6 py-3 rounded hover:bg-neutral-800 transition"
-  >
-    ✉️ Quiero que me avises
-  </a>
-  <p class="mt-3 text-sm text-gray-500">
-    Te escribiré solo para avisarte de nuevas ediciones o del acceso a las
-    grabaciones. Sin spam.
+<div class="max-w-2xl mx-auto mb-10">
+  <ServiceLeadForm
+    servicio="bootcamp-erpnext-grabaciones"
+    heading="Antes de comprar"
+    subheading="Déjame tus datos y tu objetivo; luego te llevo al checkout de Stripe."
+    ctaLabel="Comprar grabaciones (125 €)"
+    submitMode="external"
+    externalRedirectUrl="https://buy.stripe.com/dRmcN59b48e00rxaAT2kw01"
+  />
+  <p class="mt-3 text-center text-sm text-gray-500">
+    Te escribiré solo si es necesario por la compra o para soporte. Sin spam.
   </p>
 </div>
 
