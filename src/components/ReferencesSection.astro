@@ -1,0 +1,59 @@
+---
+import ReferenceCard from "./ReferenceCard.astro";
+import { references } from "../data/references";
+
+const {
+  showCta = true,
+  ctaUrl = "/casos-reales",
+  showHeader = true,
+  sectionClass = "py-16",
+  eyebrow = "Casos reales",
+  title = "Experiencia aplicada en proyectos críticos",
+  subtitle =
+    "Experiencia aplicada en proyectos de ERP, automatización, finanzas y transformación operativa en distintos entornos empresariales.",
+} = Astro.props;
+---
+
+<section
+  id="casos-reales"
+  class={sectionClass}
+  aria-labelledby="casos-reales-title"
+>
+  <div class="max-w-6xl mx-auto">
+    <div class="bg-transparent">
+      {showHeader && (
+        <div class="max-w-3xl">
+          <p
+            class="text-sm font-semibold uppercase tracking-[0.2em] text-gray-500"
+          >
+            {eyebrow}
+          </p>
+          <h2
+            id="casos-reales-title"
+            class="mt-2 text-2xl sm:text-3xl font-semibold text-gray-900"
+          >
+            {title}
+          </h2>
+          <p class="mt-3 text-base text-gray-600">{subtitle}</p>
+        </div>
+      )}
+
+      <div class="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+        {references.map((reference) => (
+          <ReferenceCard reference={reference} />
+        ))}
+      </div>
+
+      {showCta && (
+        <div class="mt-8">
+          <a
+            href={ctaUrl}
+            class="inline-flex items-center gap-2 text-sm font-semibold text-gray-900 underline underline-offset-4 hover:text-gray-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
+          >
+            Ver todos los casos reales
+          </a>
+        </div>
+      )}
+    </div>
+  </div>
+</section>

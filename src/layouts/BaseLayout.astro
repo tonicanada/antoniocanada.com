@@ -16,6 +16,9 @@ const {
   ogType,
   backgroundUrl,
   backgroundClasses = "brightness-[0.4]",
+  mainClass = "px-4 py-10 max-w-[900px] mx-auto [&_ul>li]:leading-tight",
+  contentClass = "bg-base-100",
+  shellClass = "bg-base-100",
 } = Astro.props;
 ---
 
@@ -31,11 +34,11 @@ const {
     />
     {TRANSITION_API && <ViewTransitions />}
   </head>
-  <body>
+  <body class="min-h-screen">
     <!-- 🔽 BACKGROUND (video o imagen) -->
     <slot name="background" />
 
-    <div class="bg-base-100 drawer lg:drawer-open">
+    <div class={`${shellClass} drawer min-h-screen lg:drawer-open`}>
       {
         backgroundUrl && (
           <div class="fixed top-0 right-0 bottom-0 left-0 lg:left-64 z-0 pointer-events-none">
@@ -62,16 +65,16 @@ const {
       }
 
       <input id="my-drawer" type="checkbox" class="drawer-toggle" />
-      <div class="drawer-content bg-base-100">
+      <div class={`drawer-content min-h-screen flex flex-col ${contentClass}`}>
         <Header title={SITE_TITLE} />
-        <div class="md:flex md:justify-center">
-          <main
-            class="px-4 py-10 max-w-[900px] mx-auto [&_ul>li]:leading-tight"
-          >
+        <div class="flex-1 md:flex md:justify-center">
+          <main class={mainClass}>
             <slot />
           </main>
         </div>
-        <Footer />
+        <div class="mt-auto">
+          <Footer />
+        </div>
       </div>
       {
         includeSidebar && (

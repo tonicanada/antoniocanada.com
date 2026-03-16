@@ -1,29 +1,27 @@
 ---
 const { sideBarActiveItemID } = Astro.props;
 const activeClass = "bg-base-300";
+const linkClass = "py-3 text-base";
+const itemClass = (id) =>
+  `${linkClass} ${sideBarActiveItemID === id ? activeClass : ""}`;
 ---
 
 <ul class="menu grow shrink menu-md overflow-y-auto">
-  <li><a class="py-3 text-base" id="home" href="/">Inicio</a></li>
-  <li><a class="py-3 text-base" id="erpnext" href="/erpnext">ERPNext</a></li>
-  <li><a class="py-3 text-base" id="projects" href="/projects">Proyectos</a></li>
+  <li><a class={itemClass("home")} id="home" href="/">Inicio</a></li>
+  <li><a class={itemClass("erpnext")} id="erpnext" href="/erpnext">ERPNext</a></li>
   <li>
-    <a class="py-3 text-base" id="services" href="/services">Servicios</a>
+    <a class={itemClass("casos-reales")} id="casos-reales" href="/casos-reales"
+      >Casos reales</a
+    >
   </li>
-    <li>
-    <a class="py-3 text-base" id="courses" href="/courses">Cursos</a>
+  <li><a class={itemClass("projects")} id="projects" href="/projects">Proyectos</a></li>
+  <li>
+    <a class={itemClass("services")} id="services" href="/services">Servicios</a>
   </li>
-  <li><a class="py-3 text-base" id="blog" href="/blog">Blog</a></li>
-  <li><a class="py-3 text-base" id="about-me" href="/about-me">Sobre mí</a></li>
-  <li><a class="py-3 text-base" id="contact" href="/contact">Contacto</a></li>
+  <li>
+    <a class={itemClass("courses")} id="courses" href="/courses">Cursos</a>
+  </li>
+  <li><a class={itemClass("blog")} id="blog" href="/blog">Blog</a></li>
+  <li><a class={itemClass("about-me")} id="about-me" href="/about-me">Sobre mí</a></li>
+  <li><a class={itemClass("contact")} id="contact" href="/contact">Contacto</a></li>
 </ul>
-
-<script
-  define:vars={{
-    sideBarActiveItemID: sideBarActiveItemID,
-    activeClass: activeClass,
-  }}
->
-  const activeItemElem = document.getElementById(sideBarActiveItemID);
-  activeItemElem && activeItemElem.classList.add(activeClass);
-</script>

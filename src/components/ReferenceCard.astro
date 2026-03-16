@@ -1,0 +1,97 @@
+---
+import type { Reference } from "../data/references";
+
+type Props = {
+  reference: Reference;
+};
+
+const { reference } = Astro.props;
+const companyMetadata = `${reference.country} · ${reference.sector}`;
+const scopeLabel = "Trabajo realizado:";
+---
+
+{
+  reference.url ? (
+    <a
+      href={reference.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`Abrir sitio web de ${reference.company}`}
+      class="block h-full rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+    >
+      <article class="flex h-full flex-col rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+        <div class={`flex min-h-[72px] items-start ${reference.logo ? "gap-3" : "gap-0"}`}>
+          {reference.logo ? (
+            <div class="h-12 w-12 overflow-hidden rounded-md border border-gray-200 bg-gray-50">
+              <img
+                src={reference.logo}
+                alt={`Logo ${reference.company}`}
+                class="h-full w-full object-contain p-1"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          ) : null}
+          <div class="flex-1">
+            <h3 class="text-lg font-semibold text-gray-900">{reference.company}</h3>
+            <p class="text-sm text-gray-600">{companyMetadata}</p>
+          </div>
+        </div>
+
+        <div class="min-h-[72px] pt-2">
+          <p class="text-sm text-gray-600">{scopeLabel}</p>
+          <p class="text-sm text-gray-600">{reference.scope}</p>
+        </div>
+
+        <blockquote class="mt-4 text-sm text-gray-700 italic leading-relaxed">
+          “{reference.quote}”
+        </blockquote>
+
+        <div class="mt-auto pt-6 border-t border-gray-100 flex items-end justify-between gap-4">
+          <div>
+            <p class="text-sm font-semibold text-gray-900">{reference.person}</p>
+            <p class="text-xs text-gray-500">{reference.role}</p>
+          </div>
+
+          <span class="text-sm text-gray-700 underline underline-offset-4">Ver empresa</span>
+        </div>
+      </article>
+    </a>
+  ) : (
+    <article class="flex h-full flex-col rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+      <div class={`flex min-h-[72px] items-start ${reference.logo ? "gap-3" : "gap-0"}`}>
+        {reference.logo ? (
+          <div class="h-12 w-12 overflow-hidden rounded-md border border-gray-200 bg-gray-50">
+            <img
+              src={reference.logo}
+              alt={`Logo ${reference.company}`}
+              class="h-full w-full object-contain p-1"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+        ) : null}
+        <div class="flex-1">
+          <h3 class="text-lg font-semibold text-gray-900">{reference.company}</h3>
+          <p class="text-sm text-gray-600">{companyMetadata}</p>
+        </div>
+      </div>
+
+      <div class="min-h-[72px] pt-2">
+        <p class="text-sm text-gray-600">{scopeLabel}</p>
+        <p class="text-sm text-gray-600">{reference.scope}</p>
+      </div>
+
+      <blockquote class="mt-4 text-sm text-gray-700 italic leading-relaxed">
+        “{reference.quote}”
+      </blockquote>
+
+      <div class="mt-auto pt-6 border-t border-gray-100 flex items-end justify-between gap-4">
+        <div>
+          <p class="text-sm font-semibold text-gray-900">{reference.person}</p>
+          <p class="text-xs text-gray-500">{reference.role}</p>
+        </div>
+      </div>
+    </article>
+  )
+}

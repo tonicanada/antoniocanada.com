@@ -41,6 +41,34 @@ const { page } = Astro.props;
     </p>
   </section>
 
+  <section class="max-w-5xl mx-auto px-6 pb-12">
+    <div class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+      <h2 class="text-2xl font-semibold mb-3">ERPNext + IA en acción</h2>
+      <p class="text-base text-gray-700 mb-6">
+        Demo rápida de automatización sobre ERPNext: emitir una factura y
+        enviarla por email con OpenClaw.
+      </p>
+
+      <div class="mx-auto w-full max-w-[400px]">
+        <div
+          class="relative w-full overflow-hidden rounded-lg bg-black shadow-lg aspect-[9/16]"
+          data-short-hover-player
+        >
+          <iframe
+            data-short-iframe
+            class="absolute inset-0 h-full w-full border-0"
+            src="https://www.youtube-nocookie.com/embed/vG_Yv2dNY38?rel=0&mute=1&playsinline=1"
+            title="ERPNext + IA en acción"
+            loading="lazy"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Lista paginada de artículos -->
   <PaginatedList
     title="Artículos"
@@ -55,4 +83,27 @@ const { page } = Astro.props;
       tags: entry.data.tags,
     })}
   />
+
+  <script>
+    const player = document.querySelector("[data-short-hover-player]");
+    const iframe = player?.querySelector("[data-short-iframe]");
+
+    if (player instanceof HTMLElement && iframe instanceof HTMLIFrameElement) {
+      const baseSrc = "https://www.youtube-nocookie.com/embed/vG_Yv2dNY38?rel=0&mute=1&playsinline=1";
+      const autoplaySrc = `${baseSrc}&autoplay=1`;
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry?.isIntersecting) {
+            if (iframe.src !== autoplaySrc) iframe.src = autoplaySrc;
+            return;
+          }
+
+          if (iframe.src !== baseSrc) iframe.src = baseSrc;
+        },
+        { threshold: 0.6 }
+      );
+
+      observer.observe(player);
+    }
+  </script>
 </BaseLayout>

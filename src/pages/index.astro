@@ -1,5 +1,6 @@
 ---
 import HeroSection from "../components/HeroSection.astro";
+import ReferencesSection from "../components/ReferencesSection.astro";
 import UltimosPosts from "../components/UltimosPosts.astro";
 import Sidebar from "../components/SideBar.astro";
 import RelativityBackground from "../components/RelativityBackground";
@@ -73,6 +74,7 @@ import Footer from "../components/Footer.astro";
             class="px-6 py-12 lg:h-screen lg:overflow-y-auto lg:snap-start"
           >
             <div class="max-w-4xl mx-auto space-y-12">
+              <ReferencesSection showCta={false} />
               <UltimosPosts />
             </div>
             <Footer />

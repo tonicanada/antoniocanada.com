@@ -1,0 +1,28 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ReferencesSection from "../components/ReferencesSection.astro";
+---
+
+<BaseLayout
+  title="Casos reales"
+  sideBarActiveItemID="casos-reales"
+  contentClass="bg-transparent"
+  shellClass="bg-transparent"
+>
+  <section class="space-y-6">
+    <header class="max-w-3xl">
+      <p class="text-sm font-semibold uppercase tracking-[0.2em] text-gray-500">
+        Casos reales
+      </p>
+      <h1 class="mt-2 text-3xl sm:text-4xl font-semibold text-gray-900">
+        Experiencia aplicada con foco en resultados
+      </h1>
+      <p class="mt-4 text-base text-gray-600">
+        Referencias de proyectos en ERP, automatización y finanzas, con contexto
+        claro del alcance y las personas involucradas.
+      </p>
+    </header>
+
+    <ReferencesSection showHeader={false} showCta={false} sectionClass="pt-2 pb-12" />
+  </section>
+</BaseLayout>
