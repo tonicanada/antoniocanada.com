@@ -24,7 +24,7 @@ export const references: Reference[] = [
     role: "Gerente General",
   },
   {
-    company: "Vegostar",
+    company: "Vegostart",
     country: "Bolivia",
     sector: "Tecnología",
     scope: "Capacitación ERPNext",
