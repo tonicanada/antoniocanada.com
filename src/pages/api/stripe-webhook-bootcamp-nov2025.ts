@@ -14,6 +14,7 @@ const stripe = new Stripe(import.meta.env.STRIPE_SECRET_KEY!, {
 
 // Inicialización de Resend
 const resend = new Resend(import.meta.env.RESEND_API_KEY!);
+const FROM_DEFAULT = "Antonio Cañada <antonio@bizmotion.io>";
 
 // 📎 Cargamos el archivo .ICS para adjuntarlo en el correo
 const icsPath = path.resolve("public/assets/downloads/bootcamp-erpnext-2025.ics");
@@ -52,7 +53,7 @@ export const POST: APIRoute = async ({ request }) => {
           console.log(`✅ Enviando confirmación Bootcamp ERPNext 2025 a ${email}`);
 
           await resend.emails.send({
-            from: "Antonio Cañada <no-reply@antoniocanada.com>",
+            from: import.meta.env.BOOKING_CLICK_FROM || FROM_DEFAULT,
             to: email,
             subject: "🎓 Bootcamp ERPNext 2025 — Inscripción confirmada",
             html: `

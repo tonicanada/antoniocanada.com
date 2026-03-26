@@ -4,7 +4,7 @@ import type { APIRoute } from "astro";
 import { Resend } from "resend";
 
 const NOTIFY_TO_DEFAULT = "toni.cm@gmail.com";
-const FROM_DEFAULT = "Antonio Cañada <no-reply@antoniocanada.com>";
+const FROM_DEFAULT = "Antonio Cañada <antonio@bizmotion.io>";
 
 function getEnv(name: string): string | undefined {
   return (import.meta.env as Record<string, string | undefined>)[name];
@@ -153,4 +153,3 @@ export const POST: APIRoute = async ({ request }) => {
     });
   }
 };
-
