@@ -5,13 +5,17 @@ import UltimosPosts from "../components/UltimosPosts.astro";
 import Sidebar from "../components/SideBar.astro";
 import RelativityBackground from "../components/RelativityBackground";
 import Footer from "../components/Footer.astro";
+import { SITE_DESCRIPTION, SITE_TITLE } from "../config";
 ---
 
 <html lang="es" data-theme="lofi">
   <head>
     <meta charset="UTF-8" />
-    <title>Antonio Cañada</title>
+    <title>{SITE_TITLE}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={SITE_DESCRIPTION} />
+    <meta name="robots" content="index,follow" />
+    <link rel="canonical" href="https://antoniocanada.com/" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   </head>
 

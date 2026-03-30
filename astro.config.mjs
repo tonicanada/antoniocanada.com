@@ -18,7 +18,17 @@ export default defineConfig({
       rehypePlugins: [rehypeKatex],
     }),
     tailwind(),
-    sitemap(),
+    sitemap({
+      filter: (page) =>
+        ![
+          "/test/",
+          "/gracias/",
+          "/mensaje-enviado/",
+          "/cancelado/",
+          "/success/",
+          "/blog/tag/",
+        ].some((path) => page.includes(path)),
+    }),
   ],
   markdown: {
     syntaxHighlight: "shiki",

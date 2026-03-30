@@ -8,9 +8,16 @@ export interface Props {
 	description: string;
 	image?: string;
 	ogType?: string;
+	robots?: string;
 }
 
-const { title, description, image = '/social_img.webp', ogType = 'website' } = Astro.props;
+const {
+	title,
+	description,
+	image = '/social_img.webp',
+	ogType = 'website',
+	robots = 'index,follow',
+} = Astro.props;
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
 ---
 
@@ -39,3 +46,4 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(image, Astro.url)} />
+<meta name="robots" content={robots} />
