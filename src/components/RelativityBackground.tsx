@@ -1,7 +1,13 @@
 import { useRef, useEffect } from "react";
 import * as THREE from "three";
 
-export default function RelativityBackground() {
+type RelativityBackgroundProps = {
+  className?: string;
+};
+
+export default function RelativityBackground({
+  className = "fixed inset-0 z-0 pointer-events-none",
+}: RelativityBackgroundProps) {
   const mountRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -9,12 +15,11 @@ export default function RelativityBackground() {
     if (!mount) return;
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(45, mount.clientWidth / mount.clientHeight, 0.1, 1000);
+    const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 1000);
     camera.position.z = 5;
 
     const renderer = new THREE.WebGLRenderer({ alpha: true });
-    renderer.setSize(mount.clientWidth, mount.clientHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     mount.appendChild(renderer.domElement);
 
     const geometry = new THREE.PlaneGeometry(10, 10, 64, 64);
@@ -22,12 +27,11 @@ export default function RelativityBackground() {
       color: 0xdddddd,
       wireframe: true,
       transparent: true,
-      opacity: 0.15
+      opacity: 0.15,
     });
     const mesh = new THREE.Mesh(geometry, material);
     scene.add(mesh);
 
-    // Deformación inicial
     const updateGeometry = () => {
       for (let i = 0; i < geometry.attributes.position.count; i++) {
         const x = geometry.attributes.position.getX(i);
@@ -39,25 +43,39 @@ export default function RelativityBackground() {
     };
     updateGeometry();
 
-    // Animación
+    const resize = () => {
+      const width = mount.clientWidth || window.innerWidth;
+      const height = mount.clientHeight || window.innerHeight;
+
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height);
+    };
+    resize();
+
+    let animationFrameId = 0;
     const animate = () => {
-      requestAnimationFrame(animate);
+      animationFrameId = requestAnimationFrame(animate);
       mesh.rotation.z += 0.0005;
       mesh.rotation.x += 0.0003;
       renderer.render(scene, camera);
     };
     animate();
 
-    // Cleanup
+    window.addEventListener("resize", resize);
+
     return () => {
-      mount.removeChild(renderer.domElement);
+      window.removeEventListener("resize", resize);
+      cancelAnimationFrame(animationFrameId);
+      geometry.dispose();
+      material.dispose();
+      renderer.dispose();
+
+      if (renderer.domElement.parentNode === mount) {
+        mount.removeChild(renderer.domElement);
+      }
     };
   }, []);
 
-  return (
-    <div
-      ref={mountRef}
-      className="absolute inset-0 z-0 pointer-events-none"
-    />
-  );
+  return <div ref={mountRef} className={className} aria-hidden="true" />;
 }

@@ -3,6 +3,7 @@ import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import SideBar from "../components/SideBar.astro";
+import RelativityBackground from "../components/RelativityBackground";
 import { ViewTransitions } from "astro:transitions";
 
 import { SITE_TITLE, SITE_DESCRIPTION, TRANSITION_API } from "../config";
@@ -16,10 +17,11 @@ const {
   ogType,
   robots,
   backgroundUrl,
+  enableRelativityBackground = true,
   backgroundClasses = "brightness-[0.4]",
-  mainClass = "px-4 py-10 max-w-[900px] mx-auto [&_ul>li]:leading-tight",
-  contentClass = "bg-base-100",
-  shellClass = "bg-base-100",
+  mainClass = "w-full px-4 py-10 max-w-[900px] mx-auto [&_ul>li]:leading-tight",
+  contentClass = "bg-transparent",
+  shellClass = "bg-transparent",
 } = Astro.props;
 ---
 
@@ -36,11 +38,13 @@ const {
     />
     {TRANSITION_API && <ViewTransitions />}
   </head>
-  <body class="min-h-screen">
+  <body class="min-h-screen bg-white text-gray-900">
+    {enableRelativityBackground && <RelativityBackground client:load />}
+
     <!-- 🔽 BACKGROUND (video o imagen) -->
     <slot name="background" />
 
-    <div class={`${shellClass} drawer min-h-screen lg:drawer-open`}>
+    <div class={`${shellClass} relative drawer min-h-screen lg:drawer-open`}>
       {
         backgroundUrl && (
           <div class="fixed top-0 right-0 bottom-0 left-0 lg:left-64 z-0 pointer-events-none">
@@ -67,7 +71,7 @@ const {
       }
 
       <input id="my-drawer" type="checkbox" class="drawer-toggle" />
-      <div class={`drawer-content min-h-screen flex flex-col ${contentClass}`}>
+      <div class={`drawer-content relative z-10 min-h-screen flex flex-col ${contentClass}`}>
         <Header title={SITE_TITLE} />
         <div class="flex-1 md:flex md:justify-center">
           <main class={mainClass}>

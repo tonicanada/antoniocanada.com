@@ -3,14 +3,14 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
 <BaseLayout sideBarActiveItemID="contact">
-  <section class="py-20 bg-white">
+  <section class="py-20 bg-white/70 backdrop-blur-[1px]">
     <div class="max-w-3xl mx-auto px-4 sm:px-6">
       <h1 class="text-4xl font-bold mb-10 text-center">Contáctame</h1>
 
       <form
         action="https://formspree.io/f/xwpbjdky"
         method="POST"
-        class="bg-white p-8 rounded-lg shadow-sm border border-gray-200 space-y-6"
+        class="w-full max-w-[calc(100vw-4rem)] sm:max-w-full mx-auto overflow-hidden bg-white/90 p-5 sm:p-8 rounded-lg shadow-sm border border-gray-200 space-y-6"
         id="form-contacto"
       >
         <!-- Mensaje dinámico -->
@@ -25,7 +25,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
               name="name"
               id="name"
               required
-              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-neutral-500"
+              class="box-border w-full max-w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-neutral-500"
             />
           </div>
 
@@ -36,7 +36,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
               name="email"
               id="email"
               required
-              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-neutral-500"
+              class="box-border w-full max-w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-neutral-500"
             />
           </div>
         </div>
@@ -48,7 +48,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
             name="asunto"
             id="asunto"
             required
-            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-neutral-500"
+            class="box-border w-full max-w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-neutral-500"
           >
             <option value="">Selecciona una opción</option>
             <option value="consulta_inicial">Consulta inicial (Gratis)</option>
@@ -69,7 +69,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
             name="message"
             id="message"
             required
-            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-neutral-500 min-h-[250px]"
+            class="box-border w-full max-w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-neutral-500 min-h-[250px]"
           ></textarea>
         </div>
 
