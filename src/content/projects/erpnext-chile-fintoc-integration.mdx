@@ -1,0 +1,113 @@
+---
+title: "ERPNext + Fintoc: Conciliación Bancaria Automática"
+description: "Integración de ERPNext con Fintoc para crear Bank Transactions automáticamente desde el banco y acelerar la conciliación bancaria con una interfaz asistida."
+image: "/assets/images/projects/erpnext-chile-fintoc-integration/portada.webp"
+tags:
+  [
+    "ERPNext",
+    "Fintoc",
+    "conciliación bancaria",
+    "automatización financiera",
+    "Bank Transactions",
+    "Chile",
+    "finanzas",
+  ]
+publishDate: "2026-04-27"
+github: ""
+demo: ""
+---
+
+Esta integración conecta **ERPNext** con **Fintoc** para automatizar la creación de transacciones bancarias y simplificar el trabajo diario de conciliación. En lugar de descargar cartolas del banco, subir archivos manualmente y revisar movimientos uno a uno, el sistema consulta directamente la información bancaria y la lleva a ERPNext de forma periódica.
+
+El resultado es un flujo más rápido, trazable y menos propenso a errores para equipos contables y financieros que necesitan mantener sus bancos al día dentro del ERP.
+
+---
+
+## Video de la integración
+
+<div class="relative my-6 w-full overflow-hidden rounded-lg border border-base-300 bg-base-200" style="aspect-ratio: 16 / 9;">
+  <iframe
+    class="absolute inset-0 h-full w-full"
+    src="https://www.youtube.com/embed/YOUTUBE_VIDEO_ID"
+    title="ERPNext + Fintoc: Conciliación Bancaria Automática"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    allowfullscreen
+  />
+</div>
+
+> El video quedará disponible cuando se publique en YouTube. Solo hay que reemplazar `YOUTUBE_VIDEO_ID` por el identificador real del video.
+
+---
+
+## El problema
+
+En muchas implementaciones de ERPNext, la conciliación bancaria sigue dependiendo de tareas manuales:
+
+- Descargar cartolas o extractos desde el portal del banco.
+- Adaptar archivos al formato esperado por el ERP.
+- Subir movimientos manualmente a ERPNext.
+- Revisar coincidencias entre transacciones bancarias y documentos contables.
+- Resolver casos donde un pago corresponde a varios movimientos, o varios pagos corresponden a un mismo movimiento.
+
+Este proceso consume tiempo, se repite cada día o cada semana, y puede generar diferencias difíciles de rastrear si la carga de información no es consistente.
+
+---
+
+## Qué hace la integración
+
+La integración usa **Fintoc** como conector bancario y se ejecuta mediante un proceso programado. Ese proceso consulta los movimientos disponibles en el banco y crea automáticamente los documentos **Bank Transaction** en ERPNext.
+
+Con esto, el equipo financiero trabaja directamente sobre movimientos bancarios actualizados, sin depender de archivos descargados y cargados manualmente.
+
+En términos prácticos, permite:
+
+- Conectar ERPNext con cuentas bancarias mediante Fintoc.
+- Crear **Bank Transactions** automáticamente desde los movimientos reales del banco.
+- Ejecutar la sincronización mediante cron, con una frecuencia definida para cada operación.
+- Mantener trazabilidad entre el movimiento bancario y la conciliación realizada en ERPNext.
+- Reducir errores asociados a manipulación manual de cartolas.
+
+---
+
+## Conciliación asistida
+
+Además de la sincronización bancaria, el proyecto incorpora una interfaz mejorada para facilitar la conciliación. El sistema busca posibles coincidencias entre **Bank Transactions** y documentos contables de ERPNext, principalmente **Journal Entry** y **Payment Entry**.
+
+La interfaz complementa la herramienta estándar **Bank Reconciliation Tool** y permite trabajar con escenarios reales de conciliación:
+
+- Asociar **1 Bank Transaction** a **1 Payment Entry** o **1 Journal Entry**.
+- Asociar **varias Bank Transactions** a **1 Payment Entry** o **1 Journal Entry**.
+- Asociar **varias Bank Transactions** a **varios Payment Entries** o **Journal Entries**.
+
+Esto permite resolver casos simples y complejos desde una experiencia más directa para el usuario, manteniendo el control sobre qué movimientos se relacionan con qué documentos contables.
+
+---
+
+## Replicable a otros países
+
+Aunque esta integración fue pensada para el contexto chileno usando **Fintoc**, el patrón es fácilmente replicable a otros países.
+
+La arquitectura separa dos responsabilidades:
+
+- El conector bancario, que obtiene movimientos desde bancos o proveedores locales.
+- ERPNext, que recibe esos movimientos como **Bank Transactions** y gestiona la conciliación.
+
+Al cambiar el proveedor bancario o adaptar el conector local, la misma lógica puede reutilizarse para otros mercados. Esto hace que la solución sea una base práctica para empresas que operan con ERPNext y necesitan automatizar conciliaciones bancarias en distintos países.
+
+---
+
+## Resultado para la empresa
+
+- Menos tiempo dedicado a descargar, transformar y subir cartolas bancarias.
+- Movimientos bancarios disponibles automáticamente en ERPNext.
+- Mejor experiencia para usuarios que realizan conciliaciones.
+- Menos errores por carga manual de datos.
+- Base extensible para automatizar conciliaciones en otros países o bancos.
+
+---
+
+## ¿Quieres implementar algo similar?
+
+Si tu empresa usa **ERPNext** y necesita automatizar la conciliación bancaria, esta integración se puede adaptar a tus cuentas, bancos y flujos contables.
+
+💬 [Contáctame](/contact) y revisamos cómo llevar este flujo a tu operación.
