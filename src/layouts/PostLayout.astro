@@ -11,7 +11,7 @@ dayjs.extend(localizedFormat);
 const displayDate = dayjs(publishDate).format("DD-MM-YYYY")
 ---
 
-<BaseLayout title={title} description={description} image={image}, ogType="article">
+<BaseLayout title={title} description={description} image={image}, ogType="article" enableRelativityBackground={false}>
   <main class="md:flex md:justify-center">
     <article class="prose prose-lg max-w-[750px] prose-img:mx-auto">
       <!-- {image && <Image width={750} height={422} format="webp" src={image} alt={title} class="w-full mb-6" />} -->
