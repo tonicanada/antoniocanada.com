@@ -3,6 +3,8 @@ const { id } = Astro.props;
 const [user, gistId] = id.split('/');
 const gistScriptUrl = `https://gist.github.com/${user}/${gistId}.js`;
 const gistUrl = `https://gist.github.com/${user}/${gistId}`;
+const codeFontStack =
+  'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace';
 ---
 
 <iframe
@@ -14,6 +16,24 @@ const gistUrl = `https://gist.github.com/${user}/${gistId}`;
   </head>
   <body style="margin:0;">
     <script src="${gistScriptUrl}"></script>
+    <style>
+      .gist,
+      .gist .blob-code,
+      .gist .blob-code-inner,
+      .gist .blob-num,
+      .gist .highlight,
+      .gist .highlight pre,
+      .gist table {
+        font-family: ${codeFontStack} !important;
+      }
+
+      .gist .blob-code,
+      .gist .blob-code-inner,
+      .gist .blob-num {
+        font-size: 14px !important;
+        line-height: 1.55 !important;
+      }
+    </style>
   </body>
 </html>`}>
 </iframe>
