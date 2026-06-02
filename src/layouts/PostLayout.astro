@@ -8,36 +8,60 @@ export interface Props extends BlogSchema {}
 
 const { title, description, publishDate, updatedDate, image, badge, tags = [] } = Astro.props;
 dayjs.extend(localizedFormat);
-const displayDate = dayjs(publishDate).format("DD-MM-YYYY")
+const displayDate = dayjs(publishDate).format("DD-MM-YYYY");
+const displayUpdatedDate = updatedDate ? dayjs(updatedDate).format("DD-MM-YYYY") : null;
 ---
 
-<BaseLayout title={title} description={description} image={image}, ogType="article" enableRelativityBackground={false}>
-  <main class="md:flex md:justify-center">
-    <article class="prose prose-lg max-w-[750px] prose-img:mx-auto">
-      <!-- {image && <Image width={750} height={422} format="webp" src={image} alt={title} class="w-full mb-6" />} -->
-      {image && <img src={image} alt={title} class="w-full rounded-lg mb-6" />}
-      <h1 class="title my-2 text-4xl font-bold">{title}</h1>
-      {publishDate && <time>{displayDate}</time>}
-      <br />
-      {badge && <div class="badge badge-secondary my-1">{badge}</div>}
-      {
-        tags &&
-          tags.map((tag) => (
-            <a href={`/tags/${tag}`} class="badge badge-outline ml-2 no-underline">
-              {tag}
-            </a>
-          ))
-      }
-      {
-        updatedDate && (
-          <div>
-            {" "}
-            Last updated on <time>{updatedDate}</time>{" "}
-          </div>
-        )
-      }
-      <div class="divider my-2"></div>
-      <slot />
-    </article>
-  </main>
+<BaseLayout
+  title={title}
+  description={description}
+  image={image}
+  ogType="article"
+  enableRelativityBackground={false}
+  mainClass="w-full px-0 py-6 overflow-hidden [&_ul>li]:leading-tight"
+>
+  <article
+    class="content-article prose prose-base md:prose-lg mx-auto w-full min-w-0 max-w-full prose-img:mx-auto"
+    style="width: min(750px, 80vw);"
+  >
+    <!-- {image && <Image width={750} height={422} format="webp" src={image} alt={title} class="w-full mb-6" />} -->
+    {image && <img src={image} alt={title} class="w-full rounded-lg mb-3" />}
+    <header class="not-prose mb-3 w-full min-w-0">
+      <h1 class="my-0 max-w-full break-words text-2xl sm:text-3xl md:text-4xl font-bold leading-tight">{title}</h1>
+      <div class="mt-2 flex max-w-full flex-wrap items-center gap-x-3 gap-y-2 text-sm text-gray-600">
+        {publishDate && <time datetime={dayjs(publishDate).format("YYYY-MM-DD")}>{displayDate}</time>}
+        {
+          displayUpdatedDate && (
+            <span>
+              Actualizado <time datetime={dayjs(updatedDate).format("YYYY-MM-DD")}>{displayUpdatedDate}</time>
+            </span>
+          )
+        }
+        {badge && <span class="badge badge-secondary badge-sm">{badge}</span>}
+        {
+          tags &&
+            tags.map((tag) => (
+              <a href={`/tags/${tag}`} class="badge badge-outline badge-sm max-w-full whitespace-normal break-words no-underline">
+                {tag}
+              </a>
+            ))
+        }
+      </div>
+    </header>
+    <div class="divider my-1"></div>
+    <slot />
+  </article>
 </BaseLayout>
+
+<style is:global>
+  .content-article hr {
+    margin-top: 2.25rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .content-article hr + h2,
+  .content-article hr + h3,
+  .content-article hr + h4 {
+    margin-top: 0;
+  }
+</style>
