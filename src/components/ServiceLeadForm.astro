@@ -165,8 +165,16 @@ const formAction = submitMode === "stripe" ? stripeCheckoutAction : actionRedire
     submitMode,
     stripeCheckoutJson,
     externalRedirectUrl,
+    servicio,
   }}
 >
+  // No usamos `import` aquí: este script tiene `define:vars`, así que Astro
+  // lo inserta inline en el HTML de la página (no como archivo externo), y
+  // un import relativo se resolvería mal contra la URL de la página. En su
+  // lugar, llamamos a `window.trackEvent`, expuesto por src/lib/analytics.ts
+  // (cargado siempre antes, vía TrackingInit.astro en el <head>).
+  const trackEvent = (name, params) => window.trackEvent?.(name, params);
+
   const form = document.getElementById(formId);
   const statusEl = document.getElementById(statusId);
   const submitBtn = form?.querySelector("[data-submit]");
@@ -193,6 +201,14 @@ const formAction = submitMode === "stripe" ? stripeCheckoutAction : actionRedire
         throw new Error(data?.error || "No se pudo enviar el formulario.");
       }
 
+      // El lead se considera generado aquí: el backend confirmó la
+      // recepción de los datos, independientemente de lo que ocurra en las
+      // ramas de abajo (pago Stripe, redirección externa o agenda).
+      trackEvent("generate_lead", {
+        form_name: submitMode === "booking" ? "booking" : "service_request",
+        service_name: servicio,
+      });
+
       if (submitMode === "stripe") {
         setStatus("Listo. Redirigiendo a pago seguro…", "success");
 
@@ -208,6 +224,7 @@ const formAction = submitMode === "stripe" ? stripeCheckoutAction : actionRedire
         window.location.assign(externalRedirectUrl);
       } else {
         setStatus("Listo. Redirigiendo a la agenda para que elijas un horario…", "success");
+        trackEvent("booking_start", { service_name: servicio });
         // Usamos redirección en la misma pestaña para evitar bloqueadores de popups.
         window.location.assign(bookingHref);
       }

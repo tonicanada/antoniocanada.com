@@ -15,7 +15,9 @@ const bookingUrl = import.meta.env.PUBLIC_GOOGLE_CALENDAR_BOOKING_URL;
         href={bookingUrl}
         target="_blank"
         rel="noopener noreferrer"
+        id="gracias-agendar-link"
         class="bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-900"
+        data-ev="booking_start"
       >
         Agendar en Google Calendar
       </a>
@@ -26,3 +28,17 @@ const bookingUrl = import.meta.env.PUBLIC_GOOGLE_CALENDAR_BOOKING_URL;
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  // `/gracias` es una página estática (prerenderizada); el `?servicio=` que
+  // Stripe añade en la success_url solo existe en la URL del navegador, no
+  // en el HTML pre-generado. Lo leemos aquí y lo añadimos como parámetro del
+  // evento `booking_start` antes de que el usuario pueda hacer clic (el
+  // disparo del evento en sí lo gestiona la delegación de clicks genérica
+  // de src/lib/analytics.ts, vía el atributo data-ev).
+  const servicio = new URLSearchParams(window.location.search).get("servicio");
+  const link = document.getElementById("gracias-agendar-link");
+  if (link && servicio) {
+    link.setAttribute("data-ev-params", JSON.stringify({ service_name: servicio }));
+  }
+</script>

@@ -12,6 +12,12 @@ const {
 <a
   href={`/${slug}`}
   class="relative z-0 block flex flex-col justify-between h-full border rounded-lg shadow p-6 bg-white hover:shadow-lg hover:scale-[1.01] transition overflow-hidden"
+  data-ev="service_cta_click"
+  data-ev-params={JSON.stringify({
+    service_name: slug,
+    cta_text: "Ver más",
+    cta_location: "services_listing",
+  })}
 >
   {
     badgeImage && (

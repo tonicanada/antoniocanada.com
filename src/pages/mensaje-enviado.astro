@@ -13,3 +13,16 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     </a>
   </section>
 </BaseLayout>
+
+<script>
+  // Formspree redirige aquí solo si el envío del formulario de /contact fue
+  // aceptado, así que llegar a esta página es la señal fiable de éxito
+  // (ese formulario no tiene JS propio de éxito, ver docs/analytics.md).
+  import { trackEvent } from "../lib/analytics";
+
+  const ALREADY_FIRED_KEY = "generate_lead:contact:fired";
+  if (!sessionStorage.getItem(ALREADY_FIRED_KEY)) {
+    sessionStorage.setItem(ALREADY_FIRED_KEY, "1");
+    trackEvent("generate_lead", { form_name: "contact" });
+  }
+</script>
