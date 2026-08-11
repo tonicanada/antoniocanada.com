@@ -1,0 +1,105 @@
+---
+// Único punto que carga Google Tag Manager. GA4 y Microsoft Clarity se
+// gestionan DENTRO de GTM (ver docs/analytics.md) — no se instalan aquí
+// para evitar scripts/tags duplicados.
+//
+// Si PUBLIC_GTM_ID no está definido, no se renderiza nada (evita un
+// contenedor "GTM-undefined" roto en desarrollo).
+const gtmId = import.meta.env.PUBLIC_GTM_ID;
+
+// Códigos ISO 3166-1 alpha-2 de la UE + EEE + Reino Unido, usados por Google
+// Consent Mode v2 para aplicar el "default" restrictivo solo a esa región.
+// Esta evaluación la hace Google en su servidor con la IP real de cada
+// visita — es el mecanismo real de cumplimiento legal, independiente de a
+// quién se le muestre la interfaz visible del banner (ver docs/analytics.md).
+const CONSENT_MODE_REGION = [
+  "AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR",
+  "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK",
+  "SI", "ES", "SE",
+  "IS", "LI", "NO",
+  "GB",
+];
+
+// Debe coincidir con COOKIE_NAME en src/lib/consent.ts.
+const CONSENT_COOKIE_NAME = "cc_antoniocanada";
+---
+
+{
+  gtmId && (
+    <script define:vars={{ gtmId, region: CONSENT_MODE_REGION, cookieName: CONSENT_COOKIE_NAME }}>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        window.dataLayer.push(arguments);
+      }
+      window.gtag = gtag;
+
+      // Si ya existe una decisión de consentimiento guardada de una visita
+      // anterior, la leemos aquí de forma síncrona (sin esperar a que cargue
+      // la librería vanilla-cookieconsent, que es asíncrona) y la aplicamos
+      // de inmediato como "default". Sin esto hay una carrera: GTM se
+      // inicializa con el "denegado" por defecto ANTES de que nuestro banner
+      // termine de cargar y restaure la decisión guardada, y las etiquetas
+      // (p.ej. Clarity) quedarían bloqueadas en cada carga aunque el usuario
+      // ya hubiera aceptado en una visita anterior.
+      function getStoredConsentCategories() {
+        try {
+          var match = document.cookie.match(
+            new RegExp("(?:^|;\\s*)" + cookieName + "=([^;]+)")
+          );
+          if (!match) return null;
+          var parsed = JSON.parse(decodeURIComponent(match[1]));
+          return Array.isArray(parsed.categories) ? parsed.categories : null;
+        } catch (e) {
+          return null;
+        }
+      }
+
+      var storedCategories = getStoredConsentCategories();
+
+      if (storedCategories) {
+        // Decisión explícita ya conocida: se aplica igual para todo el
+        // mundo, sin distinción de región (el usuario ya decidió).
+        var granted = function (category) {
+          return storedCategories.indexOf(category) !== -1 ? "granted" : "denied";
+        };
+        gtag("consent", "default", {
+          ad_storage: granted("marketing"),
+          ad_user_data: granted("marketing"),
+          ad_personalization: granted("marketing"),
+          analytics_storage: granted("analytics"),
+        });
+      } else {
+        // Visitante sin decisión guardada (primera visita, o cookies
+        // borradas): Google Consent Mode v2, modo "avanzado". Denegado por
+        // defecto SOLO para España/UE/EEE/UK (`region`); el resto del mundo
+        // se concede por defecto (no aplica esta exigencia legal). Debe
+        // ejecutarse ANTES de cargar gtm.js.
+        gtag("consent", "default", {
+          ad_storage: "denied",
+          ad_user_data: "denied",
+          ad_personalization: "denied",
+          analytics_storage: "denied",
+          region: region,
+          wait_for_update: 500,
+        });
+        gtag("consent", "default", {
+          ad_storage: "granted",
+          ad_user_data: "granted",
+          ad_personalization: "granted",
+          analytics_storage: "granted",
+        });
+      }
+
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l !== "dataLayer" ? "&l=" + l : "";
+        j.async = true;
+        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, "script", "dataLayer", gtmId);
+    </script>
+  )
+}

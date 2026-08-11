@@ -1,0 +1,153 @@
+---
+// Banner de consentimiento (vanilla-cookieconsent) compatible con Google
+// Consent Mode v2. Se muestra a todos los visitantes — ver
+// src/lib/consent.ts y docs/analytics.md.
+import "vanilla-cookieconsent/dist/cookieconsent.css";
+---
+
+<script>
+  import { initCookieConsent } from "../lib/consent";
+  initCookieConsent();
+</script>
+
+<style is:global>
+  /*
+   * Rediseño visual del banner de cookies: versión compacta, con el texto a
+   * la izquierda y los botones a la derecha en desktop (apilados en móvil),
+   * en el mismo negro/blanco minimalista que el resto del sitio. Solo toca
+   * aspecto — la lógica de consentimiento vive en src/lib/consent.ts.
+   *
+   * Los selectores repetidos (p.ej. .cm__body.cm__body) son un truco de
+   * especificidad: la propia librería usa `!important` en su breakpoint
+   * móvil, y así ganamos de forma determinista sin depender del orden final
+   * del bundle de CSS.
+   */
+  #cc-main {
+    --cc-font-family: inherit;
+    --cc-bg: #ffffff;
+    --cc-primary-color: #111827;
+    --cc-secondary-color: #4b5563;
+    --cc-modal-border-radius: 0;
+    --cc-btn-border-radius: 0.375rem;
+    --cc-modal-margin: 0;
+    --cc-separator-border-color: #e5e7eb;
+    --cc-btn-primary-bg: #000000;
+    --cc-btn-primary-color: #ffffff;
+    --cc-btn-primary-border-color: #000000;
+    --cc-btn-primary-hover-bg: #111827;
+    --cc-btn-primary-hover-color: #ffffff;
+    --cc-btn-primary-hover-border-color: #111827;
+    --cc-btn-secondary-bg: transparent;
+    --cc-btn-secondary-color: #111827;
+    --cc-btn-secondary-border-color: #000000;
+    --cc-btn-secondary-hover-bg: #f3f4f6;
+    --cc-btn-secondary-hover-color: #000000;
+    --cc-btn-secondary-hover-border-color: #000000;
+  }
+
+  #cc-main .cm {
+    border-top: 1px solid #e5e7eb;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.06);
+  }
+
+  /*
+   * Forzamos una sola fila en desktop: texto a la izquierda, los 3 botones
+   * (Aceptar/Rechazar/Configurar) en línea a la derecha. Por defecto la
+   * librería coloca "Configurar" en un grupo aparte que apila debajo del
+   * par Aceptar/Rechazar incluso en el layout "bar inline" — por eso fijamos
+   * `flex-direction:row` también en `.cm__btns` y en cada `.cm__btn-group`
+   * (hay dos: el par principal y el de "Configurar"), no solo en `.cm__body`.
+   */
+  #cc-main .cm__body.cm__body {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.625rem 1.25rem !important;
+  }
+
+  #cc-main .cm__texts {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 0 !important;
+  }
+
+  #cc-main .cm__desc.cm__desc {
+    padding: 0 !important;
+    margin: 0;
+    max-height: none;
+    font-size: 0.85rem;
+    line-height: 1.3;
+  }
+
+  #cc-main .cm__btns {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center;
+    flex: 0 0 auto;
+    gap: 0.5rem;
+    padding: 0 !important;
+    max-width: none !important;
+  }
+
+  #cc-main .cm__btn-group {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 !important;
+  }
+
+  #cc-main .cm__btn {
+    padding: 0.45rem 0.9rem !important;
+    font-size: 0.8rem;
+    min-height: 0;
+    white-space: nowrap;
+  }
+
+  #cc-main .cm__btn:focus-visible {
+    outline: 2px solid #000000;
+    outline-offset: 2px;
+  }
+
+  /* "Configurar" (data-role="show") queda como acción terciaria: texto
+   * subrayado, sin fondo ni borde, para distinguirla de "Rechazar"
+   * (data-role="necessary"), que conserva el botón con borde visible. */
+  #cc-main .cm__btn[data-role="show"] {
+    background: transparent !important;
+    border-color: transparent !important;
+    color: var(--cc-secondary-color) !important;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  #cc-main .cm__btn[data-role="show"]:hover,
+  #cc-main .cm__btn[data-role="show"]:focus-visible {
+    color: #111827 !important;
+  }
+
+  @media (max-width: 640px) {
+    #cc-main .cm__body.cm__body {
+      flex-direction: column !important;
+      align-items: stretch;
+      padding: 1rem !important;
+    }
+
+    #cc-main .cm__btns {
+      flex-direction: column !important;
+      align-items: stretch;
+      width: 100%;
+    }
+
+    #cc-main .cm__btn-group {
+      flex-direction: column !important;
+      align-items: stretch;
+      width: 100%;
+    }
+
+    #cc-main .cm__btn {
+      width: 100%;
+    }
+  }
+</style>

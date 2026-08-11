@@ -5,6 +5,10 @@ import Footer from "../components/Footer.astro";
 import SideBar from "../components/SideBar.astro";
 import RelativityBackground from "../components/RelativityBackground";
 import { ViewTransitions } from "astro:transitions";
+import GtmScripts from "../components/analytics/GtmScripts.astro";
+import GtmNoscript from "../components/analytics/GtmNoscript.astro";
+import TrackingInit from "../components/analytics/TrackingInit.astro";
+import CookieConsentBanner from "../components/CookieConsentBanner.astro";
 
 import { SITE_TITLE, SITE_DESCRIPTION, TRANSITION_API } from "../config";
 
@@ -28,6 +32,7 @@ const {
 <!doctype html>
 <html lang="es" data-theme="lofi">
   <head>
+    <GtmScripts />
     <BaseHead
       title={title}
       description={description}
@@ -37,8 +42,11 @@ const {
       robots={robots}
     />
     {TRANSITION_API && <ViewTransitions />}
+    <TrackingInit />
+    <CookieConsentBanner />
   </head>
   <body class="min-h-screen bg-white text-gray-900">
+    <GtmNoscript />
     {enableRelativityBackground && <RelativityBackground client:load />}
 
     <!-- 🔽 BACKGROUND (video o imagen) -->
