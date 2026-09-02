@@ -9,6 +9,7 @@ const uniqueTags = z
 
 // 📚 Blog
 const blogSchema = z.object({
+  urlSlug: z.string().optional(), // fija la URL; ver src/lib/createSlug.ts
   title: z.string(),
   description: z.string(),
   publishDate: z.coerce.date(), // ← unificado
@@ -20,6 +21,7 @@ const blogSchema = z.object({
 
 // 🛒 Store
 const storeSchema = z.object({
+  urlSlug: z.string().optional(), // fija la URL; ver src/lib/createSlug.ts
   title: z.string(),
   description: z.string(),
   custom_link_label: z.string(),
@@ -34,6 +36,7 @@ const storeSchema = z.object({
 
 // 💼 Proyectos
 const projectSchema = z.object({
+  urlSlug: z.string().optional(), // fija la URL; ver src/lib/createSlug.ts
   title: z.string(),
   description: z.string(),
   publishDate: z.coerce.date(),
@@ -45,6 +48,7 @@ const projectSchema = z.object({
 
 // 🎓 Cursos
 const courseSchema = z.object({
+  urlSlug: z.string().optional(), // fija la URL; ver src/lib/createSlug.ts
   title: z.string(),
   description: z.string(),
   publishDate: z.coerce.date(),

@@ -22,7 +22,7 @@ const { page } = Astro.props;
       title: entry.data.title,
       desc: entry.data.description,
       img: entry.data.image || entry.data.heroImage,
-      url: "/blog/" + createSlug(entry.data.title, entry.slug),
+      url: "/blog/" + createSlug(entry.data.title, entry.slug, entry.data.urlSlug),
       badge: entry.data.badge,
       tags: entry.data.tags,
     })}

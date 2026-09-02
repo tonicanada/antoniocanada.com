@@ -7,7 +7,7 @@ import createSlug from "../../lib/createSlug"
 export async function getStaticPaths() {
   const postEntries = await getCollection("courses");
   return postEntries.map((entry) => ({
-    params: { slug: createSlug(entry.data.title, entry.slug) },
+    params: { slug: createSlug(entry.data.title, entry.slug, entry.data.urlSlug) },
     props: { entry },
   }));
 }

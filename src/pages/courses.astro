@@ -24,7 +24,7 @@ const courses = await getCollection("courses");
             description={course.data.description}
             price={course.data.price ?? ""}
             img={course.data.image}
-            slug={"courses/" + createSlug(course.data.title, course.slug)}
+            slug={"courses/" + createSlug(course.data.title, course.slug, course.data.urlSlug)}
             badgeImage={course.data.badgeImage ?? ""}
           />
         ))

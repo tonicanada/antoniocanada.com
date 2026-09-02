@@ -1,0 +1,17 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "trailingSlash": true,
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.antoniocanada.com" }],
+      "destination": "https://antoniocanada.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/courses/bootcamp-erpnext-proxima-edicion-2025",
+      "destination": "/courses/bootcamp-erpnext-edicion-2025/",
+      "permanent": true
+    }
+  ]
+}

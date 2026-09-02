@@ -1,6 +1,16 @@
 import { GENERATE_SLUG_FROM_TITLE } from '../config'
 
-export default function (title: string, staticSlug: string) {
+/**
+ * URL de una entrada de contenido.
+ *
+ * `urlSlug` (opcional, en el frontmatter) fija la URL y gana siempre. Úsalo en
+ * cualquier página que tenga enlaces externos apuntando a ella: sin él la URL
+ * se deriva del título, así que editar el título la mueve y rompe esos enlaces
+ * sin ningún aviso.
+ */
+export default function (title: string, staticSlug: string, urlSlug?: string) {
+  if (urlSlug) return urlSlug;
+
   return (
     !GENERATE_SLUG_FROM_TITLE ? staticSlug :
     title
