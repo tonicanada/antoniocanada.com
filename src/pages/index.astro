@@ -1,7 +1,8 @@
 ---
 import HeroSection from "../components/HeroSection.astro";
 import ReferencesSection from "../components/ReferencesSection.astro";
-import UltimosPosts from "../components/UltimosPosts.astro";
+import EsquemaFlujo from "../components/EsquemaFlujo.astro";
+import HomeContenido from "../components/HomeContenido.astro";
 import Sidebar from "../components/SideBar.astro";
 import RelativityBackground from "../components/RelativityBackground";
 import Footer from "../components/Footer.astro";
@@ -69,7 +70,7 @@ import CookieConsentBanner from "../components/CookieConsentBanner.astro";
           <!-- Primera sección -->
           <section
             id="hero"
-            class="relative min-h-[calc(100dvh-4rem)] lg:h-screen flex items-center justify-center px-6 py-8 lg:py-0 lg:snap-start"
+            class="relative min-h-[calc(100dvh-4rem)] lg:min-h-screen flex items-center justify-center px-6 py-8 lg:py-0 lg:snap-start"
           >
             <HeroSection />
             <div
@@ -80,14 +81,38 @@ import CookieConsentBanner from "../components/CookieConsentBanner.astro";
             </div>
           </section>
 
-          <!-- Segunda sección -->
+          <!-- Una sección por pantalla. `min-h-screen` y no `h-screen`: con
+               altura fija, el contenido que no cabe genera scroll interno que
+               pelea con el snap y deja huecos en blanco. Así el contenido corto
+               llena la pantalla y el largo crece sin romper nada. -->
           <section
             id="contenido"
-            class="px-6 py-12 lg:h-screen lg:overflow-y-auto lg:snap-start"
+            class="px-6 py-12 lg:min-h-screen lg:flex lg:items-center lg:snap-start"
           >
-            <div class="max-w-4xl mx-auto space-y-12">
+            <div class="max-w-4xl mx-auto w-full">
+              <EsquemaFlujo />
+            </div>
+          </section>
+
+          <section
+            id="casos"
+            class="px-6 py-12 lg:min-h-screen lg:flex lg:items-center lg:snap-start"
+          >
+            <div class="max-w-4xl mx-auto w-full">
               <ReferencesSection showCta={false} />
-              <UltimosPosts />
+            </div>
+          </section>
+
+          <!-- Última: el contenido centrado y el pie abajo, no flotando en
+               medio del hueco que sobra. -->
+          <section
+            id="decidir"
+            class="px-6 pt-12 lg:min-h-screen lg:flex lg:flex-col lg:snap-start"
+          >
+            <div class="lg:flex-1 lg:flex lg:items-center">
+              <div class="max-w-4xl mx-auto w-full">
+                <HomeContenido />
+              </div>
             </div>
             <Footer />
           </section>
