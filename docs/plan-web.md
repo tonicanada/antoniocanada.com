@@ -502,7 +502,7 @@ en la home. Si menos de una cuarta parte llegaba a `#casos`, el argumento del
 relato único estaba muerto empíricamente. La instrumentación de la Fase 0 puede
 responderlo; conviene mirarlo antes de mover más contenido entre páginas.
 
-## Estructura de scroll: del snap obligatorio al de proximidad
+## Estructura de scroll: se abandona el snap
 
 La home scrolleaba dentro de un `<main>` con `overflow-y-auto` y
 `lg:snap-mandatory`. Costes reales, no teóricos:
@@ -515,12 +515,36 @@ La home scrolleaba dentro de un `<main>` con `overflow-y-auto` y
   altas que la ventana de un portátil, así que no alineaba pantallas — peleaba
   con el scroll interno del contenido que no cabía.
 
-Ahora el scroll es del documento y el snap es **`proximity`**: alinea cuando el
-gesto termina cerca de un borde y deja parar a media altura si estás leyendo.
-Vuelve el aterrizaje sin los dos costes de arriba.
+El scroll pasa al documento, con lo que se arreglan los tres puntos de arriba.
+Y tras probar las tres variantes de snap —`mandatory`, sin snap, y `proximity`—
+**se abandona el snap por completo**. El patrón fue el mismo en las tres: cada
+vez que se le pide al layout que garantice pantallas completas, aparece una
+ventana donde no puede.
 
-La última sección se queda **sin punto de snap** a propósito: detrás va el pie,
-su alineación caería muy cerca del final del scroll y pelearía con llegar abajo.
+Los números que lo cierran:
+
+- El contenido del esquema mide **651 px**. El alto útil en un portátil de
+  768 px de pantalla ronda los 640. En esa ventana no cabe ni quitándole todo el
+  padding, así que "una sección, una pantalla" no es una promesa cumplible.
+- La home mide **2,7 pantallas**. Con dos puntos de anclaje y el segundo a menos
+  de una ventana del final, alguna vista salía parcial por aritmética.
+
+Y alinear *a medias* es exactamente lo que se leía como error: dejaba la última
+caja del esquema cortada por 30 px. Sin promesa de alineación no hay nada que
+incumplir.
+
+Descartado también **snap sólo en el hero**: con un único punto de anclaje en el
+0 y `proximity`, empezar a bajar despacio y parar a 200 px te devuelve arriba de
+un tirón. Peor que no tener snap.
+
+El hero conserva la pantalla completa, que es decisión de landing y no de
+mecánica de scroll: no depende de que nada encaje después.
+
+**El padding de las secciones baja a `lg:py-16`.** Con los 96 px de `lg:py-24`
+la sección del esquema se iba a 843 px y se pasaba de una ventana de 813 por
+30 px — el corte que se veía. Con 64 px se queda en **779** y entra con holgura:
+verificado en 1440×900 (813 útiles) y 1920×1080 (993). En 1440×768 (681 útiles)
+no cabe, y ya no importa.
 
 `scroll-pt-16` descuenta el navbar sticky de 4rem de móvil, que hasta ahora
 tapaba la cabecera de la sección a la que saltabas —tanto con el snap como con
