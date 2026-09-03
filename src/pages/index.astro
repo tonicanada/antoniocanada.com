@@ -59,21 +59,38 @@ const htmlClass = "scroll-pt-16 lg:scroll-pt-0";
   <!-- Las dos secciones de abajo llevan espaciado fijo, no `min-h-screen`: con
        el alto atado a la ventana el ritmo cambiaba según la pantalla, largo en
        un portátil y con aire de sobra en un monitor grande.
-       `lg:py-16` y no más: el esquema mide 651 px de contenido, y con los 96 px
-       de `lg:py-24` que tenía antes la sección se iba a 843 px y se pasaba de
-       una ventana de 813 por 30 px — justo lo que dejaba la última caja
-       cortada. Con 64 px se queda en 779 y entra con holgura en las ventanas
-       habituales. No es una garantía (en un portátil de 768 px de pantalla no
-       cabe ni sin padding), pero ya no depende de ello. -->
-  <section id="contenido" class="px-6 py-12 lg:py-16">
+
+       Aquí estuvo `lg:py-16` y no más, porque el esquema vertical medía 651 px
+       de contenido y con los 96 px de `lg:py-24` la sección se iba a 843 px,
+       treinta por encima de una ventana de 813 — justo lo que dejaba la última
+       caja cortada. Ese techo desapareció con la banda horizontal: el esquema
+       ronda ahora los 340 px, así que a `lg:py-24` la sección se queda en unos
+       530 y sobra sitio. El espaciado ya se puede elegir por ritmo y no por
+       aritmética. -->
+  <section id="contenido" class="px-6 py-16 lg:py-24">
     <div class="mx-auto w-full max-w-4xl">
       <EsquemaFlujo />
     </div>
   </section>
 
   <!-- El id era `decidir` cuando aquí vivían las guías de /erpnext; ahora la
-       sección es la petición de llamada y se llama por lo que hace. -->
-  <section id="hablamos" class="px-6 py-12 lg:py-16">
+       sección es la petición de llamada y se llama por lo que hace.
+
+       Y va sobre banda propia, a sangre. Con las tres secciones sobre el mismo
+       blanco, el esquema y el CTA se leían como un solo bloque largo aunque
+       hubiera 128 px de aire entre ellos: sin frontera visual, el espacio en
+       blanco no separa, sólo se nota como hueco. Un cambio de fondo y una línea
+       arriba hacen el trabajo que el padding no podía hacer solo — y el
+       espaciado sube igualmente a `lg:py-24` en las dos.
+
+       El fondo va translúcido (`/80`) a propósito: `GridBackground` pinta la
+       rejilla del sitio detrás y un gris opaco la borraría justo en esta franja,
+       que es lo que delataría la banda como parche. Y las tarjetas de dentro son
+       `bg-white/70`, así que sobre el gris ganan contraste en vez de perderlo. -->
+  <section
+    id="hablamos"
+    class="border-t border-gray-200 bg-gray-50/80 px-6 py-16 lg:py-24"
+  >
     <div class="mx-auto w-full max-w-4xl">
       <HomeContenido />
     </div>
