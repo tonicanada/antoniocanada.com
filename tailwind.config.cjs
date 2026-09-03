@@ -20,8 +20,12 @@ module.exports = {
 	},
 	plugins: [require("@tailwindcss/typography"), require("daisyui"), require("@tailwindcss/aspect-ratio")],
 	daisyui: {
-		themes: true, // true: all themes | false: only light + dark | array: specific themes like this ["light", "dark", "cupcake"]
-		darkTheme: "dark", // name of one of the included themes for dark mode
+		// Solo el tema que el sitio usa de verdad (`data-theme="lofi"`). Con `themes: true`
+		// daisyUI compilaba los 32 temas: 144 KB de CSS, de los que 120 eran reglas
+		// `[data-theme=cyberpunk]` y compañía que nunca se aplican.
+		themes: ["lofi"],
+		// Sin `darkTheme`: el sitio fija `data-theme="lofi"` en el <html> y no tiene
+		// modo oscuro. Apuntar a un tema que ya no se compila no haría nada.
 		logs: false, // Shows info about daisyUI version and used config in the console when building your CSS
 	}
 }
