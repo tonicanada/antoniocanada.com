@@ -26,17 +26,21 @@ export type ComponenteServicio = {
   precioEUR?: number;
   /** Por qué varía, cuando el modo es presupuesto. */
   porQueVaria?: string;
+  /** Página propia del componente, si la tiene. */
+  enlace?: string;
 };
 
 export const componentes: ComponenteServicio[] = [
   {
     nombre: "Consulta inicial",
+    enlace: "/services/consulta-inicial/",
     queEs:
       "Llamada de 15–20 minutos: qué sistemas usas hoy, qué se puede unificar y qué no, y una ruta con orden y plazos.",
     modo: "gratis",
   },
   {
     nombre: "Estudio de procesos y blueprint",
+    enlace: "/services/diagnostico-procesos/",
     queEs:
       "Análisis de tus procesos y entregable escrito: módulos, automatizaciones y plan por fases. Es el primer paso de pago, y sirve aunque después no me contrates.",
     modo: "fijo",
@@ -44,6 +48,7 @@ export const componentes: ComponenteServicio[] = [
   },
   {
     nombre: "Puesta en marcha de ERPNext",
+    enlace: "/services/migracion-erpnext/",
     queEs:
       "Instalación, empresas, plan de cuentas, impuestos, usuarios y permisos por perfil. El sistema funcionando con tu estructura real.",
     modo: "fijo",
@@ -64,18 +69,21 @@ export const componentes: ComponenteServicio[] = [
   },
   {
     nombre: "Integraciones",
+    enlace: "/integraciones/",
     queEs:
       "Precio fijo por integración: banco, compras y licitaciones, facturación electrónica, IA por MCP, ecommerce, pagos.",
     modo: "fijo",
   },
   {
     nombre: "Hosting, soporte y actualizaciones",
+    enlace: "/services/hosting-soporte/",
     queEs:
       "El sistema alojado en nuestros servidores, con respaldos, monitoreo, actualizaciones de versión y soporte. Cuota mensual.",
     modo: "mensual",
   },
   {
     nombre: "Capacitación",
+    enlace: "/services/capacitacion-tecnica-erpnext/",
     queEs:
       "Bloques de horas, para usuarios o para equipos técnicos que van a mantener y extender el sistema.",
     modo: "fijo",

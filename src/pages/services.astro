@@ -92,7 +92,13 @@ import { componentes, comoSeCobra } from "../data/servicios";
               componentes.map((c) => (
                 <tr class="border-b border-gray-200 align-top">
                   <th scope="row" class="py-3 pr-4 font-semibold text-gray-900">
-                    {c.nombre}
+                    {c.enlace ? (
+                      <a href={c.enlace} class="underline underline-offset-2">
+                        {c.nombre}
+                      </a>
+                    ) : (
+                      c.nombre
+                    )}
                   </th>
                   <td class="py-3 pr-4 text-gray-600">{c.queEs}</td>
                   <td class="py-3 text-gray-700 whitespace-nowrap">
