@@ -449,3 +449,48 @@ Se usa **`min-h-screen`, no `h-screen`**, en todas: el contenido corto llena la
 pantalla y el largo crece sin romper el snap ni provocar scroll anidado. En la
 última sección el contenido va centrado con `flex-1` y el pie queda abajo, en
 vez de flotar en medio del hueco que sobra.
+
+## Dos ajustes de copy tras revisar la home renderizada
+
+### El subtítulo se leía como oferta, no como problema
+
+Arrancaba con un sustantivo sin verbo ("Un sistema para facturar, otro para
+remuneraciones, otro para el banco"), y en una landing la línea bajo el titular
+es por convención donde dices qué haces. Quien escaneaba la primera línea podía
+leerla como el catálogo de servicios — y peor, **esas tres cosas sí se ofrecen**,
+así que la mala lectura aterrizaba en algo verosímil y el lector no volvía atrás.
+La aclaración llegaba al final de un párrafo de tres líneas, donde mucha gente no
+llega. El titular tampoco protegía: es una instrucción, no un diagnóstico.
+
+Arreglo: **"Hoy tienes un sistema para facturar…"**. La marca temporal implica un
+después, y la segunda persona lo hace suyo. Descartado "Tienes" a secas: sin
+"hoy" reintroduce el problema por otra vía — puede leerse como *lo que tendrás
+conmigo*, módulos que se entregan.
+
+Alternativas evaluadas y no elegidas, por si se retoma: "Arrastras…" (el verbo
+aporta persona y carga negativa a la vez, pero es más literario que el resto de
+la web), "Te suena:…" (máximo reconocimiento, registro coloquial), "El punto de
+partida habitual:…", y una etiqueta tipográfica `EL PROBLEMA` sobre la frase
+—cero riesgo interpretativo y permitiría un `LA SALIDA` sobre el esquema, pero
+es el recurso más visto en landings y la página tiene hoy un tono más sobrio.
+
+### La caja de IA no lista más marcas
+
+Verificado el 2026-09: Claude tiene soporte MCP de primera clase y ChatGPT lo
+tiene vía Modo Desarrollador (desde finales de 2025); también Cursor, Windsurf y
+VS Code con GitHub Copilot. Sin soporte o mínimo: Gemini, Microsoft Copilot de
+consumo y Perplexity. **De Grok no hay constancia de soporte MCP.**
+
+Por eso no se nombran Grok ni Copilot:
+
+- Grok sería una afirmación no verificable, del tipo que un lector técnico
+  comprueba en dos minutos.
+- "Copilot" es ambiguo y engañoso para este público: GitHub Copilot en VS Code
+  sí lo soporta, pero el de Microsoft 365 no — y un director de administración
+  piensa en el segundo.
+
+La caja dice **"IA — Claude, ChatGPT y cualquier asistente compatible"**, y la
+flecha ("vía MCP") define qué significa compatible. No caduca, no promete lo que
+no se cumple, y "cualquiera compatible" es un argumento comercial más fuerte que
+cuatro nombres: MCP es estándar abierto, no hay atadura de proveedor — lo
+contrario de lo que le pasa al lector con el software que tiene hoy.
