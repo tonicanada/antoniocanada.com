@@ -1,54 +1,40 @@
 ---
-import HorizontalCard from "./HorizontalCard.astro";
-import createSlug from "../lib/createSlug";
-import { getCollection } from "astro:content";
-
 const agendarUrl =
   import.meta.env.PUBLIC_AGENDAR_URL ||
   import.meta.env.PUBLIC_GOOGLE_CALENDAR_BOOKING_URL ||
   "/agendar";
 
-// Sólo contenido que ayuda a decidir. Los cursos y el blog personal se
-// encuentran desde el menú: en la home compiten con la única acción que
-// importa aquí, que es agendar.
-const guias = (await getCollection("erpnext"))
-  .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
-  .slice(0, 3);
+// Aquí vivía un bloque "Antes de decidir" con las guías de /erpnext. Fuera por
+// dos razones: la colección tiene dos entradas y el `.slice(0, 3)` prometía una
+// tercera que no existe, y /erpnext está en el menú. Ocupaba media pantalla
+// para repetir un enlace que ya está a un clic.
+//
+// La prueba social se queda, pero en una línea. La sección de casos reales que
+// había antes montaba el mismo componente que /casos-reales: el mismo contenido
+// en dos URLs, que es justo lo que la Fase 0 vino a arreglar en el dominio y la
+// barra final. Una línea nombrando el trabajo concreto da credibilidad de paso
+// —que es lo que hace la prueba social en una landing— sin gastar una pantalla
+// ni duplicar la página.
+//
+// Las tres frases salen de `src/data/references.ts` y no las inventa nadie:
+// Tecton (finanzas, procesos y digitalización), Hostname (migración desde Odoo)
+// y Vegostart (capacitación en ERPNext).
 ---
 
-<div class="mb-12">
-  <div class="max-w-3xl">
-    <p class="text-sm font-semibold uppercase tracking-[0.2em] text-gray-500">
-      Antes de decidir
-    </p>
-    <h2 class="mt-2 text-2xl sm:text-3xl font-semibold text-gray-900">
-      Qué implica cambiar de sistema
-    </h2>
-    <p class="mt-3 text-base text-gray-600">
-      Cómo se compara ERPNext con SAP, Odoo o Dynamics, y por qué conviene que
-      contabilidad y operaciones hablen el mismo idioma desde el primer día.
-    </p>
-  </div>
-
-  <div class="mt-6 space-y-4">
-    {
-      guias.map((guia) => (
-        <HorizontalCard
-          title={guia.data.title}
-          img={guia.data.image}
-          desc={guia.data.description}
-          url={"/erpnext/" + createSlug(guia.data.title, guia.slug, guia.data.urlSlug)}
-          target="_self"
-          tags={guia.data.tags}
-        />
-      ))
-    }
-  </div>
-</div>
+<p class="max-w-2xl text-base text-gray-600">
+  Tecton ordenó finanzas y procesos, Hostname salió de Odoo, Vegostart formó a
+  su equipo.
+  <a
+    href="/casos-reales"
+    class="font-semibold text-gray-900 underline underline-offset-2 hover:text-gray-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
+  >
+    Ver los tres casos
+  </a>
+</p>
 
 <!-- Una sola acción, y sin tener que volver arriba a buscarla -->
 <div
-  class="rounded-lg border border-gray-300 bg-white/70 p-6 sm:p-8 backdrop-blur-sm"
+  class="mt-8 rounded-lg border border-gray-300 bg-white/70 p-6 sm:p-8 backdrop-blur-sm"
 >
   <h2 class="text-xl sm:text-2xl font-semibold text-gray-900">
     ¿Hablamos de tu caso?

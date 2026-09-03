@@ -10,7 +10,6 @@
 // head declaraba a mano.
 import BaseLayout from "../layouts/BaseLayout.astro";
 import HeroSection from "../components/HeroSection.astro";
-import ReferencesSection from "../components/ReferencesSection.astro";
 import EsquemaFlujo from "../components/EsquemaFlujo.astro";
 import HomeContenido from "../components/HomeContenido.astro";
 
@@ -68,20 +67,13 @@ const htmlClass = "snap-y snap-proximity scroll-pt-16 lg:scroll-pt-0";
     </div>
   </section>
 
-  <section id="casos" class="snap-start px-6 py-16 lg:py-24">
-    <div class="mx-auto w-full max-w-4xl">
-      <!-- `sectionClass=""` para no sumar el `py-16` propio del componente al
-           padding que ya pone la sección. -->
-      <ReferencesSection showCta={false} sectionClass="" />
-    </div>
-  </section>
-
-  <!-- Sin `snap-start` a propósito: es la última sección, mide más de una
-       pantalla y detrás va el pie. Su punto de snap cae a sólo ~200 px del
-       final del scroll, así que alinearla pelearía con llegar al pie —el bug
-       clásico de "no puedo bajar del todo". El final de la página se deja
-       libre. -->
-  <section id="decidir" class="px-6 py-16 lg:py-24">
+  <!-- Sin `snap-start` a propósito: es la última sección y detrás va el pie,
+       así que su punto de snap cae muy cerca del final del scroll y alinearla
+       pelearía con llegar abajo —el bug clásico de "no puedo bajar del todo".
+       El final de la página se deja libre.
+       El id era `decidir` cuando aquí vivían las guías de /erpnext; ahora la
+       sección es la petición de llamada y se llama por lo que hace. -->
+  <section id="hablamos" class="px-6 py-16 lg:py-24">
     <div class="mx-auto w-full max-w-4xl">
       <HomeContenido />
     </div>

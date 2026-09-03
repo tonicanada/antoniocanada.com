@@ -431,7 +431,11 @@ home un enlace interno hacia la página comercial, que hoy no tiene.
 
 ✅ **Resuelto en Fase 2**: ya apunta a `/integraciones/`.
 
-## Estructura de la home: una sección por pantalla
+## Estructura de la home: una sección por pantalla — SUPERADO
+
+> Ver *"Sexta pasada"* más abajo: la home pasó de cuatro secciones a tres y
+> dejó de atar la altura a la pantalla. Lo que sigue queda como registro.
+
 
 La home pasa de 2 secciones con snap a **4**: `#hero` → `#contenido` (esquema)
 → `#casos` (casos reales) → `#decidir` (guías + banda de CTA + pie).
@@ -445,6 +449,92 @@ Se usa **`min-h-screen`, no `h-screen`**, en todas: el contenido corto llena la
 pantalla y el largo crece sin romper el snap ni provocar scroll anidado. En la
 última sección el contenido va centrado con `flex-1` y el pie queda abajo, en
 vez de flotar en medio del hueco que sobra.
+
+## Sexta pasada: la home se acorta a tres secciones
+
+Cuatro secciones eran demasiadas, y una de ellas duplicaba una página entera.
+
+**Fuera `#casos`.** Montaba `ReferencesSection` con `showCta={false}`, y
+`/casos-reales` monta el mismo componente con `showHeader={false}`: el mismo
+contenido en dos URLs. Es exactamente lo que la Fase 0 vino a arreglar —"dejar
+de contar el mismo contenido dos veces"— sólo que allí se buscó en el host y en
+la barra final, y esto se quedó dentro de la propia home.
+
+En su lugar, una línea: "Tecton ordenó finanzas y procesos, Hostname salió de
+Odoo, Vegostart formó a su equipo. **Ver los tres casos**". Las tres frases
+salen de `src/data/references.ts`, no las inventa nadie. Da credibilidad de
+paso —que es lo que hace la prueba social en una landing— sin gastar una
+pantalla ni competir con la página que existe.
+
+**Fuera el bloque de guías** que abría `#decidir` con el epígrafe "Antes de
+decidir". Dos razones: la colección `erpnext` tiene dos entradas y el
+`.slice(0, 3)` prometía una tercera que no existe, y `/erpnext` está en el menú.
+Media pantalla para repetir un enlace que ya estaba a un clic.
+
+**`#decidir` pasa a `#hablamos`.** El id describía las guías; ahora la sección
+es la petición de llamada y se llama por lo que hace. Nada enlazaba a los
+anclajes viejos (verificado en `src/`, `docs/` y `vercel.json`).
+
+Queda: `#hero` → `#contenido` (esquema) → `#hablamos` (prueba + banda de CTA +
+pie). De 4,40 pantallas a **2,84** en 1440×813, y 3,25 en móvil.
+
+### Qué se consideró y no se hizo
+
+**Sacar el esquema a una página propia** tipo `/como-funciona`. Descartado por
+tres razones. La primera es que ya se probó al revés: las pasadas 1 a 3 de este
+documento concluyeron que el esquema no funciona cuando no tiene sitio para ser
+explícito, y ponerlo a un clic es la versión extrema del mismo error. La segunda
+es que es el único activo que no tiene la competencia, y un director de
+administración decide si esto es distinto en la primera pantalla y media, no
+después de hacer clic en un ítem de menú. La tercera es el volumen: con 233
+sesiones al mes, partir la home somete a cada página nueva al mismo suelo de
+medición que hizo descartar el A/B —por debajo de 100-300 sesiones las
+variaciones no son señal—. Concentrar tráfico vale más que segmentarlo.
+
+Si en algún momento el mecanismo merece desarrollo propio, la página ya existe:
+`/erpnext`, que tiene reservado "El Excel que pega tus sistemas es tu sistema
+más crítico" y es el mismo argumento con otras palabras. El botón secundario del
+hero ("Ver cómo funciona") ya apunta ahí. Eso es progresión, no fragmentación, y
+no suma un décimo ítem al menú.
+
+**Lo que decidiría esto con datos y no por criterio**: la profundidad de scroll
+en la home. Si menos de una cuarta parte llegaba a `#casos`, el argumento del
+relato único estaba muerto empíricamente. La instrumentación de la Fase 0 puede
+responderlo; conviene mirarlo antes de mover más contenido entre páginas.
+
+## Estructura de scroll: del snap obligatorio al de proximidad
+
+La home scrolleaba dentro de un `<main>` con `overflow-y-auto` y
+`lg:snap-mandatory`. Costes reales, no teóricos:
+
+- El navegador sólo restaura la posición del **documento**, no la de un
+  contenedor: volver atrás desde el blog dejaba la home arriba.
+- Un enlace a `/#casos` desde otra página no saltaba, por lo mismo.
+- El snap era `lg:` solamente, así que en móvil nunca existió. Y en desktop
+  sujetaba menos de lo que parecía: medidas las cuatro secciones, tres eran más
+  altas que la ventana de un portátil, así que no alineaba pantallas — peleaba
+  con el scroll interno del contenido que no cabía.
+
+Ahora el scroll es del documento y el snap es **`proximity`**: alinea cuando el
+gesto termina cerca de un borde y deja parar a media altura si estás leyendo.
+Vuelve el aterrizaje sin los dos costes de arriba.
+
+La última sección se queda **sin punto de snap** a propósito: detrás va el pie,
+su alineación caería muy cerca del final del scroll y pelearía con llegar abajo.
+
+`scroll-pt-16` descuenta el navbar sticky de 4rem de móvil, que hasta ahora
+tapaba la cabecera de la sección a la que saltabas —tanto con el snap como con
+la flecha ↓—. En `lg` no hay barra y el descuento se anula. Verificado: 64 px a
+500 px de ancho, 0 px a 1440.
+
+Las secciones dejan de usar `lg:min-h-screen` (salvo el hero, que sí quiere la
+pantalla completa) y pasan a padding fijo: con el alto atado a la ventana el
+ritmo cambiaba según la pantalla, largo en un portátil y con aire de sobra en un
+monitor grande.
+
+`BaseLayout` gana una prop `htmlClass`, porque `scroll-snap-type` y
+`scroll-padding` tienen que ir en el contenedor de scroll —el `<html>`— y ese
+elemento lo controla el layout. Sólo la home la usa.
 
 ## Dos ajustes de copy tras revisar la home renderizada
 
