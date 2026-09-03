@@ -249,7 +249,7 @@ corresponde a con qué llega el visitante. Las frases quedan asignadas:
 |---|---|---|
 | Home | **Antes de poner IA en tu empresa, ponla en un solo sistema** | ✅ puesto |
 | `/erpnext` | **El Excel que pega tus sistemas es tu sistema más crítico** | reservado (Fase 2) |
-| `/services` | **Cerrar el mes no debería llevar tres semanas** | reservado (Fase 3) |
+| `/services` | **ERPNext, desde la implementación hasta la IA** | ✅ puesto (Fase 3) |
 | `/chile` | ángulo fiscal local (SII, DTE, RCV, F29) | reservado (Fase 3) |
 | `/espana` | ángulo fiscal local (Veri*Factu, AEAT) | reservado (Fase 3) |
 
@@ -672,3 +672,34 @@ for u in /projects/ /projects/integracion-de-erpnext-con-el-sii-de-chile \
   curl -sS -o /dev/null -w "%{http_code} %{redirect_url}\n" "https://antoniocanada.com$u"
 done
 ```
+
+## Corrección: el titular de /services
+
+El plan reservaba "Cerrar el mes no debería llevar tres semanas" para
+`/services`, y era un error — el mismo que este documento ya había señalado al
+descartarla de la home: *encasilla el negocio como problema de contabilidad*.
+MCP, inventario, obras, sourcing y ecommerce no pasan por el cierre mensual, así
+que la frase recorta la oferta justo en la página cuyo trabajo es comunicar
+alcance.
+
+Titular puesto: **"ERPNext, desde la implementación hasta la IA"**. Nombra el
+producto (aquí llega quien ya sabe lo que busca, y es donde interesa posicionar
+"implementar ERPNext") y dice de dónde a dónde llega la oferta en cuatro
+palabras. Se descartó "ERPNext **para tu empresa**, desde…" porque "para tu
+empresa" se sobreentiende y ablanda la frase.
+
+Descartada también "Implementa ERPNext. Conéctalo. Automatízalo.": tiene más
+ritmo, pero "conéctalo" y "automatízalo" se solapan, y tres imperativos seguidos
+suenan a eslogan de agencia — un registro más flojo que el del resto del sitio.
+
+La frase del cierre de mes se conserva en el subtítulo, donde acompaña sin
+gobernar.
+
+### Pendiente: primera persona singular o plural
+
+El subtítulo dice "Centralizamos, conectamos, hacemos" y el resto del sitio
+habla en singular ("Soy Antonio Cañada", "te lo digo en la misma llamada"). La
+página de hosting dice "nuestros servidores". **La web mezcla las dos voces
+hoy.** Es una decisión de marca, no de estilo —con Bizmotion en marcha,
+"nosotros" puede ser lo correcto— pero hay que elegir una y pasarla por todo el
+sitio de una vez.

@@ -3,8 +3,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import ProductCard from "../components/ProductCard.astro";
 import { componentes, comoSeCobra } from "../data/servicios";
 
-// Titular reservado para esta página en el plan: el visitante que llega aquí ya
-// decidió que quiere cambiar de sistema y viene a saber alcance y precio.
+// El titular tiene que comunicar ALCANCE: aquí llega quien ya sabe lo que
+// busca y viene a ver de dónde a dónde llegas. "Cerrar el mes no debería llevar
+// tres semanas" estaba reservado para esta página en el plan, y era un error —
+// encasilla el negocio en contabilidad y deja fuera inventario, obras,
+// sourcing, ecommerce y MCP, que no pasan por el cierre mensual. La frase se
+// conserva en el subtítulo, donde acompaña sin gobernar.
 ---
 
 <BaseLayout
@@ -17,12 +21,12 @@ import { componentes, comoSeCobra } from "../data/servicios";
       Servicios
     </p>
     <h1 class="mt-2 text-3xl sm:text-4xl font-semibold text-gray-900">
-      Cerrar el mes no debería llevar tres semanas
+      ERPNext, desde la implementación hasta la IA
     </h1>
     <p class="mt-4 max-w-2xl text-lg text-gray-600">
-      Cuatro cosas hago, y en este orden: llevo tu operación a un solo sistema,
-      lo mantengo funcionando, lo extiendo cuando tu negocio lo pide, y formo a
-      quien lo va a usar. Todo empieza por una llamada sin coste.
+      Deja de cerrar el mes cruzando sistemas y Excel. Centralizamos la
+      operación, conectamos las herramientas que ya utilizas y hacemos que tu
+      información pueda trabajar también con IA.
     </p>
 
     <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
