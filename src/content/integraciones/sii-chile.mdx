@@ -1,6 +1,6 @@
 ---
 title: "ERPNext + SII de Chile: facturación electrónica de punta a punta"
-description: "Emisión y recepción de DTE contra el SII desde ERPNext: folios, envío, estado, PDF con timbre, RCV, boletas de honorarios y multiempresa. Sin portales intermedios ni digitación."
+description: "Emite y recibe facturas electrónicas sin salir de tu ERP: el SII, tus proveedores y tu contabilidad en un solo sistema, sin portales aparte ni digitar dos veces."
 image: "/assets/images/integraciones/erpnext-chile-sii-integration/portada.webp"
 tags:
   [
@@ -25,8 +25,8 @@ si falla, no falla un informe, falla el cumplimiento tributario de la empresa.
 
 Esta integración pone ese ciclo completo **dentro de ERPNext**. No un portal
 aparte donde alguien vuelve a escribir lo que ya está en el ERP, ni un Excel de
-control entre los dos: el documento nace en ERPNext, se timbra y se envía al
-SII, y lo que el SII responde vuelve al mismo documento.
+control entre los dos: el documento nace en ERPNext, se envía al SII, y lo que
+el SII responde vuelve al mismo documento.
 
 ---
 
@@ -38,33 +38,61 @@ dos cuestan lo mismo:
 - **Un portal de facturación separado del ERP.** Se emite en un sitio y se
   contabiliza en otro, así que alguien digita dos veces y alguien más cuadra las
   diferencias a fin de mes.
-- **Las compras entran a mano.** Los XML de los proveedores llegan al correo o
-  se bajan del SII, y hay una persona clasificándolos, subiéndolos y
-  enlazándolos a su orden de compra, su centro de costo y su bodega.
+- **Las compras entran a mano.** Las facturas de los proveedores llegan al
+  correo o se bajan del SII, y hay una persona clasificándolas, subiéndolas y
+  enlazándolas a su orden de compra, su centro de costo y su bodega.
 
 En los dos casos el ERP deja de ser la fuente de verdad: la verdad está
 repartida entre el portal, el correo y la carpeta compartida.
 
 ---
 
-## Cómo funciona
+## Qué cambia para ti
+
+Sin entrar en detalle técnico, esto es lo que nota la empresa:
+
+- **Emites desde el mismo sitio donde contabilizas.** Se acabó el portal aparte
+  y la doble digitación.
+- **Las facturas de tus proveedores entran solas**, ya enlazadas a su orden de
+  compra y su centro de costo. Nadie las va clasificando a mano.
+- **El estado en el SII se ve en el documento.** No hay que ir a consultarlo a
+  otro lado ni preguntarle a nadie si la factura pasó.
+- **Una sola instalación para todas tus sociedades**, cada una con sus
+  credenciales y su numeración, sin mezclarse.
+- **El cierre de mes deja de depender de que alguien haya terminado de subir
+  cosas**, porque ya están.
+
+Si con eso te sirve, [agenda una llamada](/agendar/) y lo vemos con tus
+números. Lo que viene a continuación es el detalle para quien necesita
+comprobar que está bien resuelto.
+
+---
+
+## El detalle técnico
+
+Tres siglas que aparecen a partir de aquí, por si no las manejas: **DTE** es la
+factura electrónica que el SII reconoce; los **folios CAF** son los números de
+documento que el SII te autoriza a usar; el **RCV** es el registro de compras y
+ventas que el SII mantiene con lo que otros te facturaron.
 
 <Mermaid
-  code={`flowchart LR
-  A[Venta en ERPNext] --> B[Genera DTE y timbra con folio CAF]
-  B --> C[SII]
-  C --> D[Estado del envío y del DTE]
+  client:only="react"
+  code={`flowchart TD
+  A["Venta en ERPNext"] --> B["Genera el DTE<br/>y lo timbra con folio CAF"]
+  B --> C["SII"]
+  C --> D["Estado del envío<br/>y del documento"]
   D --> A
-  C --> E[RCV y correo del proveedor]
-  E --> F[Clasifica el XML recibido]
-  F --> G[Factura de compra en ERPNext<br/>con OC, centro de costo y bodega]
+  C --> E["RCV"]
+  F["Correo del proveedor"] --> G["Clasifica el XML recibido"]
+  E --> G
+  G --> H["Factura de compra en ERPNext<br/>con OC, centro de costo y bodega"]
 `}
 />
 
 ### Del lado de la venta
 
-- **Emite el DTE** desde el documento de ERPNext, con folios administrados
-  desde el propio sistema (CAF).
+- **Emite el DTE** desde el documento de ERPNext, con los folios CAF
+  administrados desde el propio sistema.
 - **Lo envía al SII** y **consulta el estado** del envío y del documento, sin
   salir del ERP.
 - **Genera el PDF con timbre**, en formato carta y cedible.
@@ -125,7 +153,7 @@ el mismo patrón con el que está montada la
 ## ¿Tienes que resolver esto?
 
 Si hoy emites en un portal y contabilizas en otro sitio, o tienes a alguien
-metiendo XML a mano, esto se puede medir: cuántos documentos al mes, cuánto
+metiendo facturas a mano, esto se puede medir: cuántos documentos al mes, cuánto
 tarda el cierre, cuántas diferencias aparecen.
 
 **[Agenda una llamada de 15–20 minutos](/agendar/)** y lo revisamos con tus

@@ -21,7 +21,7 @@ const esPrimeraPagina = !page.url.prev;
 >
   {
     esPrimeraPagina && (
-      <section class="mb-10 max-w-3xl">
+      <section class="mb-10">
         <p class="text-sm font-semibold uppercase tracking-[0.2em] text-gray-500">
           Integraciones
         </p>
@@ -52,28 +52,12 @@ const esPrimeraPagina = !page.url.prev;
           </p>
         </div>
 
-        <p class="mt-6 text-sm text-gray-600">
-          ¿No ves la herramienta que usas? Casi todo lo que tenga API se puede
-          conectar.{" "}
-          <a
-            href="/agendar/"
-            data-ev="service_cta_click"
-            data-ev-params={JSON.stringify({
-              service_name: "agendar",
-              cta_text: "Cuéntame tu caso",
-              cta_location: "integraciones_intro",
-            })}
-            class="font-semibold text-gray-900 underline underline-offset-2 hover:text-gray-600"
-          >
-            Cuéntame tu caso en una llamada →
-          </a>
-        </p>
       </section>
     )
   }
 
   <PaginatedList
-    title={esPrimeraPagina ? "Todas las integraciones" : "Integraciones"}
+    title={esPrimeraPagina ? "Integraciones documentadas" : "Integraciones"}
     urlPrefix="/integraciones"
     page={page}
     cardProps={(entry) => ({
@@ -84,4 +68,36 @@ const esPrimeraPagina = !page.url.prev;
       tags: entry.data.tags,
     })}
   />
+
+  {
+    esPrimeraPagina && (
+      <section class="mt-12 rounded-lg border border-gray-300 bg-white/70 p-6 backdrop-blur-sm">
+        <h2 class="text-xl font-semibold text-gray-900">
+          ¿No está la que usas?
+        </h2>
+        <p class="mt-2 text-base text-gray-600">
+          Esta lista es lo que está documentado, no el límite. El criterio real
+          es simple: <strong class="font-semibold text-gray-800">si tu
+          herramienta tiene API, se conecta</strong> — y casi siempre en menos
+          tiempo del que parece, porque el patrón de dos capas ya está resuelto.
+          Si no tiene API, hay que mirarlo, y a veces la respuesta honesta es
+          que no se puede: en ese caso te lo digo antes de cobrarte nada.
+        </p>
+        <div class="mt-5">
+          <a
+            href="/agendar/"
+            data-ev="service_cta_click"
+            data-ev-params={JSON.stringify({
+              service_name: "agendar",
+              cta_text: "Cuéntame qué usas",
+              cta_location: "integraciones_cierre",
+            })}
+            class="inline-block px-5 py-3 text-sm sm:text-base font-semibold bg-black text-white rounded-md hover:bg-gray-900 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+          >
+            Cuéntame qué usas
+          </a>
+        </div>
+      </section>
+    )
+  }
 </BaseLayout>
