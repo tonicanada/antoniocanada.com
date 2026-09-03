@@ -1,0 +1,117 @@
+---
+title: "ERPNext + IA: preguntar y operar el ERP en lenguaje natural"
+description: "Un gateway MCP conecta ERPNext con Claude, ChatGPT o cualquier asistente compatible: consultas y tareas en lenguaje natural, con los permisos de cada persona. Y hacia fuera, WhatsApp o Telegram."
+image: "/assets/images/integraciones/chatbot-whatsapp-erpnext/portada.webp"
+tags:
+  [
+    "ERPNext",
+    "MCP",
+    "IA",
+    "Claude",
+    "automatización",
+    "WhatsApp",
+  ]
+publishDate: "2026-09-03"
+github: ""
+demo: ""
+urlSlug: "mcp-ia"
+---
+
+La pregunta que una empresa necesita responder casi nunca cabe en un sistema:
+*«¿cuánto llevamos gastado en esta obra y qué falta por facturar?»* cruza
+compras, bodega, contabilidad y ventas. Cuando cada una vive en un programa
+distinto, no hay IA que la conteste — no porque le falte inteligencia, sino
+porque no hay ningún sitio donde esté la respuesta.
+
+Con ERPNext como fuente de verdad, sí lo hay. Y entonces la IA deja de ser una
+demo y pasa a ser la forma normal de consultar la empresa.
+
+---
+
+## Dos cosas distintas, y conviene no confundirlas
+
+### Hacia dentro: MCP, para el equipo
+
+**MCP** (Model Context Protocol) es un estándar abierto para conectar
+asistentes de IA con sistemas reales. Un *gateway* MCP expone ERPNext como un
+conjunto de herramientas, y a partir de ahí **Claude, ChatGPT o cualquier
+asistente compatible** puede consultar y operar el ERP.
+
+En la práctica, alguien del equipo escribe:
+
+> «Dame el resultado por obra del mes pasado, comparado con el anterior.»
+>
+> «¿Qué facturas de este proveedor están sin pagar y desde cuándo?»
+>
+> «Crea la orden de compra de estos materiales para la obra Norte.»
+
+Y ocurre. No hay que aprender dónde está el informe ni qué filtros aplicar, que
+es la razón real por la que la mayoría de la gente no usa el ERP que su empresa
+pagó.
+
+Lo que lo hace utilizable en una empresa de verdad, y no un juguete:
+
+- **Los permisos son los de ERPNext.** El bodeguero ve lo del bodeguero y el
+  contador lo del contador. La IA no es una puerta lateral que se salta los
+  roles: entra por la misma puerta y con las mismas llaves que la persona.
+- **Multiempresa.** Un mismo gateway atiende varias sociedades sin mezclarlas.
+- **No solo consulta, también ejecuta**, cuando así se define: crear
+  documentos, enviar, corregir.
+- **No hay atadura de proveedor.** MCP es estándar abierto: si mañana cambias
+  de asistente, el gateway sigue sirviendo.
+
+Es, además, cómo trabajo yo a diario. La pregunta del ejemplo no es inventada.
+
+### Hacia fuera: WhatsApp, Telegram y el canal que uses
+
+MCP resuelve al equipo que trabaja con un asistente de IA. Pero hay gente —en
+terreno, en bodega, un cliente— para la que el canal natural es **WhatsApp** o
+**Telegram**, no una interfaz de chat con IA.
+
+Eso también se conecta a ERPNext, y el patrón es el mismo: el mensaje entra, se
+interpreta, se ejecuta contra el ERP con los permisos de quien pregunta, y la
+respuesta vuelve por donde llegó. Consultas de stock, estado de un pedido,
+aprobaciones, avisos automáticos cuando algo cambia.
+
+El código de una primera versión del canal de WhatsApp está público en
+[chatbot-whatsapp-erpnext](https://github.com/tonicanada/chatbot-whatsapp-erpnext).
+
+---
+
+## Por qué esto solo funciona con el ERP unificado
+
+Es el punto que suele malinterpretarse. Poner IA encima de seis sistemas
+separados no da seis veces el valor: da mucho menos que ponerla encima de uno
+solo, porque las preguntas que importan cruzan sistemas y ninguna herramienta
+puede cruzar lo que no tiene delante.
+
+Y hay una segunda razón, menos obvia: cuando el ERP es **abierto y
+personalizado**, la IA no solo ve los datos, también puede ver **el código** que
+los produce. Sabe cómo se calcula ese informe, qué significa ese campo que
+alguien añadió, por qué esa provisión se registra así. Con un sistema cerrado y
+sin API, eso es imposible — y con uno de escritorio, ni eso.
+
+Es la razón por la que ERPNext y la IA se potencian tanto: no es que ERPNext
+tenga IA. Es que un sistema abierto y unificado es el sustrato que la IA
+necesita para servir de algo.
+
+---
+
+## Cómo encaja con el resto
+
+El gateway MCP es la capa de arriba de un sistema que ya se alimenta solo desde
+sus fuentes: la [facturación electrónica](/integraciones/sii-chile/), el
+[banco](/integraciones/banco/) y las
+[compras y licitaciones](/integraciones/sourcing/). Sin esas, la IA responde
+sobre datos incompletos o desactualizados, y una respuesta rápida sobre datos
+malos es peor que no tener respuesta.
+
+---
+
+## ¿Quieres verlo con tus datos?
+
+La forma corta de evaluarlo es hacerle a tu empresa la pregunta que hoy tarda
+dos semanas en responderse.
+
+**[Agenda una llamada de 15–20 minutos](/agendar/)** y lo vemos con tu caso
+concreto.

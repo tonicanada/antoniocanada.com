@@ -1,34 +1,34 @@
 ---
 import { CollectionEntry, getCollection } from "astro:content";
 import PostLayout from "../../layouts/PostLayout.astro"; // o PostLayout si usas el mismo
-import { ProjectSchema } from "../../content/config";
+import { IntegracionSchema } from "../../content/config";
 import createSlug from "../../lib/createSlug";
 
 export async function getStaticPaths() {
-  const projectEntries = await getCollection("projects");
-  return projectEntries.map((entry) => ({
+  const entradas = await getCollection("integraciones");
+  return entradas.map((entry) => ({
     params: { slug: createSlug(entry.data.title, entry.slug, entry.data.urlSlug) },
     props: { entry },
   }));
 }
 
 interface Props {
-  entry: CollectionEntry<"projects">;
+  entry: CollectionEntry<"integraciones">;
 }
 
 const { entry } = Astro.props;
-const project: ProjectSchema = entry.data;
+const integracion: IntegracionSchema = entry.data;
 const { Content } = await entry.render();
 ---
 
 <PostLayout
-  title={project.title}
-  description={project.description}
-  publishDate={project.publishDate}
-  image={project.image}
-  tags={project.tags}
-  github={project.github}
-  demo={project.demo}
+  title={integracion.title}
+  description={integracion.description}
+  publishDate={integracion.publishDate}
+  image={integracion.image}
+  tags={integracion.tags}
+  github={integracion.github}
+  demo={integracion.demo}
 >
   <Content />
 </PostLayout>

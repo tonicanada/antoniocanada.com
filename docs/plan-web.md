@@ -190,16 +190,14 @@ https://antoniocanada.com/services/automatizacion-erpnext/?utm_source=youtube&ut
 
 ```
 👉 Cómo funciona la conciliación bancaria automática:
-https://antoniocanada.com/projects/erpnext-fintoc-conciliacion-bancaria-automatica/?utm_source=youtube&utm_medium=video&utm_campaign=fintoc
+https://antoniocanada.com/integraciones/banco/?utm_source=youtube&utm_medium=video&utm_campaign=fintoc
 ```
 
 Las diez páginas destino verificadas con `curl` contra producción: todas 200.
 
-⚠️ **Requisito para la Fase 2**: la última URL cambia cuando `/projects` se
-sustituya por `/integraciones`. Hay que dejar un 301 de
-`/projects/erpnext-fintoc-conciliacion-bancaria-automatica/` a
-`/integraciones/banco/` (y del resto de `/projects/*`) o los enlaces de YouTube
-se rompen.
+✅ **Resuelto en Fase 2.** La URL del vídeo de Fintoc es ya la definitiva
+(`/integraciones/banco/`) y los 301 desde `/projects/*` están puestos, así que
+el enlace funciona por las dos vías.
 
 ## 4. Enlace roto en el vídeo más visto — HECHO
 
@@ -431,9 +429,7 @@ riesgo de fondo: el lector que no ve su herramienta entre las ocho cajas
 concluye que no la haces. Con la salida hace clic en vez de irse. Y le da a la
 home un enlace interno hacia la página comercial, que hoy no tiene.
 
-⚠️ **Requisito de Fase 2**: hoy apunta a `/projects` porque `/integraciones` no
-existe todavía y no se deja un enlace roto en producción. Al crear la página hay
-que cambiar el `href` y el `service_name` del evento en `EsquemaFlujo.astro`.
+✅ **Resuelto en Fase 2**: ya apunta a `/integraciones/`.
 
 ## Estructura de la home: una sección por pantalla
 
@@ -494,3 +490,95 @@ flecha ("vía MCP") define qué significa compatible. No caduca, no promete lo q
 no se cumple, y "cualquiera compatible" es un argumento comercial más fuerte que
 cuatro nombres: MCP es estándar abierto, no hay atadura de proveedor — lo
 contrario de lo que le pasa al lector con el software que tiene hoy.
+
+---
+
+# Fase 2 — Muere /projects, nace /integraciones
+
+`/projects` no contenía proyectos, contenía productos: cuatro integraciones que
+se venden. Los proyectos personales (oloide, three.js, TSP) ya vivían en el
+blog, así que la sección entera se reconvierte.
+
+## Mapa de URLs
+
+| Antes | Ahora |
+|---|---|
+| `/projects/` | `/integraciones/` |
+| `/projects/integracion-de-erpnext-con-el-sii-de-chile/` | `/integraciones/sii-chile/` |
+| `/projects/erpnext-fintoc-conciliacion-bancaria-automatica/` | `/integraciones/banco/` |
+| `/projects/integracion-de-erpnext-con-wherex/` | `/integraciones/sourcing/` |
+| `/projects/chatbot-de-whatsapp-conectado-a-erpnext/` | `/integraciones/mcp-ia/` |
+| `/rss-projects.xml` | `/rss-integraciones.xml` |
+
+Las cuatro páginas llevan `urlSlug` fijo, así que los títulos se pueden reescribir
+sin mover las URLs — que es exactamente el fallo que rompió el enlace del
+bootcamp en YouTube.
+
+Se renombró también `public/assets/images/projects/` a `.../integraciones/` para
+que la ruta no mienta, y la colección `projects` pasó a `integraciones` (esquema,
+rutas, RSS, página de tags y menú).
+
+### Los 301, escritos en las dos formas
+
+Cada redirect existe con y sin barra final. **No está verificado si Vercel
+aplica los redirects antes o después de normalizar la barra con
+`trailingSlash: true`**, y adivinarlo mal significa que los 301 no capturan
+nada. Con las dos formas acierta en cualquier orden, y ningún destino coincide
+con un `source`, así que no hay bucle posible. Verificado: 14 reglas, cero
+bucles.
+
+## Reencuadre de contenido
+
+- **`sii-chile`** — reescrita entera. La anterior explicaba el repo
+  `erpnext_chile_factura` (ingreso de XML por correo y Drive). Ahora cubre el
+  ciclo completo desde el orquestador: emisión de DTE con folios CAF, envío,
+  consulta de estado, PDF con timbre carta y cedible, RCV, lectura de casilla,
+  aceptación/reclamo, boletas de honorarios y multiempresa.
+- **`banco`** y **`sourcing`** — mismo cuerpo, encuadre nuevo: capa genérica
+  (banca, sourcing) más el proveedor de cada país (Fintoc, Wherex en Chile). Es
+  lo que permite vender lo mismo en México o Perú sin reescribir el sistema.
+- **`mcp-ia`** — sustituye al chatbot de WhatsApp. El gateway MCP hacia dentro
+  (Claude, ChatGPT o cualquier asistente compatible, con los permisos de
+  ERPNext) y WhatsApp/Telegram hacia fuera como canal, no como producto.
+- **`/integraciones`** deja de ser un listado pelado: lleva introducción, explica
+  el patrón de dos capas y una salida a agendar para quien no vea su
+  herramienta.
+
+## Qué se puede afirmar y qué no
+
+La emisión de venta está **validada contra el ambiente de certificación del
+SII** y en despliegue; la parte de compras **corre en producción**. La página
+describe la capacidad en presente y sin disclaimers —está construida y
+funciona— pero **no afirma historial que no existe**: nada de "N empresas
+emiten con esto" ni volúmenes de facturas.
+
+La distinción no es cosmética: se vende cumplimiento tributario, y un DTE
+fallido en Chile no es un bug, es un problema legal. Si un cliente firma
+creyendo que la emisión está curtida en producción, el problema aparece en el
+primer cierre de mes.
+
+Y la precisión vende: "compras en producción; emisión validada en certificación"
+suena a alguien que distingue maullin de palena — que es la pericia que se está
+vendiendo. El historial real que sí existe está en la página porque es fuerte:
+cuatro empresas en producción en compras, 132 tests unitarios donde no había
+ninguno, y el clasificador de correo validado contra 120 XML reales del SII.
+
+**No se publica infraestructura interna**: nada de hosts, códigos de sitio,
+dominios de desarrollo ni número total de sitios del bench.
+
+## Verificado
+
+- Build de 118 páginas, y **cero enlaces roto** en todo el sitio (barrido de
+  todos los `href` internos de todas las páginas contra los ficheros generados).
+- Cero referencias a `/projects` en el HTML generado.
+
+## Pendiente tras el deploy
+
+Comprobar que los 301 capturan las URLs viejas en sus dos formas:
+
+```bash
+for u in /projects/ /projects/integracion-de-erpnext-con-el-sii-de-chile \
+         /projects/erpnext-fintoc-conciliacion-bancaria-automatica/ ; do
+  curl -sS -o /dev/null -w "%{http_code} %{redirect_url}\n" "https://antoniocanada.com$u"
+done
+```

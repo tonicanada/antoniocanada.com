@@ -1,0 +1,132 @@
+---
+title: "ERPNext + SII de Chile: facturación electrónica de punta a punta"
+description: "Emisión y recepción de DTE contra el SII desde ERPNext: folios, envío, estado, PDF con timbre, RCV, boletas de honorarios y multiempresa. Sin portales intermedios ni digitación."
+image: "/assets/images/integraciones/erpnext-chile-sii-integration/portada.webp"
+tags:
+  [
+    "ERPNext",
+    "SII",
+    "facturación electrónica",
+    "DTE",
+    "Chile",
+    "contabilidad",
+  ]
+publishDate: "2026-09-03"
+github: "https://github.com/tonicanada/erpnext_chile_factura"
+demo: ""
+urlSlug: "sii-chile"
+---
+
+import Mermaid from "../../components/Mermaid.jsx";
+
+En Chile la factura no existe hasta que el SII la acepta. Eso convierte la
+facturación electrónica en la pieza que no se puede tratar como un módulo más:
+si falla, no falla un informe, falla el cumplimiento tributario de la empresa.
+
+Esta integración pone ese ciclo completo **dentro de ERPNext**. No un portal
+aparte donde alguien vuelve a escribir lo que ya está en el ERP, ni un Excel de
+control entre los dos: el documento nace en ERPNext, se timbra y se envía al
+SII, y lo que el SII responde vuelve al mismo documento.
+
+---
+
+## El problema que resuelve
+
+La mayoría de las empresas chilenas viven una de estas dos situaciones, y las
+dos cuestan lo mismo:
+
+- **Un portal de facturación separado del ERP.** Se emite en un sitio y se
+  contabiliza en otro, así que alguien digita dos veces y alguien más cuadra las
+  diferencias a fin de mes.
+- **Las compras entran a mano.** Los XML de los proveedores llegan al correo o
+  se bajan del SII, y hay una persona clasificándolos, subiéndolos y
+  enlazándolos a su orden de compra, su centro de costo y su bodega.
+
+En los dos casos el ERP deja de ser la fuente de verdad: la verdad está
+repartida entre el portal, el correo y la carpeta compartida.
+
+---
+
+## Cómo funciona
+
+<Mermaid
+  code={`flowchart LR
+  A[Venta en ERPNext] --> B[Genera DTE y timbra con folio CAF]
+  B --> C[SII]
+  C --> D[Estado del envío y del DTE]
+  D --> A
+  C --> E[RCV y correo del proveedor]
+  E --> F[Clasifica el XML recibido]
+  F --> G[Factura de compra en ERPNext<br/>con OC, centro de costo y bodega]
+`}
+/>
+
+### Del lado de la venta
+
+- **Emite el DTE** desde el documento de ERPNext, con folios administrados
+  desde el propio sistema (CAF).
+- **Lo envía al SII** y **consulta el estado** del envío y del documento, sin
+  salir del ERP.
+- **Genera el PDF con timbre**, en formato carta y cedible.
+- **Boletas de honorarios emitidas**, además de las facturas.
+
+### Del lado de la compra
+
+- **Consulta el RCV** y trae lo que el SII ya sabe que te facturaron.
+- **Lee la casilla de correo** y clasifica los XML que llegan del proveedor,
+  distinguiendo tipos de documento sin intervención humana.
+- **Crea la factura de compra** enlazada a su orden de compra, centro de costo,
+  bodega o proyecto — que es la parte que de verdad ahorra trabajo, porque es
+  donde se pierde el tiempo cuando se hace a mano.
+- **Acepta o reclama** documentos y registra los eventos del SII.
+- **Boletas de honorarios recibidas** y libros.
+
+### Multiempresa desde el diseño
+
+Cada empresa del grupo tiene sus propias credenciales, sus folios y su
+configuración, y las sincronizaciones acotan su alcance a las empresas
+habilitadas. No es un sistema por empresa: es un sistema con varias empresas
+dentro, que es lo que se necesita cuando hay holding, filiales o sociedades por
+proyecto.
+
+---
+
+## Dónde está funcionando
+
+La parte de compras **corre en producción** en cuatro empresas de un grupo
+constructor, sincronizando el RCV y el correo a diario. La emisión de venta está
+**validada contra el ambiente de certificación del SII** y en despliegue.
+
+Un dato que dice más sobre el estado del código que cualquier adjetivo: el
+clasificador de correo se valida contra **120 XML reales del SII**, y el módulo
+tiene **132 tests unitarios** donde antes no había ninguno. Eso es lo que
+permite tocar la facturación de una empresa sin cruzar los dedos.
+
+---
+
+## Por qué no es solo para Chile
+
+La integración está partida en dos capas a propósito:
+
+- **Una capa de facturación electrónica**, que es la misma en cualquier país:
+  emitir, timbrar, enviar al organismo, consultar estado, recibir del proveedor,
+  conciliar contra el registro oficial.
+- **Una capa de localización**, que es la que sabe de SII, de DTE, de folios
+  CAF, de RCV y de los ambientes de certificación y producción.
+
+Cambiar de país significa cambiar la segunda capa, no reescribir el sistema. Es
+el mismo patrón con el que está montada la
+[integración bancaria](/integraciones/banco/) y la de
+[compras y licitaciones](/integraciones/sourcing/). Para España existe ya el
+[pack con Veri\*Factu](/services/pack-espana-verifactu/).
+
+---
+
+## ¿Tienes que resolver esto?
+
+Si hoy emites en un portal y contabilizas en otro sitio, o tienes a alguien
+metiendo XML a mano, esto se puede medir: cuántos documentos al mes, cuánto
+tarda el cierre, cuántas diferencias aparecen.
+
+**[Agenda una llamada de 15–20 minutos](/agendar/)** y lo revisamos con tus
+números. Si tu caso no encaja, te lo digo en la misma llamada.

@@ -4,13 +4,78 @@
   "redirects": [
     {
       "source": "/:path*",
-      "has": [{ "type": "host", "value": "www.antoniocanada.com" }],
+      "has": [
+        {
+          "type": "host",
+          "value": "www.antoniocanada.com"
+        }
+      ],
       "destination": "https://antoniocanada.com/:path*",
       "permanent": true
     },
     {
       "source": "/courses/bootcamp-erpnext-proxima-edicion-2025",
       "destination": "/courses/bootcamp-erpnext-edicion-2025/",
+      "permanent": true
+    },
+    {
+      "source": "/courses/bootcamp-erpnext-proxima-edicion-2025/",
+      "destination": "/courses/bootcamp-erpnext-edicion-2025/",
+      "permanent": true
+    },
+    {
+      "source": "/projects",
+      "destination": "/integraciones/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/",
+      "destination": "/integraciones/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/integracion-de-erpnext-con-el-sii-de-chile",
+      "destination": "/integraciones/sii-chile/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/integracion-de-erpnext-con-el-sii-de-chile/",
+      "destination": "/integraciones/sii-chile/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/erpnext-fintoc-conciliacion-bancaria-automatica",
+      "destination": "/integraciones/banco/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/erpnext-fintoc-conciliacion-bancaria-automatica/",
+      "destination": "/integraciones/banco/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/integracion-de-erpnext-con-wherex",
+      "destination": "/integraciones/sourcing/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/integracion-de-erpnext-con-wherex/",
+      "destination": "/integraciones/sourcing/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/chatbot-de-whatsapp-conectado-a-erpnext",
+      "destination": "/integraciones/mcp-ia/",
+      "permanent": true
+    },
+    {
+      "source": "/projects/chatbot-de-whatsapp-conectado-a-erpnext/",
+      "destination": "/integraciones/mcp-ia/",
+      "permanent": true
+    },
+    {
+      "source": "/rss-projects.xml",
+      "destination": "/rss-integraciones.xml",
       "permanent": true
     }
   ]

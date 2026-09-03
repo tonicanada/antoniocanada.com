@@ -14,7 +14,7 @@ const blogSchema = z.object({
   description: z.string(),
   publishDate: z.coerce.date(), // ← unificado
   updatedDate: z.coerce.date().optional(),
-  image: z.string().optional(), // ← para mantener consistencia con 'projects' y 'courses'
+  image: z.string().optional(), // ← para mantener consistencia con 'integraciones' y 'courses'
   badge: z.string().optional(),
   tags: uniqueTags.optional(),
 });
@@ -34,8 +34,8 @@ const storeSchema = z.object({
   image: z.string().optional(),
 });
 
-// 💼 Proyectos
-const projectSchema = z.object({
+// 🔌 Integraciones
+const integracionSchema = z.object({
   urlSlug: z.string().optional(), // fija la URL; ver src/lib/createSlug.ts
   title: z.string(),
   description: z.string(),
@@ -58,19 +58,19 @@ const courseSchema = z.object({
 
 export type BlogSchema = z.infer<typeof blogSchema>;
 export type StoreSchema = z.infer<typeof storeSchema>;
-export type ProjectSchema = z.infer<typeof projectSchema>;
+export type IntegracionSchema = z.infer<typeof integracionSchema>;
 export type CourseSchema = z.infer<typeof courseSchema>;
 
 const blogCollection = defineCollection({ schema: blogSchema });
 const storeCollection = defineCollection({ schema: storeSchema });
-const projectCollection = defineCollection({ schema: projectSchema });
+const integracionesCollection = defineCollection({ schema: integracionSchema });
 const courseCollection = defineCollection({ schema: courseSchema });
 const erpnextCollection = defineCollection({ schema: blogSchema });
 
 export const collections = {
   blog: blogCollection,
   store: storeCollection,
-  projects: projectCollection,
+  integraciones: integracionesCollection,
   courses: courseCollection,
   erpnext: erpnextCollection,
 };

@@ -7,10 +7,10 @@ import createSlug from "../../lib/createSlug";
 export async function getStaticPaths() {
   const blog = await getCollection("blog");
   const courses = await getCollection("courses");
-  const projects = await getCollection("projects");
+  const integraciones = await getCollection("integraciones");
   const erpnext = await getCollection("erpnext");
 
-  const all = [...blog, ...courses, ...projects, ...erpnext];
+  const all = [...blog, ...courses, ...integraciones, ...erpnext];
 
   const allTags = new Set(all.flatMap((item) => item.data.tags || []));
 
@@ -23,7 +23,7 @@ const { tag } = Astro.params;
 
 const sections = [
   { name: "Cursos", slug: "courses", entries: (await getCollection("courses")).filter((e) => e.data.tags?.includes(tag)) },
-  { name: "Proyectos", slug: "projects", entries: (await getCollection("projects")).filter((e) => e.data.tags?.includes(tag)) },
+  { name: "Integraciones", slug: "integraciones", entries: (await getCollection("integraciones")).filter((e) => e.data.tags?.includes(tag)) },
   { name: "Artículos del Blog", slug: "blog", entries: (await getCollection("blog")).filter((e) => e.data.tags?.includes(tag)) },
   { name: "Artículos sobre ERPNext", slug: "erpnext", entries: (await getCollection("erpnext")).filter((e) => e.data.tags?.includes(tag)) },
 ];
