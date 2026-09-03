@@ -1,149 +1,97 @@
 ---
+// Esta página reimplementaba a mano el <html>, el <head>, el navbar móvil y el
+// drawer completos, en paralelo a BaseLayout. El coste no era teórico: la home
+// —la URL que más se comparte del sitio— se quedó sin una sola etiqueta
+// Open Graph, porque esas viven en BaseHead y aquí nunca se importó. Al pasar
+// por BaseLayout las hereda, y además entra en ViewTransitions como el resto.
+//
+// El título y la descripción no cambian: BaseLayout ya usa SITE_TITLE y
+// SITE_DESCRIPTION como valores por defecto, que es exactamente lo que este
+// head declaraba a mano.
+import BaseLayout from "../layouts/BaseLayout.astro";
 import HeroSection from "../components/HeroSection.astro";
 import ReferencesSection from "../components/ReferencesSection.astro";
 import EsquemaFlujo from "../components/EsquemaFlujo.astro";
 import HomeContenido from "../components/HomeContenido.astro";
-import Sidebar from "../components/SideBar.astro";
-import RelativityBackground from "../components/RelativityBackground";
-import Footer from "../components/Footer.astro";
-import { SITE_DESCRIPTION, SITE_TITLE } from "../config";
-import GtmScripts from "../components/analytics/GtmScripts.astro";
-import GtmNoscript from "../components/analytics/GtmNoscript.astro";
-import TrackingInit from "../components/analytics/TrackingInit.astro";
-import CookieConsentBanner from "../components/CookieConsentBanner.astro";
+
+// Las secciones ponen su propio ancho y su propio padding, así que el <main>
+// sólo tiene que dejarlas correr de borde a borde.
+const mainClass = "w-full";
 ---
 
-<html lang="es" data-theme="lofi">
-  <head>
-    <GtmScripts />
-    <meta charset="UTF-8" />
-    <title>{SITE_TITLE}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content={SITE_DESCRIPTION} />
-    <meta name="robots" content="index,follow" />
-    <link rel="canonical" href="https://antoniocanada.com/" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <TrackingInit />
-    <CookieConsentBanner />
-  </head>
+<BaseLayout sideBarActiveItemID="home" mainClass={mainClass}>
+  <!-- Sin scroll-snap. Estaba puesto sólo en `lg:`, así que en móvil nunca
+       existió, y en desktop sujetaba menos de lo que parecía: al medirlas, tres
+       de las cuatro secciones ya son más altas que la ventana de un portátil,
+       de modo que el snap no alineaba pantallas — peleaba con el scroll interno
+       del contenido que no cabía.
+       Lo que costaba era real: el scroll ocurría en un contenedor con
+       `overflow-y-auto`, y el navegador sólo restaura la posición del documento.
+       Volver atrás desde el blog te dejaba arriba, y un enlace a /#casos desde
+       otra página no saltaba. Ahora el scroll es del documento y las dos cosas
+       funcionan. -->
 
-  <body class="relative min-h-screen bg-white text-gray-900">
-    <GtmNoscript />
-    <RelativityBackground client:load />
-
-    <div class="drawer lg:drawer-open">
-      <input id="my-drawer" type="checkbox" class="drawer-toggle" />
-
-      <!-- Contenido principal -->
-      <div class="drawer-content flex flex-col h-screen">
-
-        <!-- Navbar superior móvil (sin banner) -->
-        <div
-          class="sticky lg:hidden top-0 z-30 flex h-16 w-full justify-center bg-opacity-90 backdrop-blur transition-all duration-100 bg-base-100 text-base-content shadow-sm"
-        >
-          <div class="navbar">
-            <div class="navbar-start">
-              <label
-                for="my-drawer"
-                class="btn btn-square btn-ghost drawer-button"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  class="inline-block w-5 h-5 stroke-current"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M4 6h16M4 12h16M4 18h16"
-                  ></path>
-                </svg>
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <!-- Contenido principal -->
-        <main class="flex-1 overflow-y-auto scroll-smooth lg:snap-y lg:snap-mandatory">
-          <!-- Primera sección -->
-          <section
-            id="hero"
-            class="relative min-h-[calc(100dvh-4rem)] lg:min-h-screen flex items-center justify-center px-6 py-8 lg:py-0 lg:snap-start"
-          >
-            <HeroSection />
-            <div
-              id="scroll-indicator"
-              class="absolute inset-x-0 bottom-6 flex justify-center text-gray-500 animate-bounce text-2xl transition-opacity duration-500"
-            >
-              <a href="#contenido" aria-label="Desliza hacia abajo">↓</a>
-            </div>
-          </section>
-
-          <!-- Una sección por pantalla. `min-h-screen` y no `h-screen`: con
-               altura fija, el contenido que no cabe genera scroll interno que
-               pelea con el snap y deja huecos en blanco. Así el contenido corto
-               llena la pantalla y el largo crece sin romper nada. -->
-          <section
-            id="contenido"
-            class="px-6 py-12 lg:min-h-screen lg:flex lg:items-center lg:snap-start"
-          >
-            <div class="max-w-4xl mx-auto w-full">
-              <EsquemaFlujo />
-            </div>
-          </section>
-
-          <section
-            id="casos"
-            class="px-6 py-12 lg:min-h-screen lg:flex lg:items-center lg:snap-start"
-          >
-            <div class="max-w-4xl mx-auto w-full">
-              <ReferencesSection showCta={false} />
-            </div>
-          </section>
-
-          <!-- Última: el contenido centrado y el pie abajo, no flotando en
-               medio del hueco que sobra. -->
-          <section
-            id="decidir"
-            class="px-6 pt-12 lg:min-h-screen lg:flex lg:flex-col lg:snap-start"
-          >
-            <div class="lg:flex-1 lg:flex lg:items-center">
-              <div class="max-w-4xl mx-auto w-full">
-                <HomeContenido />
-              </div>
-            </div>
-            <Footer />
-          </section>
-        </main>
-      </div>
-
-      <!-- Sidebar dentro de drawer-side -->
-      <div class="drawer-side absolute top-0 bottom-0 h-screen z-40">
-        <label for="my-drawer" class="drawer-overlay"></label>
-        <Sidebar sideBarActiveItemID="home" />
-      </div>
+  <!-- El hero sí conserva la pantalla completa: es lo primero que se ve y
+       quieres que ocupe todo. En móvil descuenta los 4rem del navbar sticky. -->
+  <section
+    id="hero"
+    class="relative flex min-h-[calc(100dvh-4rem)] items-center justify-center px-6 py-8 lg:min-h-screen lg:py-0"
+  >
+    <HeroSection />
+    <div
+      id="scroll-indicator"
+      class="absolute inset-x-0 bottom-6 flex justify-center text-2xl text-gray-500 transition-opacity duration-500 animate-bounce motion-reduce:animate-none"
+    >
+      <a href="#contenido" aria-label="Desliza hacia abajo">↓</a>
     </div>
-  </body>
+  </section>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const indicator = document.getElementById("scroll-indicator");
-      const target = document.getElementById("contenido");
+  <!-- Las otras tres van con espaciado vertical fijo en vez de `min-h-screen`.
+       Con el alto atado a la ventana, el ritmo cambiaba según la pantalla:
+       en un portátil el contenido se pasaba de largo y en un monitor grande
+       sobraba aire. Un padding constante se lee igual en las dos. -->
+  <section id="contenido" class="px-6 py-20 lg:py-28">
+    <div class="mx-auto w-full max-w-4xl">
+      <EsquemaFlujo />
+    </div>
+  </section>
 
-      if (!indicator || !target) return;
+  <section id="casos" class="px-6 py-20 lg:py-28">
+    <div class="mx-auto w-full max-w-4xl">
+      <!-- `sectionClass=""` para no sumar el `py-16` propio del componente al
+           padding que ya pone la sección. -->
+      <ReferencesSection showCta={false} sectionClass="" />
+    </div>
+  </section>
 
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            indicator.style.opacity = entry.isIntersecting ? "0" : "1";
-          });
-        },
-        { threshold: 0.1 }
-      );
+  <section id="decidir" class="px-6 py-20 lg:py-28">
+    <div class="mx-auto w-full max-w-4xl">
+      <HomeContenido />
+    </div>
+  </section>
+</BaseLayout>
 
-      observer.observe(target);
-    });
-  </script>
-</html>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const indicator = document.getElementById("scroll-indicator");
+    const target = document.getElementById("contenido");
+
+    if (!indicator || !target) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const hidden = entry.isIntersecting;
+          indicator.style.opacity = hidden ? "0" : "1";
+          // Con sólo la opacidad a 0, la flecha seguía siendo clicable y
+          // enfocable con Tab estando invisible.
+          indicator.classList.toggle("pointer-events-none", hidden);
+          indicator.setAttribute("aria-hidden", String(hidden));
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(target);
+  });
+</script>

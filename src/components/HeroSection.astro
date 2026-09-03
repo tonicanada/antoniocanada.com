@@ -6,8 +6,13 @@ const agendarUrl =
 
 ---
 
-<section
-  class="relative w-full min-h-[90vh] flex items-center justify-center px-6 overflow-hidden"
+<!-- Sin `min-h-[90vh]` ni `<section>` propia: la sección #hero de la home ya
+     fija la altura (100dvh menos el navbar) y la centra. Tener las dos alturas
+     daba 190vh de mínimo combinado; con el scroll-snap no se notaba, sin él
+     asomaba como un hueco bajo el hero. Y una <section> dentro de otra sin
+     nombre accesible no aporta nada al árbol del documento. -->
+<div
+  class="relative w-full flex items-center justify-center px-6 overflow-hidden"
 >
   <div class="relative z-10 w-full max-w-3xl mx-auto px-2 sm:px-4">
     <p
@@ -74,4 +79,4 @@ const agendarUrl =
       >
     </p>
   </div>
-</section>
+</div>
