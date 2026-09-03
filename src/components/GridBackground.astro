@@ -1,0 +1,40 @@
+---
+// Sustituye a RelativityBackground.tsx, que traía three.js entero (456 KB de JS)
+// y un requestAnimationFrame en bucle a todas las páginas para dibujar una malla
+// wireframe gris #dddddd a opacity 0.15 — imperceptible en la práctica.
+//
+// Esto hace lo mismo con dos repeating-linear-gradient y 0 KB de JavaScript.
+// La retícula es estática a propósito: la del original giraba a 0,0005 rad/frame,
+// una velocidad que no se percibe pero que mantenía la GPU despierta y no
+// respetaba prefers-reduced-motion.
+//
+// El motivo se queda porque encaja con el tema: la retícula de un plano técnico,
+// no un degradado decorativo. Por eso el paso es de 64 px (módulo, no textura) y
+// el contraste es mínimo — tiene que leerse como papel, no como fondo de pantalla.
+---
+
+<div class="grid-background" aria-hidden="true"></div>
+
+<style>
+  .grid-background {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+      repeating-linear-gradient(
+        to right,
+        rgb(0 0 0 / 3.5%) 0 1px,
+        transparent 1px 64px
+      ),
+      repeating-linear-gradient(
+        to bottom,
+        rgb(0 0 0 / 3.5%) 0 1px,
+        transparent 1px 64px
+      );
+    /* La retícula se desvanece hacia abajo para que el contenido de las últimas
+       secciones no compita con ella. */
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 45%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 0%, #000 45%, transparent 100%);
+  }
+</style>

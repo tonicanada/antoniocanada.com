@@ -3,7 +3,7 @@ import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import SideBar from "../components/SideBar.astro";
-import RelativityBackground from "../components/RelativityBackground";
+import GridBackground from "../components/GridBackground.astro";
 import { ViewTransitions } from "astro:transitions";
 import GtmScripts from "../components/analytics/GtmScripts.astro";
 import GtmNoscript from "../components/analytics/GtmNoscript.astro";
@@ -21,7 +21,7 @@ const {
   ogType,
   robots,
   backgroundUrl,
-  enableRelativityBackground = true,
+  enableGridBackground = true,
   backgroundClasses = "brightness-[0.4]",
   mainClass = "w-full px-4 py-10 max-w-[900px] mx-auto [&_ul>li]:leading-tight",
   contentClass = "bg-transparent",
@@ -47,7 +47,7 @@ const {
   </head>
   <body class="min-h-screen bg-white text-gray-900">
     <GtmNoscript />
-    {enableRelativityBackground && <RelativityBackground client:load />}
+    {enableGridBackground && <GridBackground />}
 
     <!-- 🔽 BACKGROUND (video o imagen) -->
     <slot name="background" />
