@@ -77,6 +77,36 @@
       "source": "/rss-projects.xml",
       "destination": "/rss-integraciones.xml",
       "permanent": true
+    },
+    {
+      "source": "/services/asesoria-inicial",
+      "destination": "/services/consulta-inicial/",
+      "permanent": true
+    },
+    {
+      "source": "/services/asesoria-inicial/",
+      "destination": "/services/consulta-inicial/",
+      "permanent": true
+    },
+    {
+      "source": "/services/implementacion-erpnext",
+      "destination": "/services/migracion-erpnext/",
+      "permanent": true
+    },
+    {
+      "source": "/services/implementacion-erpnext/",
+      "destination": "/services/migracion-erpnext/",
+      "permanent": true
+    },
+    {
+      "source": "/services/automatizacion-erpnext",
+      "destination": "/services/desarrollo-integraciones/",
+      "permanent": true
+    },
+    {
+      "source": "/services/automatizacion-erpnext/",
+      "destination": "/services/desarrollo-integraciones/",
+      "permanent": true
     }
   ]
 }

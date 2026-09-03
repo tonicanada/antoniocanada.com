@@ -1,68 +1,150 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import ProductCard from "../components/ProductCard.astro";
+import { componentes, comoSeCobra } from "../data/servicios";
+
+// Titular reservado para esta página en el plan: el visitante que llega aquí ya
+// decidió que quiere cambiar de sistema y viene a saber alcance y precio.
 ---
 
-<BaseLayout sideBarActiveItemID="services">
+<BaseLayout
+  title="Servicios: implantar ERPNext y mantenerlo"
+  description="Migración a ERPNext, hosting con soporte y actualizaciones, desarrollo e integraciones a medida, y capacitación técnica. Con el detalle de cómo se cobra cada parte."
+  sideBarActiveItemID="services"
+>
   <div class="pb-12 mt-5">
-    <h1 class="text-4xl font-bold mb-6">Servicios profesionales</h1>
-
-    <p class="text-lg mb-8">
-      Explora los servicios disponibles. Si estás empezando o tienes dudas,
-      agenda una
-      <strong>consulta inicial gratuita</strong>: revisamos tu caso y te
-      propongo una ruta concreta (implementación, automatización, integraciones
-      o formación) según tus objetivos.
+    <p class="text-sm font-semibold uppercase tracking-[0.2em] text-gray-500">
+      Servicios
+    </p>
+    <h1 class="mt-2 text-3xl sm:text-4xl font-semibold text-gray-900">
+      Cerrar el mes no debería llevar tres semanas
+    </h1>
+    <p class="mt-4 max-w-2xl text-lg text-gray-600">
+      Cuatro cosas hago, y en este orden: llevo tu operación a un solo sistema,
+      lo mantengo funcionando, lo extiendo cuando tu negocio lo pide, y formo a
+      quien lo va a usar. Todo empieza por una llamada sin coste.
     </p>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
       <ProductCard
-        title="Consulta inicial"
-        description="Primera reunión para entender tu caso, resolver dudas y proponerte el mejor siguiente paso según tu situación (ERPNext, automatización, integraciones, formación o migración desde otro sistema)."
-        price="Gratis"
-        img="/assets/images/services/servicio1.webp"
-        slug="services/consulta-inicial"
-      />
-
-      <ProductCard
-        title="Estudio de procesos + Blueprint ERP (por sector)"
-        description="Estudio personalizado de procesos y necesidades de tu empresa. Incluye entregable: blueprint/roadmap con módulos, automatizaciones y plan por fases. Recomendado tras la consulta inicial."
-        price="300 €"
-        img="/assets/images/services/servicio2.webp"
-        slug="services/diagnostico-procesos"
-      />
-
-      <ProductCard
-        title="Pack España: ERPNext + Contabilidad + Veri*Factu"
-        description="ERPNext listo para España: plan contable e impuestos + emisión con Veri*Factu y PDF con QR validable. Implementación y acompañamiento."
-        price="A medida"
-        img="/assets/images/services/servicio6.webp"
-        slug="services/pack-espana-verifactu"
-      />
-
-      <ProductCard
-        title="Implementación ERPNext"
-        description="Instalación, configuración inicial y capacitación adaptada a tu empresa. Desde cero y con acompañamiento."
-        price="A medida"
+        title="Migración a ERPNext"
+        description="De varios sistemas —o de uno de escritorio— a un solo ERP con tu contabilidad, tu inventario, tus obras y tu gente dentro. Incluye el estudio de procesos, la puesta en marcha, la localización fiscal de tu país y la migración de datos."
+        price="Por componentes"
         img="/assets/images/services/servicio3.webp"
-        slug="services/implementacion-erpnext"
+        slug="services/migracion-erpnext"
       />
 
       <ProductCard
-        title="Automatización y personalización ERPNext"
-        description="Creamos módulos a medida, automatizamos tareas repetitivas y conectamos ERPNext con tus otras herramientas. Ideal si ya usas ERPNext y quieres ir más allá."
-        price="A medida"
+        title="Hosting, soporte y actualizaciones"
+        description="El sistema alojado en nuestros servidores, con respaldos, monitoreo, actualizaciones de versión y alguien a quien llamar cuando algo se rompe. Es la parte que hace que la implantación siga sirviendo en tres años."
+        price="Cuota mensual"
+        img="/assets/images/services/servicio1_.webp"
+        slug="services/hosting-soporte"
+      />
+
+      <ProductCard
+        title="Desarrollo e integraciones a medida"
+        description="Conectar ERPNext con lo que uses, automatizar lo repetitivo y construir los módulos que tu operación necesita y que ningún ERP estándar trae. Para quien ya tiene ERPNext o acaba de migrar."
+        price="Precio fijo por integración"
         img="/assets/images/services/servicio4.webp"
-        slug="services/automatizacion-erpnext"
+        slug="services/desarrollo-integraciones"
       />
 
       <ProductCard
-        title="Capacitación técnica en ERPNext y desarrollo"
-        description="Formación 1:1 o grupal en Frappe, personalización de ERPNext, programación de módulos, y otras herramientas técnicas relacionadas. Ideal para desarrolladores o equipos técnicos que quieran especializarse."
-        price="A medida"
+        title="Capacitación técnica"
+        description="Formación en Frappe y ERPNext para desarrolladores y equipos técnicos que van a mantener y extender el sistema. 1:1 o en grupo."
+        price="Por bloques de horas"
         img="/assets/images/services/servicio5.webp"
         slug="services/capacitacion-tecnica-erpnext"
       />
     </div>
+
+    <!-- Lo que antes decía "A medida" en casi todas las tarjetas. Publicar la
+         composición permite al visitante sumar su caso y saber si está en su
+         orden de magnitud, sin anclar el proyecto a una cifra. -->
+    <section class="mt-16" aria-labelledby="composicion">
+      <h2 id="composicion" class="text-2xl font-semibold text-gray-900">
+        De qué está compuesto un proyecto
+      </h2>
+      <p class="mt-3 max-w-2xl text-base text-gray-600">
+        Un proyecto no es un precio único: son estas piezas, y no todas hacen
+        falta en todos los casos. Lo predecible va a precio fijo. Sólo una línea
+        va por presupuesto, y abajo está explicado por qué.
+      </p>
+
+      <div class="mt-6 overflow-x-auto">
+        <table class="w-full min-w-[38rem] border-collapse text-left text-sm">
+          <thead>
+            <tr class="border-b border-gray-400">
+              <th scope="col" class="py-3 pr-4 font-semibold text-gray-900">
+                Componente
+              </th>
+              <th scope="col" class="py-3 pr-4 font-semibold text-gray-900">
+                Qué incluye
+              </th>
+              <th scope="col" class="py-3 font-semibold text-gray-900 whitespace-nowrap">
+                Cómo se cobra
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              componentes.map((c) => (
+                <tr class="border-b border-gray-200 align-top">
+                  <th scope="row" class="py-3 pr-4 font-semibold text-gray-900">
+                    {c.nombre}
+                  </th>
+                  <td class="py-3 pr-4 text-gray-600">{c.queEs}</td>
+                  <td class="py-3 text-gray-700 whitespace-nowrap">
+                    {comoSeCobra(c)}
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+
+      {
+        componentes
+          .filter((c) => c.porQueVaria)
+          .map((c) => (
+            <p class="mt-6 max-w-2xl text-sm text-gray-600">
+              <strong class="font-semibold text-gray-800">
+                Por qué {c.nombre.toLowerCase()} va por presupuesto:
+              </strong>{" "}
+              {c.porQueVaria}
+            </p>
+          ))
+      }
+    </section>
+
+    <section
+      class="mt-14 rounded-lg border border-gray-300 bg-white/70 p-6 backdrop-blur-sm"
+    >
+      <h2 class="text-xl font-semibold text-gray-900">
+        Empieza por la llamada
+      </h2>
+      <p class="mt-2 max-w-2xl text-base text-gray-600">
+        15–20 minutos, sin coste: qué sistemas usas hoy, qué se puede unificar y
+        qué no, y qué componentes de los de arriba necesita tu caso. Sales de la
+        llamada con una ruta y un orden de magnitud. Si no encaja, te lo digo
+        ahí mismo.
+      </p>
+      <div class="mt-5">
+        <a
+          href="/services/consulta-inicial/"
+          data-ev="service_cta_click"
+          data-ev-params={JSON.stringify({
+            service_name: "consulta-inicial",
+            cta_text: "Agendar la consulta inicial",
+            cta_location: "services_cierre",
+          })}
+          class="inline-block rounded-md bg-black px-5 py-3 text-sm font-semibold text-white transition hover:bg-gray-900 sm:text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+        >
+          Agendar la consulta inicial
+        </a>
+      </div>
+    </section>
   </div>
 </BaseLayout>

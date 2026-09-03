@@ -17,9 +17,21 @@ import HomeContenido from "../components/HomeContenido.astro";
 // Las secciones ponen su propio ancho y su propio padding, así que el <main>
 // sólo tiene que dejarlas correr de borde a borde.
 const mainClass = "w-full";
+
+// `proximity`, no `mandatory`: alinea la sección cuando ya vas llegando a su
+// borde, pero si paras a media altura para leer te deja ahí. El snap anterior
+// era `mandatory` y además vivía en un contenedor con `overflow-y-auto`, que es
+// lo que rompía el botón atrás y los anclajes entre páginas; aquí va sobre el
+// documento, así que no reintroduce ninguna de las dos cosas.
+//
+// `scroll-pt-16` descuenta el navbar sticky de 4rem que hay en móvil: sin él la
+// cabecera de cada sección aterrizaba por debajo de la barra, tanto al hacer
+// snap como al clicar la flecha. En `lg` la barra no existe y el descuento se
+// anula.
+const htmlClass = "snap-y snap-proximity scroll-pt-16 lg:scroll-pt-0";
 ---
 
-<BaseLayout sideBarActiveItemID="home" mainClass={mainClass}>
+<BaseLayout sideBarActiveItemID="home" mainClass={mainClass} htmlClass={htmlClass}>
   <!-- Sin scroll-snap. Estaba puesto sólo en `lg:`, así que en móvil nunca
        existió, y en desktop sujetaba menos de lo que parecía: al medirlas, tres
        de las cuatro secciones ya son más altas que la ventana de un portátil,
@@ -35,7 +47,7 @@ const mainClass = "w-full";
        quieres que ocupe todo. En móvil descuenta los 4rem del navbar sticky. -->
   <section
     id="hero"
-    class="relative flex min-h-[calc(100dvh-4rem)] items-center justify-center px-6 py-8 lg:min-h-screen lg:py-0"
+    class="relative flex min-h-[calc(100dvh-4rem)] snap-start items-center justify-center px-6 py-8 lg:min-h-screen lg:py-0"
   >
     <HeroSection />
     <div
@@ -50,13 +62,13 @@ const mainClass = "w-full";
        Con el alto atado a la ventana, el ritmo cambiaba según la pantalla:
        en un portátil el contenido se pasaba de largo y en un monitor grande
        sobraba aire. Un padding constante se lee igual en las dos. -->
-  <section id="contenido" class="px-6 py-16 lg:py-24">
+  <section id="contenido" class="snap-start px-6 py-16 lg:py-24">
     <div class="mx-auto w-full max-w-4xl">
       <EsquemaFlujo />
     </div>
   </section>
 
-  <section id="casos" class="px-6 py-16 lg:py-24">
+  <section id="casos" class="snap-start px-6 py-16 lg:py-24">
     <div class="mx-auto w-full max-w-4xl">
       <!-- `sectionClass=""` para no sumar el `py-16` propio del componente al
            padding que ya pone la sección. -->
@@ -64,6 +76,11 @@ const mainClass = "w-full";
     </div>
   </section>
 
+  <!-- Sin `snap-start` a propósito: es la última sección, mide más de una
+       pantalla y detrás va el pie. Su punto de snap cae a sólo ~200 px del
+       final del scroll, así que alinearla pelearía con llegar al pie —el bug
+       clásico de "no puedo bajar del todo". El final de la página se deja
+       libre. -->
   <section id="decidir" class="px-6 py-16 lg:py-24">
     <div class="mx-auto w-full max-w-4xl">
       <HomeContenido />

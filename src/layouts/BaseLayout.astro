@@ -26,11 +26,15 @@ const {
   mainClass = "w-full px-4 py-10 max-w-[900px] mx-auto [&_ul>li]:leading-tight",
   contentClass = "bg-transparent",
   shellClass = "bg-transparent",
+  // El <html> es el contenedor de scroll, así que las utilidades que actúan
+  // sobre él —scroll-snap, scroll-padding— tienen que aterrizar aquí y no en un
+  // envoltorio interior. Sólo la home lo usa por ahora.
+  htmlClass = "",
 } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="es" data-theme="lofi">
+<html lang="es" data-theme="lofi" class={htmlClass || undefined}>
   <head>
     <GtmScripts />
     <BaseHead

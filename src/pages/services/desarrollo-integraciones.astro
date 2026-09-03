@@ -1,0 +1,92 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ServiceLeadForm from "../../components/ServiceLeadForm.astro";
+---
+
+<BaseLayout
+  title="Desarrollo e integraciones a medida sobre ERPNext"
+  description="Conectar ERPNext con lo que uses, automatizar lo repetitivo y construir los módulos que tu operación necesita y ningún ERP estándar trae."
+  enableGridBackground={false}
+>
+  <div class="max-w-3xl mx-auto py-10 px-4">
+    <p class="text-sm font-semibold uppercase tracking-[0.2em] text-gray-500">
+      Servicio
+    </p>
+    <h1 class="mt-2 text-3xl sm:text-4xl font-semibold text-gray-900">
+      Desarrollo e integraciones a medida
+    </h1>
+
+    <p class="mt-4 text-lg text-gray-700">
+      Para quien ya tiene ERPNext o acaba de migrar: conectarlo con las
+      herramientas que usa, automatizar lo que hoy hace alguien a mano, y
+      construir lo que su operación necesita y ningún ERP estándar trae de
+      fábrica.
+    </p>
+
+    <h2 class="mt-10 text-2xl font-semibold text-gray-900">Integraciones</h2>
+    <p class="mt-3 text-gray-700">
+      Estas están construidas y documentadas, con precio fijo por integración:
+    </p>
+    <ul class="mt-4 list-disc space-y-2 pl-6 text-gray-700">
+      <li>
+        <a href="/integraciones/sii-chile/" class="underline underline-offset-2"
+          >Facturación electrónica</a
+        > — emisión y recepción contra el organismo fiscal.
+      </li>
+      <li>
+        <a href="/integraciones/banco/" class="underline underline-offset-2">Banco</a>
+        — los movimientos entran solos y la conciliación es asistida.
+      </li>
+      <li>
+        <a href="/integraciones/sourcing/" class="underline underline-offset-2"
+          >Compras y licitaciones</a
+        > — del requerimiento a la orden de compra, sin pasos manuales.
+      </li>
+      <li>
+        <a href="/integraciones/mcp-ia/" class="underline underline-offset-2"
+          >IA por MCP</a
+        > — consultar y operar el ERP en lenguaje natural, y WhatsApp o Telegram
+        hacia fuera.
+      </li>
+    </ul>
+    <p class="mt-4 text-gray-700">
+      Y las que no están en esa lista: el criterio es simple, si la herramienta
+      tiene API se conecta. Si no la tiene hay que mirarlo, y a veces la
+      respuesta honesta es que no se puede — en ese caso te lo digo antes de
+      cobrarte nada.
+    </p>
+
+    <h2 class="mt-10 text-2xl font-semibold text-gray-900">
+      Desarrollo a medida
+    </h2>
+    <p class="mt-3 text-gray-700">
+      ERPNext es software libre, así que se puede extender de verdad y no solo
+      configurar: módulos nuevos, campos y flujos propios, informes que hoy
+      alguien arma en Excel, automatizaciones que corren solas y validaciones
+      que impiden el error en vez de detectarlo después.
+    </p>
+    <p class="mt-3 text-gray-700">
+      Ejemplos de lo que suele pedirse en construcción, que es el sector que
+      conozco mejor: reportes financieros por obra, control de subcontratos,
+      permisos por perfil, cajas chicas, control de provisiones, activos fijos
+      con depreciación y ubicación, y asignación de remuneraciones a su centro
+      de costo.
+    </p>
+    <p class="mt-3 text-gray-700">
+      Y una ventaja que no es obvia: por ser abierto, la IA puede leer el código
+      que produce cada informe. Eso hace que trabajar sobre este sistema sea
+      mucho más rápido que sobre uno cerrado —
+      <a href="/integraciones/mcp-ia/" class="underline underline-offset-2"
+        >aquí está el detalle</a
+      >.
+    </p>
+
+    <div class="mt-12">
+      <ServiceLeadForm
+        servicio="desarrollo-integraciones"
+        heading="¿Qué necesitas conectar o construir?"
+        subheading="Déjame tus datos y qué herramienta o proceso tienes en mente."
+      />
+    </div>
+  </div>
+</BaseLayout>
