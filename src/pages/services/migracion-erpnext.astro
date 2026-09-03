@@ -1,14 +1,18 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import ServiceLeadForm from "../../components/ServiceLeadForm.astro";
-import { componentes, comoSeCobra } from "../../data/servicios";
+import TablaComponentes from "../../components/TablaComponentes.astro";
 
 // Sustituye a implementacion-erpnext, que era una página de 24 líneas con cuatro
 // viñetas genéricas ("flujos a medida", "capacitación a usuarios"). Esta es la
 // oferta núcleo del negocio y necesita decir a quién sirve, en qué orden se hace
 // y qué se cobra.
-const enMigracion = ["Estudio de procesos y blueprint", "Puesta en marcha de ERPNext", "Localización fiscal", "Migración de datos"];
-const piezas = componentes.filter((c) => enMigracion.includes(c.nombre));
+const piezas = [
+  "Estudio de procesos y blueprint",
+  "Puesta en marcha de ERPNext",
+  "Localización fiscal",
+  "Migración de datos",
+];
 ---
 
 <BaseLayout
@@ -96,23 +100,8 @@ const piezas = componentes.filter((c) => enMigracion.includes(c.nombre));
     <h2 class="mt-10 text-2xl font-semibold text-gray-900">
       Qué se cobra en esta parte
     </h2>
-    <div class="mt-4 overflow-x-auto">
-      <table class="w-full min-w-[32rem] border-collapse text-left text-sm">
-        <tbody>
-          {
-            piezas.map((c) => (
-              <tr class="border-b border-gray-200 align-top">
-                <th scope="row" class="py-3 pr-4 font-semibold text-gray-900">
-                  {c.nombre}
-                </th>
-                <td class="py-3 text-gray-700 whitespace-nowrap">
-                  {comoSeCobra(c)}
-                </td>
-              </tr>
-            ))
-          }
-        </tbody>
-      </table>
+    <div class="mt-4">
+      <TablaComponentes soloEstos={piezas} mostrarPorQueVaria={false} />
     </div>
     <p class="mt-4 text-sm text-gray-600">
       El desglose completo, incluidas las integraciones y la cuota mensual, está

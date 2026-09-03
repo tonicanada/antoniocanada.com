@@ -727,3 +727,69 @@ página de hosting dice "nuestros servidores". **La web mezcla las dos voces
 hoy.** Es una decisión de marca, no de estilo —con Bizmotion en marcha,
 "nosotros" puede ser lo correcto— pero hay que elegir una y pasarla por todo el
 sitio de una vez.
+
+---
+
+# Precios por país
+
+Los importes viven en las páginas de país, no en `/services`. El motivo no es
+sólo la moneda:
+
+**El contenido del componente cambia, no sólo el precio.** "Localización
+fiscal" en Chile es SII, DTE, folios CAF y RCV; en España es plan contable y
+Veri*Factu. Son trabajos distintos, no el mismo trabajo a otro precio. Y
+algunas integraciones existen sólo en un país (Fintoc, Wherex). Si sólo se
+cambiara la moneda, la página de España acabaría diciendo "SII, DTE, folios,
+RCV" en euros.
+
+**Separar por país elimina la comparación lado a lado.** Si un visitante puede
+ver la tabla de Chile junto a la de España, la diferencia de precio por el
+mismo componente exige una explicación, y la real (mercados y poder de compra
+distintos) es honesta pero incómoda escrita al lado. Es lo que hace cualquiera
+con precios regionales, siempre que no se presenten juntos.
+
+**`/services` conserva la tabla sin importes**, con la columna "cómo se cobra"
+(fijo, mensual, por presupuesto) y una salida visible a Chile y España. Así
+sigue sirviendo a quien está en México, Perú o Bolivia, donde ninguna de las dos
+monedas aplica. Los 300 € del blueprint salieron de ahí: eran el único importe
+de la página y en moneda extranjera para un lector chileno.
+
+## Cómo rellenar los números
+
+Todo está en `src/data/servicios.ts`, en `componentes[].paises.{cl,es}`. Poner
+`precio` en la moneda del país y sin decimales; la tabla lo formatea y aparece
+solo en las tres páginas que la usan. Mientras no haya importe se muestra sólo
+el modo de cobro — no se ponen cifras de relleno.
+
+Tres criterios al fijarlos:
+
+1. **Lo idéntico entre países es la estructura, no el importe.** Mismos
+   componentes y mismos modos de cobro. Si en Chile la migración va por
+   presupuesto y en España a precio fijo, eso sí es incoherente.
+2. **No convertir con el tipo de cambio, fijar por mercado** — pero cuidando
+   las proporciones entre componentes: si el hosting anual es el 10% del
+   proyecto en un país y el 40% en el otro, el cliente que compare su
+   presupuesto con la tabla lo va a notar.
+3. **Redondear a cifras memorables en cada moneda**: 1.500.000 CLP, no lo que
+   salga de convertir euros.
+
+## Las dos landings
+
+- **`/chile`** — ataca "erpnext chile" (posición 4,9 con 25 impresiones en
+  Search Console, la única consulta con intención comercial que ya posiciona).
+  SII en los dos sentidos, contabilidad chilena, banco, licitaciones, UF y
+  multiempresa, remuneraciones por centro de costo. Y la sección de
+  construcción con lo que ningún ERP estándar trae.
+- **`/espana`** — Veri*Factu, contabilidad española, banco, IA por MCP. Dice
+  explícitamente que España está en otro momento que Chile: dos demostraciones
+  grabadas y un programa de primeras implantaciones, no cuatro empresas en
+  producción.
+
+Cuidado con lo que se afirma en `/chile`: el F29, Previred y la UF se mencionan
+como lo que son —cosas que la configuración contempla— y **no** como
+integraciones automáticas, porque no lo son. Lo que sí está construido y
+corriendo es la conexión con el SII.
+
+**No entran en el menú principal**, que ya tiene nueve entradas. Se llega desde
+`/services`, desde la página de hosting y desde la otra landing de país; el
+tráfico que importa va a llegar por buscador.

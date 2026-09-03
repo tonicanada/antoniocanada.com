@@ -1,0 +1,142 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import TablaComponentes from "../components/TablaComponentes.astro";
+import ServiceLeadForm from "../components/ServiceLeadForm.astro";
+import { paises } from "../data/servicios";
+
+// Landing de intención local. Según Search Console, "erpnext chile" está en
+// posición 4,9 con 25 impresiones: es la única consulta con intención comercial
+// que ya posiciona, y hoy la respondía una home genérica.
+//
+// Cuidado con lo que se afirma: la conexión con el SII está construida y
+// corriendo (compras en producción, emisión validada en certificación). El F29,
+// Previred y la UF se mencionan como lo que son —cosas que la configuración
+// contempla— y no como integraciones automáticas, porque no lo son.
+const pais = paises.cl;
+---
+
+<BaseLayout
+  title="ERPNext en Chile: SII, DTE y contabilidad chilena"
+  description="Implantación de ERPNext en Chile con la conexión al SII funcionando: emisión y recepción de DTE, folios CAF, RCV, plan de cuentas chileno y conciliación bancaria. Precios en pesos."
+  sideBarActiveItemID="services"
+>
+  <div class="pb-12 mt-5">
+    <p class="text-sm font-semibold uppercase tracking-[0.2em] text-gray-500">
+      Chile
+    </p>
+    <h1 class="mt-2 text-3xl sm:text-4xl font-semibold text-gray-900">
+      ERPNext en Chile, con el SII funcionando de verdad
+    </h1>
+    <p class="mt-4 max-w-2xl text-lg text-gray-600">
+      Un ERP internacional que no sabe de DTE, de folios CAF ni del RCV te deja
+      a medias: acabas con un portal de facturación aparte y alguien cuadrando
+      las diferencias. Aquí la facturación electrónica no es un añadido, es
+      parte del sistema.
+    </p>
+
+    <section class="mt-12" aria-labelledby="que-esta-resuelto">
+      <h2 id="que-esta-resuelto" class="text-2xl font-semibold text-gray-900">
+        Qué está resuelto para Chile
+      </h2>
+
+      <ul class="mt-4 space-y-3 text-gray-700">
+        <li>
+          <strong class="font-semibold text-gray-900">SII, en los dos sentidos.</strong>
+          Emisión de DTE con folios CAF administrados desde el sistema, envío,
+          consulta de estado y PDF con timbre en carta y cedible. Y del lado de
+          la compra: RCV, lectura de la casilla de correo, clasificación de los
+          XML, aceptación o reclamo, y boletas de honorarios.
+          <a href="/integraciones/sii-chile/" class="underline underline-offset-2"
+            >Cómo funciona</a
+          >.
+        </li>
+        <li>
+          <strong class="font-semibold text-gray-900">Contabilidad chilena.</strong>
+          Plan de cuentas y configuración de impuestos pensada para el F29, con
+          los centros de costo que tu operación necesite.
+        </li>
+        <li>
+          <strong class="font-semibold text-gray-900">Banco.</strong>
+          Los movimientos entran solos y la conciliación es asistida, sin bajar
+          cartolas ni subir archivos.
+          <a href="/integraciones/banco/" class="underline underline-offset-2"
+            >Cómo funciona</a
+          >.
+        </li>
+        <li>
+          <strong class="font-semibold text-gray-900">Licitaciones y compras.</strong>
+          El requerimiento nace en ERPNext, se licita, y la adjudicación vuelve
+          convertida en orden de compra.
+          <a href="/integraciones/sourcing/" class="underline underline-offset-2"
+            >Cómo funciona</a
+          >.
+        </li>
+        <li>
+          <strong class="font-semibold text-gray-900">UF, monedas y multiempresa.</strong>
+          Contratos y documentos en UF, y varias sociedades en una sola
+          instalación, cada una con sus credenciales y su numeración.
+        </li>
+        <li>
+          <strong class="font-semibold text-gray-900">Remuneraciones.</strong>
+          Sueldos asignados a su centro de costo, que es lo que hace que el
+          resultado por obra sea real y no una estimación.
+        </li>
+      </ul>
+
+      <p class="mt-6 max-w-2xl text-base text-gray-600">
+        La parte de compras <strong class="font-semibold text-gray-800"
+          >corre en producción</strong
+        > en cuatro empresas de un grupo constructor, sincronizando el RCV y el
+        correo a diario. La emisión de venta está validada contra el ambiente de
+        certificación del SII y en despliegue.
+      </p>
+    </section>
+
+    <section class="mt-14" aria-labelledby="construccion">
+      <h2 id="construccion" class="text-2xl font-semibold text-gray-900">
+        Construcción, en concreto
+      </h2>
+      <p class="mt-3 max-w-2xl text-base text-gray-600">
+        Es el sector que conozco mejor, porque llevo años dentro de una
+        constructora chilena y no leyéndolo en un folleto. Lo que suele hacer
+        falta y ningún ERP estándar trae de fábrica: reportes financieros por
+        obra, control de subcontratos, permisos por perfil —bodeguero, contador,
+        jefe de obra, administrador de contrato—, cajas chicas, control de
+        provisiones, y activos fijos con su depreciación y su ubicación.
+      </p>
+      <p class="mt-3 max-w-2xl text-base text-gray-600">
+        También he trabajado con empresas de maquinaria (control de leasings),
+        inmobiliarias y oficinas de arquitectura (ingreso de horas por proyecto).
+      </p>
+    </section>
+
+    <section class="mt-14" aria-labelledby="precios-cl">
+      <h2 id="precios-cl" class="text-2xl font-semibold text-gray-900">
+        Precios en Chile
+      </h2>
+      <p class="mt-3 max-w-2xl text-base text-gray-600">
+        Un proyecto no es un precio único: son estas piezas, y no todas hacen
+        falta en todos los casos. Importes en pesos chilenos. Lo predecible va a
+        precio fijo; sólo una línea va por presupuesto, y abajo está explicado
+        por qué.
+      </p>
+      <div class="mt-6">
+        <TablaComponentes pais={pais} />
+      </div>
+    </section>
+
+    <div class="mt-14">
+      <ServiceLeadForm
+        servicio="chile"
+        heading="Hablemos de tu empresa en Chile"
+        subheading="Déjame tus datos y qué sistemas usas hoy; luego podrás elegir un horario en mi agenda."
+      />
+    </div>
+
+    <p class="mt-10 text-sm text-gray-600">
+      ¿En España? Hay una
+      <a href="/espana/" class="underline underline-offset-2">página para España</a>
+      con Veri*Factu y precios en euros.
+    </p>
+  </div>
+</BaseLayout>

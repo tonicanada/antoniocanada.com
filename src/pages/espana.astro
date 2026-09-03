@@ -1,0 +1,116 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import TablaComponentes from "../components/TablaComponentes.astro";
+import ServiceLeadForm from "../components/ServiceLeadForm.astro";
+import { paises } from "../data/servicios";
+
+// Landing de intención local para España. El vídeo de Veri*Factu tiene 58
+// vistas al mes y su enlace con UTM apunta al pack; esta página es el destino
+// natural cuando el visitante busca por su cuenta.
+//
+// España está en un momento distinto que Chile y la página lo dice: aquí hay
+// dos demostraciones completas grabadas y un programa de primeras
+// implantaciones, no cuatro empresas en producción. No se infla.
+const pais = paises.es;
+---
+
+<BaseLayout
+  title="ERPNext en España: Veri*Factu y contabilidad española"
+  description="Implantación de ERPNext en España con emisión Veri*Factu validada ante Hacienda, PDF con QR, facturas rectificativas y plan contable español. Precios en euros."
+  sideBarActiveItemID="services"
+>
+  <div class="pb-12 mt-5">
+    <p class="text-sm font-semibold uppercase tracking-[0.2em] text-gray-500">
+      España
+    </p>
+    <h1 class="mt-2 text-3xl sm:text-4xl font-semibold text-gray-900">
+      ERPNext en España, con Veri*Factu resuelto
+    </h1>
+    <p class="mt-4 max-w-2xl text-lg text-gray-600">
+      Veri*Factu obliga a cambiar cómo se emite. La salida fácil es contratar un
+      portal aparte y seguir contabilizando en otro sitio; la buena es que la
+      factura nazca en el ERP, se valide ante Hacienda y quede contabilizada en
+      el mismo movimiento.
+    </p>
+
+    <section class="mt-12" aria-labelledby="que-esta-resuelto">
+      <h2 id="que-esta-resuelto" class="text-2xl font-semibold text-gray-900">
+        Qué está resuelto para España
+      </h2>
+
+      <ul class="mt-4 space-y-3 text-gray-700">
+        <li>
+          <strong class="font-semibold text-gray-900">Emisión con Veri*Factu.</strong>
+          La factura se emite desde ERPNext, se genera el PDF con QR validable
+          ante Hacienda, y las rectificativas siguen el mismo camino.
+          <a href="/services/pack-espana-verifactu/" class="underline underline-offset-2"
+            >Con las dos demostraciones grabadas de punta a punta</a
+          >.
+        </li>
+        <li>
+          <strong class="font-semibold text-gray-900">Contabilidad española.</strong>
+          Plan contable, IVA y retenciones configurados, con los centros de
+          coste que tu operación necesite.
+        </li>
+        <li>
+          <strong class="font-semibold text-gray-900">Banco.</strong>
+          Los movimientos entran solos y la conciliación es asistida, sin
+          descargar extractos ni subir archivos.
+          <a href="/integraciones/banco/" class="underline underline-offset-2"
+            >Cómo funciona</a
+          >.
+        </li>
+        <li>
+          <strong class="font-semibold text-gray-900">IA sobre tus datos.</strong>
+          Consultar y operar el ERP en lenguaje natural desde Claude, ChatGPT o
+          cualquier asistente compatible, con los permisos de cada persona.
+          <a href="/integraciones/mcp-ia/" class="underline underline-offset-2"
+            >Cómo funciona</a
+          >.
+        </li>
+        <li>
+          <strong class="font-semibold text-gray-900">Multiempresa.</strong>
+          Varias sociedades en una sola instalación, sin mezclarlas.
+        </li>
+      </ul>
+
+      <p class="mt-6 max-w-2xl text-base text-gray-600">
+        España está en un momento distinto que Chile, y conviene decirlo: aquí
+        hay <strong class="font-semibold text-gray-800"
+          >dos demostraciones completas grabadas</strong
+        > —emisión y rectificativas, validadas ante Hacienda— y un programa de
+        primeras implantaciones con condiciones preferentes a cambio de feedback
+        durante el arranque. En Chile hay cuatro empresas en producción; aquí,
+        todavía no.
+      </p>
+    </section>
+
+    <section class="mt-14" aria-labelledby="precios-es">
+      <h2 id="precios-es" class="text-2xl font-semibold text-gray-900">
+        Precios en España
+      </h2>
+      <p class="mt-3 max-w-2xl text-base text-gray-600">
+        Un proyecto no es un precio único: son estas piezas, y no todas hacen
+        falta en todos los casos. Importes en euros. Lo predecible va a precio
+        fijo; sólo una línea va por presupuesto, y abajo está explicado por qué.
+      </p>
+      <div class="mt-6">
+        <TablaComponentes pais={pais} />
+      </div>
+    </section>
+
+    <div class="mt-14">
+      <ServiceLeadForm
+        servicio="espana"
+        heading="Hablemos de tu empresa en España"
+        subheading="Déjame tus datos y qué sistemas usas hoy; luego podrás elegir un horario en mi agenda."
+      />
+    </div>
+
+    <p class="mt-10 text-sm text-gray-600">
+      ¿En Chile? Hay una
+      <a href="/chile/" class="underline underline-offset-2">página para Chile</a>
+      con el SII y precios en pesos.
+    </p>
+  </div>
+</BaseLayout>

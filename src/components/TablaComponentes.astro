@@ -1,0 +1,80 @@
+---
+import {
+  componentes,
+  componentesDe,
+  comoSeCobra,
+  type Pais,
+  type ComponenteServicio,
+} from "../data/servicios";
+
+export interface Props {
+  /** Sin país se muestra sólo cómo se cobra, sin importes: es el caso de
+      /services, donde también llega quien está en un país sin tabla propia. */
+  pais?: Pais;
+  /** Para mostrar sólo algunos componentes, por nombre y en ese orden. */
+  soloEstos?: string[];
+  /** La nota de por qué la migración va por presupuesto. */
+  mostrarPorQueVaria?: boolean;
+}
+
+const { pais, soloEstos, mostrarPorQueVaria = true } = Astro.props;
+
+const todos: ComponenteServicio[] = pais ? componentesDe(pais) : componentes;
+const filas = soloEstos
+  ? soloEstos
+      .map((n) => todos.find((c) => c.nombre === n))
+      .filter((c): c is ComponenteServicio => Boolean(c))
+  : todos;
+---
+
+<div class="overflow-x-auto">
+  <table class="w-full min-w-[38rem] border-collapse text-left text-sm">
+    <thead>
+      <tr class="border-b border-gray-400">
+        <th scope="col" class="py-3 pr-4 font-semibold text-gray-900">Componente</th>
+        <th scope="col" class="py-3 pr-4 font-semibold text-gray-900">Qué incluye</th>
+        <th
+          scope="col"
+          class="py-3 font-semibold text-gray-900 whitespace-nowrap"
+        >
+          {pais ? `Precio (${pais.moneda})` : "Cómo se cobra"}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        filas.map((c) => (
+          <tr class="border-b border-gray-200 align-top">
+            <th scope="row" class="py-3 pr-4 font-semibold text-gray-900">
+              {c.enlace ? (
+                <a href={c.enlace} class="underline underline-offset-2">
+                  {c.nombre}
+                </a>
+              ) : (
+                c.nombre
+              )}
+            </th>
+            <td class="py-3 pr-4 text-gray-600">{c.queEs}</td>
+            <td class="py-3 text-gray-700 whitespace-nowrap">
+              {comoSeCobra(c, pais)}
+            </td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>
+
+{
+  mostrarPorQueVaria &&
+    filas
+      .filter((c) => c.porQueVaria)
+      .map((c) => (
+        <p class="mt-6 max-w-2xl text-sm text-gray-600">
+          <strong class="font-semibold text-gray-800">
+            Por qué {c.nombre.toLowerCase()} va por presupuesto:
+          </strong>{" "}
+          {c.porQueVaria}
+        </p>
+      ))
+}

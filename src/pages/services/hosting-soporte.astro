@@ -1,16 +1,14 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import ServiceLeadForm from "../../components/ServiceLeadForm.astro";
-import { componentes, comoSeCobra } from "../../data/servicios";
+import { paises } from "../../data/servicios";
 
 // Página nueva. Es el único ingreso recurrente del negocio y hasta ahora no
 // existía en la web: las seis tarjetas anteriores eran todas proyectos de una
 // vez. Sin esta página, el visitante no sabe que después de migrar hay alguien
 // manteniendo el sistema, que es justo la duda que frena a quien ya se quemó
 // con un proveedor que desapareció.
-const cuota = componentes.find(
-  (c) => c.nombre === "Hosting, soporte y actualizaciones",
-)!;
+
 ---
 
 <BaseLayout
@@ -79,11 +77,18 @@ const cuota = componentes.find(
 
     <h2 class="mt-10 text-2xl font-semibold text-gray-900">Cuánto cuesta</h2>
     <p class="mt-3 text-gray-700">
-      <strong class="font-semibold text-gray-900">{comoSeCobra(cuota)}</strong>,
+      Es una <strong class="font-semibold text-gray-900">cuota mensual</strong>
       según número de usuarios, volumen de documentos e integraciones activas.
-      El
-      <a href="/services" class="underline underline-offset-2">desglose completo</a>
-      de todos los componentes de un proyecto está en la página de servicios.
+      El importe está en la página de tu país —
+      {
+        Object.values(paises).map((p, i) => (
+          <>
+            {i > 0 && " o "}
+            <a href={p.url} class="underline underline-offset-2">{p.nombre}</a>
+          </>
+        ))
+      }
+      — junto con el desglose de todos los componentes.
     </p>
 
     <div class="mt-12">

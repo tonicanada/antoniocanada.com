@@ -1,7 +1,8 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import ProductCard from "../components/ProductCard.astro";
-import { componentes, comoSeCobra } from "../data/servicios";
+import TablaComponentes from "../components/TablaComponentes.astro";
+import { paises } from "../data/servicios";
 
 // El titular tiene que comunicar ALCANCE: aquí llega quien ya sabe lo que
 // busca y viene a ver de dónde a dónde llegas. "Cerrar el mes no debería llevar
@@ -76,57 +77,44 @@ import { componentes, comoSeCobra } from "../data/servicios";
         va por presupuesto, y abajo está explicado por qué.
       </p>
 
-      <div class="mt-6 overflow-x-auto">
-        <table class="w-full min-w-[38rem] border-collapse text-left text-sm">
-          <thead>
-            <tr class="border-b border-gray-400">
-              <th scope="col" class="py-3 pr-4 font-semibold text-gray-900">
-                Componente
-              </th>
-              <th scope="col" class="py-3 pr-4 font-semibold text-gray-900">
-                Qué incluye
-              </th>
-              <th scope="col" class="py-3 font-semibold text-gray-900 whitespace-nowrap">
-                Cómo se cobra
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              componentes.map((c) => (
-                <tr class="border-b border-gray-200 align-top">
-                  <th scope="row" class="py-3 pr-4 font-semibold text-gray-900">
-                    {c.enlace ? (
-                      <a href={c.enlace} class="underline underline-offset-2">
-                        {c.nombre}
-                      </a>
-                    ) : (
-                      c.nombre
-                    )}
-                  </th>
-                  <td class="py-3 pr-4 text-gray-600">{c.queEs}</td>
-                  <td class="py-3 text-gray-700 whitespace-nowrap">
-                    {comoSeCobra(c)}
-                  </td>
-                </tr>
-              ))
-            }
-          </tbody>
-        </table>
+      <div class="mt-6">
+        <TablaComponentes />
       </div>
 
-      {
-        componentes
-          .filter((c) => c.porQueVaria)
-          .map((c) => (
-            <p class="mt-6 max-w-2xl text-sm text-gray-600">
-              <strong class="font-semibold text-gray-800">
-                Por qué {c.nombre.toLowerCase()} va por presupuesto:
-              </strong>{" "}
-              {c.porQueVaria}
-            </p>
-          ))
-      }
+      <!-- Los importes viven por país: no sólo por la moneda, también porque el
+           contenido del componente cambia (el SII no es Veri*Factu). Y ver las
+           dos tablas juntas obligaría a explicar por qué el mismo componente
+           cuesta distinto. -->
+      <div class="mt-8 rounded-lg border border-gray-300 bg-white/70 p-5 backdrop-blur-sm">
+        <p class="text-sm font-semibold text-gray-900">Los importes, por país</p>
+        <p class="mt-2 text-sm text-gray-600">
+          El precio y el contenido de cada componente cambian según el país — la
+          localización fiscal de Chile no es la de España, son trabajos
+          distintos. Elige el tuyo:
+        </p>
+        <div class="mt-4 flex flex-wrap gap-3">
+          {
+            Object.values(paises).map((p) => (
+              <a
+                href={p.url}
+                data-ev="service_cta_click"
+                data-ev-params={JSON.stringify({
+                  service_name: `pais-${p.codigo}`,
+                  cta_text: p.nombre,
+                  cta_location: "services_precios_pais",
+                })}
+                class="rounded-md border border-black px-4 py-2 text-sm font-semibold text-black transition hover:bg-gray-100"
+              >
+                {p.nombre} · {p.moneda}
+              </a>
+            ))
+          }
+        </div>
+        <p class="mt-4 text-sm text-gray-600">
+          ¿En otro país? También trabajo en México, Perú y Bolivia — el precio
+          se cotiza igual, componente por componente.
+        </p>
+      </div>
     </section>
 
     <section
