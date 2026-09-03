@@ -6,3 +6,19 @@
 }
 
 
+
+/* El scroll suave lo tenía la home en una clase `scroll-smooth` sobre el <main>,
+   que desapareció al pasar el scroll al documento. Sin él, la flecha ↓ del hero
+   y cualquier enlace con ancla saltaban de golpe — el efecto más visible de
+   "scroll raro" al bajar por la home.
+   Va en el <html>, que es quien scrollea ahora, y respeta la preferencia del
+   sistema: la versión anterior no lo hacía. */
+html {
+    scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+}
