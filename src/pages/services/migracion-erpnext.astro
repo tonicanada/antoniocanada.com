@@ -2,7 +2,7 @@
 import PageLayout from "../../layouts/PageLayout.astro";
 import ServiceLeadForm from "../../components/ServiceLeadForm.astro";
 import TablaComponentes from "../../components/TablaComponentes.astro";
-import { tramosProceso } from "../../data/servicios";
+import { tramosProceso, paises } from "../../data/servicios";
 
 // Sustituye a implementacion-erpnext, que era una página de 24 líneas con cuatro
 // viñetas genéricas ("flujos a medida", "capacitación a usuarios"). Esta es la
@@ -161,9 +161,16 @@ const piezas = [
   <div class="not-prose my-6">
     <TablaComponentes soloEstos={piezas} mostrarPorQueVaria={false} />
   </div>
-  <p class="text-sm text-gray-600">
-    El desglose completo, incluidas las integraciones y la cuota mensual, está
-    en <a href="/services">la página de servicios</a>.
+  {/* Esta era la única página de servicio que no llevaba a los importes: las
+      otras tres enlazan a /chile y /espana, y ésta obligaba a pasar por
+      /services primero. Es justo la principal, o sea la página donde el
+      cliente se está preguntando cuánto cuesta. */}
+  <p>
+    Los importes van por país, porque en Chile se denominan en UF y en España
+    en euros:
+    <a href={paises.cl.url}>precios para Chile</a> ·
+    <a href={paises.es.url}>precios para España</a>. Ahí está el desglose
+    completo, con las integraciones y la cuota mensual.
   </p>
 
   <h2>Después de migrar</h2>
