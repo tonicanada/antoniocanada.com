@@ -27,4 +27,11 @@ export type ValorUF = {
   fecha: string;
 };
 
-export const ufActual: ValorUF | null = null;
+export const ufActual: ValorUF | null = {
+  // Banco Central de Chile, publicado a diario. Comprobado el 2026-09-04.
+  // Referencia de cordura del día: 1 € ≈ 1.083 CLP, así que 300 € ≈ 8,0 UF —
+  // de ahí sale el precio de Chile, pero la cifra es redonda a propósito y no
+  // el resultado de una división. Ver src/data/servicios.ts.
+  valor: 40879,
+  fecha: "2026-09-04",
+};

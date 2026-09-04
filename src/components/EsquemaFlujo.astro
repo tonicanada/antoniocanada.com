@@ -55,14 +55,35 @@ const fuentes = [
 //
 // Sólo entra lo que hay trabajo real detrás: el chatbot de WhatsApp, el vídeo
 // de ecommerce con Stripe y factura, y el flujo de XML por correo y Drive.
-// Cuatro por panel es el techo: una quinta fila ya no es esquema, es
-// /integraciones.
 const canales = [
   { nombre: "WhatsApp", detalle: "Consultas y avisos" },
   { nombre: "Ecommerce", detalle: "Pedidos y stock" },
   { nombre: "Pagos", detalle: "Cobros conciliados" },
   { nombre: "Documentos", detalle: "Correo y Drive" },
 ];
+
+// Cuatro por panel es el techo, pero cuatro leído como lista cerrada era otro
+// problema: quien no viera su banco, su canal de venta o su organismo entre las
+// ocho filas concluía que no se podía, y el enlace de abajo llega tarde para
+// evitar esa conclusión —se lee después del esquema, no dentro de él.
+//
+// La fila de cierre no es un quinto elemento: no nombra nada, va en gris y sin
+// negrita, y por eso no convierte el panel en catálogo. Dice que la enumeración
+// para aquí, no que el sistema pare aquí. En la de salidas el texto es además
+// el enlace a /integraciones, que es donde está la respuesta larga.
+const cierres = {
+  fuentes: {
+    texto: "… y cualquier otra fuente con API",
+    href: null,
+  },
+  canales: {
+    texto: "… y cualquier otro canal que ya uses",
+    href: "/integraciones",
+  },
+};
+
+const cierreFilaClass =
+  "border-t border-gray-200 px-3 py-2 text-[11px] leading-snug text-gray-500";
 
 // Las filas van sin borde propio dentro de un panel que ya tiene borde: ocho
 // recuadros metidos dentro de dos recuadros convertían el esquema en
@@ -111,7 +132,8 @@ const anchoClass = "max-w-3xl mx-auto";
       ERPNext mediante MCP. ERPNext es la única fuente de verdad: por la
       izquierda se alimenta solo desde facturación electrónica, banco, compras y
       remuneraciones, y por la derecha opera hacia fuera con WhatsApp,
-      ecommerce, pagos y documentos.
+      ecommerce, pagos y documentos. En ambos lados son ejemplos: caben
+      cualquier otra fuente con API y cualquier otro canal.
     </figcaption>
 
     <div>
@@ -160,6 +182,7 @@ const anchoClass = "max-w-3xl mx-auto";
               </li>
             ))
           }
+          <li class={cierreFilaClass}>{cierres.fuentes.texto}</li>
         </ul>
       </div>
 
@@ -208,6 +231,20 @@ const anchoClass = "max-w-3xl mx-auto";
               </li>
             ))
           }
+          <li class={cierreFilaClass}>
+            <a
+              href={cierres.canales.href}
+              data-ev="service_cta_click"
+              data-ev-params={JSON.stringify({
+                service_name: "integraciones",
+                cta_text: cierres.canales.texto,
+                cta_location: "home_esquema_panel",
+              })}
+              class="underline underline-offset-2 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
+            >
+              {cierres.canales.texto}
+            </a>
+          </li>
         </ul>
       </div>
     </div>

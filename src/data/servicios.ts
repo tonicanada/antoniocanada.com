@@ -94,6 +94,12 @@ export const componentes: ComponenteServicio[] = [
       "Análisis de tus procesos y entregable escrito: módulos, automatizaciones y plan por fases. Se descuenta del proyecto si seguimos adelante, y el documento es tuyo aunque no me contrates.",
     modo: "fijo",
     paises: {
+      // 8 UF y 300 € son equivalentes en términos reales al fijarlos (1 € ≈
+      // 1.083 CLP, UF ≈ 40.879 el 2026-09-04). Se mantienen a la par porque es
+      // el mismo trabajo y las mismas horas, y porque el descuento sobre el
+      // proyecto ya neutraliza la objeción de precio. La cifra es redonda a
+      // propósito: la conversión sirvió de control de cordura, no de método.
+      cl: { precio: 8 },
       es: { precio: 300 },
     },
   },

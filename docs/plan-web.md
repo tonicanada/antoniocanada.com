@@ -911,3 +911,40 @@ Pendiente para cuando se cobre en pesos: **el CLP es una moneda sin decimales**.
 El código hace `Math.round(precio * 100)` porque Stripe cobra en la unidad
 mínima, pero para CLP el multiplicador no aplica — copiar esa línea cobraría
 100 veces el importe.
+
+## El precio del blueprint en Chile: 8 UF
+
+Con España a 300 € y Chile vacío, la tabla del mercado principal parecía la
+descuidada. Ese es el argumento para rellenarlo, no la simetría en sí.
+
+**8 UF.** Comprobado el 2026-09-04: UF = $40.879 y 1 € ≈ $1.083, así que 300 €
+≈ 325.000 CLP ≈ 8,0 UF. La conversión sirvió de **control de cordura, no de
+método** — la cifra es redonda a propósito. Se mantienen a la par con España
+porque es el mismo trabajo y las mismas horas, y porque el descuento sobre el
+proyecto ya neutraliza la objeción de precio. Si 8 UF frena conversaciones en
+Chile, bajarlo es cambiar un número.
+
+**Sin conversión automática**, por tres razones: contradice el criterio de fijar
+por mercado; un precio que cambia a diario parece poco serio ("¿por qué ayer
+eran 324.100 y hoy 325.040?"); y es exactamente lo que la UF viene a evitar —
+la UF lleva +2,89% en el año, que es inflación que se habría comido un precio
+fijo en pesos. Auto-convertir EUR→CLP a diario reintroduce la volatilidad que
+la UF elimina.
+
+El valor de la UF está en `src/data/uf.ts` con su fecha, y **la fecha se
+muestra** bajo la tabla de Chile: "Referencia en pesos calculada con la UF del 4
+de septiembre de 2026 ($40.879). El precio se pacta en UF." Si el valor se
+queda viejo, se ve.
+
+### Stripe: no hay que tocarlo, pero faltaba un aviso
+
+El checkout sólo lee el precio de España y cobra en euros, así que añadir el
+precio de Chile no le afecta. Pero un visitante chileno que llegara desde
+`/chile` a la página del blueprint veía un botón "Pagar con Stripe" que **no
+decía en qué moneda cobra**. Añadido el aviso: el pago con tarjeta va en euros,
+y para Chile hay factura y transferencia en pesos.
+
+Cobrar en pesos de verdad se puede desde una cuenta española (Stripe distingue
+moneda de presentación de moneda de liquidación, con ~2% de comisión de
+conversión), pero necesita el cuidado del CLP sin decimales y para un solo
+producto es prematuro.

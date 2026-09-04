@@ -7,6 +7,7 @@ import {
   type Pais,
   type ComponenteServicio,
 } from "../data/servicios";
+import { ufActual } from "../data/uf";
 
 export interface Props {
   /** Sin país se muestra sólo cómo se cobra, sin importes: es el caso de
@@ -23,6 +24,19 @@ const { pais, soloEstos, mostrarPorQueVaria = true } = Astro.props;
 // Mientras el país no tenga ningún importe, la columna se titula como en
 // /services. En cuanto se ponga el primer precio pasa sola a "Precio (UF)".
 const conPrecios = pais ? hayPrecios(pais) : false;
+
+// La referencia en pesos se calcula con un valor de UF que se queda viejo. Se
+// muestra con su fecha para que eso se vea en vez de pasar desapercibido.
+const notaUF =
+  conPrecios && pais?.unidad === "UF" && ufActual
+    ? `Referencia en pesos calculada con la UF del ${new Intl.DateTimeFormat(
+        pais.locale,
+        { day: "numeric", month: "long", year: "numeric" },
+      ).format(new Date(`${ufActual.fecha}T12:00:00`))} (${new Intl.NumberFormat(
+        pais.locale,
+        { style: "currency", currency: "CLP", maximumFractionDigits: 0 },
+      ).format(ufActual.valor)}). El precio se pacta en UF.`
+    : null;
 
 const todos: ComponenteServicio[] = pais ? componentesDe(pais) : componentes;
 const filas = soloEstos
@@ -69,6 +83,8 @@ const filas = soloEstos
     </tbody>
   </table>
 </div>
+
+{notaUF && <p class="mt-3 text-xs text-gray-500">{notaUF}</p>}
 
 {
   mostrarPorQueVaria &&
