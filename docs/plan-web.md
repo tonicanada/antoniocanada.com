@@ -1256,3 +1256,34 @@ el JS.
 En `/erpnext` queda una línea de texto enlazando las dos demos. La página pasa
 de cuatro bloques visuales (portada, mapa de procesos, dos vídeos) a dos, que
 para una página cuyo trabajo es argumentar una elección ya es bastante.
+
+## Portada para /services/migracion-erpnext
+
+El concepto es lo que la página argumenta: **de varios sistemas dispersos a uno
+solo**. Formas geométricas sueltas a la izquierda, una masa sólida y ordenada a
+la derecha.
+
+Generada con `genimg` directamente en **21:9** en vez de 16:9 y recortar: así el
+modelo compone para el marco de banda en lugar de dejar el motivo centrado con
+aire muerto que hay que quitar después. Salió a 2,29:1, prácticamente la banda
+que ya se había validado en `/erpnext`.
+
+De las tres variantes se descartó una por un motivo que no era estético: **el
+mensaje se leía al revés**. Su lado derecho parecía una ciudad caótica, más
+compleja que el izquierdo, así que sugería que migrar te deja *más* lío. Eso
+importa más que si la imagen es bonita.
+
+**El fondo sale en `rgb(241,241,237)`** y se deja tal cual: son 14 puntos por
+debajo del blanco y apenas cálido, el mismo registro de papel que la portada de
+`/erpnext`, y dentro de un contenedor con borde se lee como intencionado.
+
+**1.428 KB de PNG → 32 KB de WebP.** Sin variante de 800 px porque `PageLayout`
+usa `src` directo sin `srcset`: un archivo que nadie referencia es un archivo
+muerto.
+
+Se pasa por `image` de `PageLayout`, que la coloca bajo la cabecera —primero se
+lee de qué va la página— y **la pasa además a `BaseHead`**, así que sirve
+también como tarjeta social. Modo `banda` (el que trae por defecto), que recorta
+a 3:1 quitando 80 px arriba y abajo: verificado que el recorte no toca el motivo,
+porque ahí sólo hay fondo. El modo `completa` habría quedado peor — mete la
+imagen en una caja 16:9 con bandas vacías y sale más alta.
