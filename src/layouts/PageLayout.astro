@@ -32,9 +32,13 @@ export interface Props {
   /** Párrafo de entrada. También puede venir como <slot name="lead"> si lleva enlaces. */
   lead?: string;
   image?: string;
+  /** Datos estructurados propios de la página. Ver `BaseHead`. */
+  schema?: Record<string, any>;
   /** Qué parte de la portada se conserva al recortarla. Ver `imagePosition` en
       el esquema de la colección. */
   imagePosition?: string;
+  /** Cómo se encaja la portada. Ver `imageAspect` en el esquema de la colección. */
+  imageAspect?: "banda" | "completa";
   /** La imagen va bajo la cabecera, no sobre ella: primero se lee de qué va. */
   showImage?: boolean;
   publishDate?: Date;
@@ -62,6 +66,7 @@ const {
   lead,
   image,
   imagePosition = "center",
+  imageAspect = "banda",
   showImage = true,
   publishDate,
   updatedDate,
@@ -70,6 +75,7 @@ const {
   sideBarActiveItemID,
   ogType,
   robots,
+  schema,
   width = "wide",
   prose = true,
 } = Astro.props;
@@ -78,6 +84,18 @@ const fecha = (d?: Date) => (d ? dayjs(d).format("DD-MM-YYYY") : null);
 const iso = (d?: Date) => (d ? dayjs(d).format("YYYY-MM-DD") : undefined);
 const hayMeta = meta && Boolean(publishDate || updatedDate || tags.length);
 const anchoClase = width === "wide" ? "max-w-wide" : "max-w-measure";
+
+// Las clases van literales y no compuestas al vuelo: Tailwind lee el fuente
+// como texto, y una clase que solo existe al concatenar una variable no acaba
+// en el CSS. De ahí el mapa en vez de `aspect-[${...}]`.
+//
+// `completa` usa `object-contain` y no `object-cover`: con `cover` una portada
+// que no fuera exactamente 16:9 se recortaría de nuevo, que es justo lo que
+// esta opción viene a evitar.
+const imagenClase =
+  imageAspect === "completa"
+    ? "aspect-[16/9] object-contain"
+    : "aspect-[3/1] object-cover";
 ---
 
 <BaseLayout
@@ -86,6 +104,7 @@ const anchoClase = width === "wide" ? "max-w-wide" : "max-w-measure";
   image={image}
   ogType={ogType}
   robots={robots}
+  schema={schema}
   sideBarActiveItemID={sideBarActiveItemID}
   mainClass={`w-full px-5 sm:px-6 py-10 lg:py-14 mx-auto ${anchoClase}`}
 >
@@ -142,6 +161,13 @@ const anchoClase = width === "wide" ? "max-w-wide" : "max-w-measure";
       tiene el rótulo "SUPPLIERS" abajo, y el recorte centrado lo partía por la
       mitad— se corrige con `imagePosition` en el frontmatter de esa entrada, no
       renunciando al recorte en todas.
+
+      Ese razonamiento vale mientras la portada sea una FOTO o un motivo con
+      aire: el recorte se lleva fondo y no se pierde nada. No vale cuando la
+      portada es un diagrama, donde lo que hay arriba y abajo es contenido y
+      recortarlo lo deja incompleto. Para ese caso está `imageAspect:
+      "completa"`, que muestra la imagen entera a costa de una portada más
+      alta. Es la excepción, no el defecto.
   */}
   {
     image && showImage && (
@@ -150,7 +176,7 @@ const anchoClase = width === "wide" ? "max-w-wide" : "max-w-measure";
         alt=""
         loading="eager"
         style={`object-position: ${imagePosition}`}
-        class="mb-10 aspect-[3/1] w-full rounded-lg object-cover"
+        class={`mb-10 w-full rounded-lg ${imagenClase}`}
       />
     )
   }
