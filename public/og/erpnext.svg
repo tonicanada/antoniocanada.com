@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <pattern id="reticula" width="64" height="64" patternUnits="userSpaceOnUse">
+      <path d="M64 0 H0 V64" fill="none" stroke="#e5e7eb" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="630" fill="#ffffff"/>
+  <rect width="1200" height="630" fill="url(#reticula)"/>
+  <rect x="0.5" y="0.5" width="1199" height="629" fill="none" stroke="#d1d5db" stroke-width="1"/>
+
+  <text x="88" y="140" font-family="Roboto, Arial, sans-serif" font-size="24" font-weight="600"
+        letter-spacing="4.8" fill="#6b7280">POR QUÉ ERPNEXT</text>
+
+  <text font-family="Roboto, Arial, sans-serif" font-size="86" font-weight="700" fill="#111827"><tspan x="88" y="250">ERPNext es el Linux</tspan><tspan x="88" y="350">de los ERP</tspan></text>
+
+  <line x1="88" y1="412" x2="256" y2="412" stroke="#111827" stroke-width="3"/>
+
+  <text x="88" y="470" font-family="Roboto, Arial, sans-serif" font-size="30" fill="#4b5563">Código abierto · licencia GPL · en producción desde 2010</text>
+
+  <text x="1112" y="574" text-anchor="end" font-family="Roboto, Arial, sans-serif"
+        font-size="24" font-weight="600" fill="#6b7280">antoniocanada.com</text>
+</svg>

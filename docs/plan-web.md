@@ -1152,3 +1152,36 @@ Y en `mcp-ia` los ejemplos pasan de tres a cuatro, con uno por área
 —proyecto, cobros, inventario, compras de obra—: que el sector aparezca como uno
 de varios lee más fuerte que como el único, **sin perder concreción**. Se
 conserva igual un ejemplo de subcontratos en los tramos, por el mismo motivo.
+
+## Imagen social para /erpnext
+
+Ninguna página del sitio tenía imagen social propia: todas compartían
+`/social_img.webp`, así que compartir `/erpnext` en LinkedIn, WhatsApp o Slack
+mostraba una imagen genérica en vez del titular. Con el 77% del tráfico llegando
+directo —buena parte de eso enlaces compartidos— es mucho desperdicio para lo
+que cuesta arreglarlo.
+
+`scripts/generar-og.mjs` dibuja la tarjeta en SVG y la rasteriza con `sharp`, que
+ya era dependencia. 1200×630, que es lo que piden LinkedIn, WhatsApp, Slack y X.
+Se ejecuta a mano (`node scripts/generar-og.mjs`) y **el PNG se commitea**:
+generarlo en cada build sería más elegante pero añade una pieza que puede fallar
+en el despliegue, y estas imágenes cambian una vez cada muchos meses.
+
+Está montado como plantilla con una lista de páginas, así que añadir la siguiente
+es una entrada en el array.
+
+**Tipografía:** el sitio no declara ninguna familia, usa la pila del sistema
+(`-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, …`), que resuelve a algo
+distinto en cada dispositivo — no hay una "fuente del sitio" que copiar. Se fija
+Roboto porque está instalada en la máquina que genera y es lo que esa misma pila
+elige en Linux y Android. El script **comprueba con `fc-list` que Roboto existe y
+aborta si no**, porque el fallo sería silencioso: `sharp` rasterizaría el texto
+con otra fuente sin avisar.
+
+Verificado además contando píxeles oscuros del PNG (4,42% del lienzo): confirma
+que el texto se rasterizó de verdad y no salió un lienzo en blanco, que es el
+otro fallo silencioso posible.
+
+Diseño: la retícula de `GridBackground`, monocromo, `gray-900` para el titular y
+`gray-500/600` para lo secundario. Sin negro pleno — está reservado al botón de
+agendar.
