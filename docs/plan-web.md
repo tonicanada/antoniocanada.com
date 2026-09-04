@@ -1199,9 +1199,22 @@ Elegida la variante con más contraste (desviación de luminancia 43 frente a 29
 diminuto —en una columna de 900 px se habría leído como un garabato— y porque su
 tono crema no es el blanco del sitio.
 
-**Conversión: 1.553 KB de PNG → 52 KB de WebP** a 1344 px, más una versión de
-800 px (12 KB) para móvil vía `srcset`. Servir 1344 a un teléfono es tirar ancho
-de banda, y el ancho máximo de la columna son 900 px.
+**Recortada a banda (1344×580, ~2,3:1)** y no dejada en 16:9. El motivo iba
+centrado con mucho aire muerto arriba y abajo, así que el recorte no pierde
+dibujo: mejora la composición. Y sobre todo, una imagen 16:9 a todo el ancho de
+una columna de 900 px mide 514 px de alto y se come media pantalla antes de que
+el lector llegue al argumento — la de `mcp-ia`, en una columna de 750, mide 422.
+Recortada baja a **388 px**.
+
+El recorte va de y=88 a y=668 del original y no más agresivo a propósito: una
+banda de 2,6:1 cortaba el bloque más alto justo en el borde, y eso se lee como
+un error en vez de como un encuadre.
+
+**Conversión: 1.553 KB de PNG → 45 KB de WebP**, más una versión de 800 px
+(12 KB) para móvil vía `srcset`. Servir 1344 a un teléfono es tirar ancho de
+banda, y el ancho máximo de la columna son 900 px. El `width`/`height`
+declarados coinciden con el recorte real, o el navegador reservaría mal el
+espacio y la página saltaría al cargar.
 
 Sin `loading="lazy"` a propósito: está en la primera pantalla, y diferir lo que
 ya se ve retrasa el pintado en vez de adelantarlo.
