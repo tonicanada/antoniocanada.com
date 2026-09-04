@@ -1402,3 +1402,86 @@ con enlace.
 La página no tiene portada, mientras el resto de páginas de `PageLayout` sí. Se
 puede generar con `genimg` siguiendo el patrón de las otras dos (21:9,
 monocroma, pocas piezas grandes para que se lea en móvil).
+
+---
+
+# Revisión previa a publicar
+
+## El orden del menú
+
+Antes: *Inicio · ERPNext · Casos reales · Integraciones · **Servicios** · Cursos
+· Blog · Sobre mí · Contacto*.
+
+Dos problemas. **Servicios estaba quinto** — la página del dinero, la que lleva
+al formulario y a los precios, detrás de tres; en una barra de nueve entradas la
+gente decide en las tres primeras. Y **Casos reales tercero**: la prueba social
+sirve para cerrar una duda, no para abrirla, y nadie llega a una web y empieza
+por los testimonios. Encima la home ya los resume en una línea con enlace, así
+que el menú los duplicaba en posición prominente.
+
+Ahora sigue el recorrido —oferta, argumento, capacidad, prueba—:
+
+> Inicio · **Servicios** · ERPNext · Integraciones · Casos reales · Cursos ·
+> Sobre mí · Contacto
+
+El menú pasa a construirse desde un array en vez de nueve `<li>` escritos a
+mano, así que reordenarlo vuelve a ser mover una línea.
+
+## El blog sale del menú al pie
+
+Su contenido es el oloide, three.js, el TSP con AutoCAD, la librería pip y
+compartir secretos: matemáticas y programación personal, cero comercial. En la
+navegación primaria competía con Servicios e Integraciones por la atención, y
+diluye el foco temático del sitio ante Google — "oloid shape" son 424
+impresiones con **1 clic**.
+
+**No se pierde nada**: mismas URLs, mismo posicionamiento, y sigue enlazado
+desde el pie (o sea desde las 125 páginas) y desde la línea de cierre de la
+home. Sólo sale de la navegación primaria. Sobre mí **se queda**: es marca
+personal, el 77% del tráfico llega directo buscando el nombre, y quien va a
+confiar su contabilidad a una persona la mira.
+
+## El oloide: nota de autor, no CTA
+
+Aquí hubo que separar dos métricas que se confunden con facilidad: **424
+impresiones** son las veces que Google lo mostró; **1 clic** las veces que
+alguien entró; **~13 visitas al mes** las reales (las "26" del informe eran la
+misma página contada dos veces por la barra final, ya arreglado). CTR del 0,2%
+— para comparar, "erpnext chile" da 3 clics con 25 impresiones, un 12%: la
+consulta comercial convierte sesenta veces mejor.
+
+Así que un CTA de venta ahí lo verían unas 13 personas al mes, buscando "oloid
+shape" en inglés: estudiantes de geometría, no compradores de ERP. Lo que se
+puso es una **nota de autor** en inglés (como el post) con enlace a `/erpnext` y
+al canal. Cuesta cero, y esas 424 impresiones sí valen para pasar algo de enlace
+interno desde una página que Google mira a menudo.
+
+⚠️ Al escribirla **inventé el handle del canal** (`@antoniocanada`) y YouTube
+devolvió 200, que no prueba nada. El canal real, según los enlaces sociales de
+la propia barra lateral, es `@contabilidad_erpnext`. Corregido — pero el 200 de
+una URL inventada es exactamente el tipo de verificación que engaña.
+
+## Casos reales — pendiente, y hay un problema de fondo
+
+**Bloqueado**: `src/data/references.ts` lo tiene modificado otra sesión.
+
+De las tres referencias (Tecton, Vegostart, Hostname), **ninguna es el cliente
+que la web describe**: Tecton es la propia empresa, Vegostart es una
+capacitación —que se decidió que no es el core— y Hostname es automatización. El
+caso que esta web necesita, "empresa con seis sistemas que migró y ahora tiene
+uno", no existe todavía. Eso no se arregla escribiendo: se arregla consiguiendo
+el primer cliente.
+
+Lo que **sí** se arregla cuando el fichero se libere, y son dos cosas concretas:
+
+1. **Hostname es un caso de migración y está escondido.** Su cita dice
+   literalmente "nos ayudó a migrar de Odoo a ERPNext", pero el campo visible
+   (`scope`) dice "Automatización y soluciones digitales". Es lo único que se
+   parece a la oferta central y está enterrado bajo una etiqueta genérica.
+2. **Tecton merece más de lo que tiene.** Es el caso más fuerte —cuatro empresas
+   en producción, más de cien mil facturas, el SII a diario— y aparece con una
+   línea de alcance y una cita amable. Faltan los números y los enlaces a
+   `/construccion` y a `/integraciones/sii-chile`.
+
+Tres casos son pocos, pero tres casos concretos con cifras baten a diez logos
+sin nada detrás.
