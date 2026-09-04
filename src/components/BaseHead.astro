@@ -24,17 +24,91 @@ const {
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
 
 // El sitio no declaraba datos estructurados de ningún tipo. En un sitio que es
-// todo servicios, eso deja al buscador adivinando quién los presta: `Person`
-// una vez en todas las páginas es el mínimo que conecta el nombre, la web y los
-// perfiles, y `schema` deja que cada página añada lo suyo (un `Service`, un
-// `Article`) sin tocar esto.
+// todo servicios, eso deja al buscador adivinando quién los presta.
+//
+// Dos entidades, con `@id` estable y enlazadas entre sí: la PERSONA (a quien se
+// busca por nombre) y el NEGOCIO (lo que se busca por "implementador de ERPNext
+// en Chile"). Separarlas importa porque responden a consultas distintas, y
+// `worksFor`/`employee` las mantiene como una sola cosa a ojos del buscador.
+//
+// `sameAs` es la pieza que faltaba y la de más valor por línea: sin ella, el
+// nombre es una cadena de texto suelta en esta web; con ella queda reconciliado
+// con los perfiles donde ya hay historial —LinkedIn, GitHub, YouTube—, que es
+// como un motor (y un LLM que busca) decide que las menciones sueltas por ahí
+// son de esta misma persona.
+//
+// `schema` deja que cada página añada lo suyo (un `Service`, un `FAQPage`) sin
+// tocar esto.
+const siteUrl = (Astro.site ?? new URL("/", Astro.url)).toString().replace(/\/$/, "");
+const PERSON_ID = `${siteUrl}/#antonio`;
+const BUSINESS_ID = `${siteUrl}/#negocio`;
+
+const perfiles = [
+	"https://www.linkedin.com/in/antoniocanada/",
+	"https://github.com/tonicanada",
+	"https://www.youtube.com/@contabilidad_erpnext",
+];
+
+const materias = [
+	"ERPNext",
+	"Frappe Framework",
+	"ERP",
+	"Facturación electrónica",
+	"SII",
+	"DTE",
+	"Veri*Factu",
+	"Contabilidad",
+	"Automatización de procesos",
+];
+
 const personSchema = {
 	"@context": "https://schema.org",
 	"@type": "Person",
+	"@id": PERSON_ID,
 	name: "Antonio Cañada",
-	url: (Astro.site ?? new URL("/", Astro.url)).toString(),
+	url: `${siteUrl}/`,
+	image: `${siteUrl}/profile.webp`,
 	jobTitle: "Consultor ERPNext",
-	knowsAbout: ["ERPNext", "Frappe", "ERP", "Facturación electrónica", "Automatización de procesos"],
+	description:
+		"Consultor de ERPNext en Chile y España: implantación, localización fiscal (SII, Veri*Factu), integraciones y soporte.",
+	email: "antonio@bizmotion.io",
+	knowsLanguage: ["es", "en"],
+	knowsAbout: materias,
+	sameAs: perfiles,
+	worksFor: { "@id": BUSINESS_ID },
+};
+
+// El tipo es `ProfessionalService` y no `Organization` a propósito: describe a
+// quien presta un servicio profesional en un territorio, y trae `areaServed`,
+// que es justo el eje por el que se pregunta ("¿en Chile?", "¿en España?").
+const businessSchema = {
+	"@context": "https://schema.org",
+	"@type": "ProfessionalService",
+	"@id": BUSINESS_ID,
+	name: "Antonio Cañada — Implantación de ERPNext",
+	url: `${siteUrl}/`,
+	description:
+		"Implantación, localización fiscal, integraciones, hosting y soporte de ERPNext para empresas en Chile, España y Bolivia.",
+	founder: { "@id": PERSON_ID },
+	employee: { "@id": PERSON_ID },
+	email: "antonio@bizmotion.io",
+	telephone: "+34626764393",
+	sameAs: perfiles,
+	knowsAbout: materias,
+	availableLanguage: ["es", "en"],
+	areaServed: [
+		{ "@type": "Country", name: "Chile" },
+		{ "@type": "Country", name: "España" },
+		{ "@type": "Country", name: "Bolivia" },
+	],
+	serviceType: [
+		"Implantación de ERPNext",
+		"Migración a ERPNext",
+		"Localización fiscal de ERPNext",
+		"Integraciones y desarrollo sobre Frappe",
+		"Hosting y soporte de ERPNext",
+		"Capacitación técnica en ERPNext",
+	],
 };
 ---
 
@@ -66,4 +140,5 @@ const personSchema = {
 <meta name="robots" content={robots} />
 
 <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+<script type="application/ld+json" set:html={JSON.stringify(businessSchema)} />
 {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}

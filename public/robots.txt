@@ -1,4 +1,65 @@
+# Todo abierto, y los rastreadores de IA nombrados uno a uno.
+#
+# `User-agent: *` ya los cubría —no había nada bloqueado—, pero nombrarlos deja
+# la intención por escrito: este sitio SÍ quiere ser leído y citado por
+# asistentes. Vale sobre todo por Google-Extended y Applebot-Extended, que son
+# opt-out: sólo existen para excluirse, y verlos aquí en `Allow` evita que un
+# cambio futuro los apague sin darse cuenta.
+
 User-agent: *
+Allow: /
+
+# OpenAI — entrenamiento, búsqueda y navegación en vivo
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+# Anthropic
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+# Perplexity
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+# Google (Gemini y AI Overviews) y Apple
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# Otros
+User-agent: Bingbot
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: meta-externalagent
+Allow: /
+
+User-agent: cohere-ai
 Allow: /
 
 Sitemap: https://antoniocanada.com/sitemap-index.xml

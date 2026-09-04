@@ -12,12 +12,47 @@ import { paises } from "../data/servicios";
 // dos demostraciones completas grabadas y un programa de primeras
 // implantaciones, no cuatro empresas en producción. No se infla.
 const pais = paises.es;
+
+// Mismo criterio que en /chile: las preguntas van redactadas como se preguntan.
+// Una sola fuente para el bloque visible y el JSON-LD, y respuestas en texto
+// plano para que no se separen. Aquí las respuestas dicen el estado real —dos
+// demostraciones grabadas y un programa de primeras implantaciones—, porque una
+// respuesta citable que exagera es peor que no tenerla.
+const faqs = [
+  {
+    q: "¿Quién implementa ERPNext en España?",
+    a: "Antonio Cañada. Implanto ERPNext para empresas españolas con la localización hecha: emisión Veri*Factu validada ante Hacienda, PDF con QR, facturas rectificativas, plan contable español, IVA y retenciones. En España hay dos demostraciones completas grabadas de punta a punta y un programa de primeras implantaciones con condiciones preferentes; las cuatro empresas en producción están en Chile.",
+  },
+  {
+    q: "¿ERPNext cumple con Veri*Factu?",
+    a: "Sí, con la integración que mantengo. La factura nace en el ERP, se valida ante Hacienda y queda contabilizada en el mismo movimiento, con el PDF y su QR verificable; las rectificativas siguen el mismo camino. La alternativa habitual —un portal de facturación aparte y la contabilidad en otro sitio— obliga a que alguien cuadre las diferencias.",
+  },
+  {
+    q: "¿Cuánto cuesta implementar ERPNext en España?",
+    a: "Los precios están publicados en esta misma página, en euros. Un proyecto se compone de piezas —localización fiscal, migración, integraciones, hosting y soporte, capacitación— y no todas hacen falta en todos los casos. Lo predecible va a precio fijo y sólo el modelado de procesos va por tramos.",
+  },
+  {
+    q: "¿Se puede llevar toda la contabilidad española en ERPNext?",
+    a: "Sí: plan contable, IVA y retenciones configurados, con los centros de coste que la operación necesite, y varias sociedades en una sola instalación sin mezclarlas. Los movimientos del banco entran solos y la conciliación es asistida, sin descargar extractos.",
+  },
+];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
 ---
 
 <BaseLayout
   title="ERPNext en España: Veri*Factu y contabilidad española"
   description="Implantación de ERPNext en España con emisión Veri*Factu validada ante Hacienda, PDF con QR, facturas rectificativas y plan contable español. Precios en euros."
   sideBarActiveItemID="services"
+  schema={faqSchema}
 >
   <div class="pb-12 mt-5">
     <p class="text-sm font-semibold uppercase tracking-[0.2em] text-gray-500">
@@ -97,6 +132,29 @@ const pais = paises.es;
       <div class="mt-6">
         <TablaComponentes pais={pais} />
       </div>
+    </section>
+
+    <section class="mt-14" aria-labelledby="preguntas-es">
+      <h2 id="preguntas-es" class="text-2xl font-semibold text-gray-900">
+        Preguntas frecuentes sobre ERPNext en España
+      </h2>
+      <dl class="mt-6 space-y-6">
+        {
+          faqs.map((f) => (
+            <div>
+              <dt class="text-base font-semibold text-gray-900">{f.q}</dt>
+              <dd class="mt-2 text-base text-gray-600">{f.a}</dd>
+            </div>
+          ))
+        }
+      </dl>
+      <p class="mt-6 text-sm text-gray-600">
+        Las preguntas que no dependen del país —si trabajo solo, el mínimo de
+        presupuesto, si merece la pena moverse— están en
+        <a href="/services/#preguntas" class="underline underline-offset-2"
+          >las preguntas frecuentes de servicios</a
+        >.
+      </p>
     </section>
 
     <div class="mt-14">

@@ -20,6 +20,8 @@ const {
   sideBarActiveItemID,
   ogType,
   robots,
+  // Datos estructurados propios de la página. Ver `BaseHead`.
+  schema,
   // La retícula va SIEMPRE, y por eso ya no hay `enableGridBackground`. Estaba
   // apagada en las siete páginas de servicio, en `PostLayout` y en
   // `StoreItemLayout` — es decir, en todas las páginas de detalle, que son
@@ -47,6 +49,7 @@ const {
       image={image}
       ogType={ogType}
       robots={robots}
+      schema={schema}
     />
     {TRANSITION_API && <ViewTransitions />}
     <TrackingInit />
