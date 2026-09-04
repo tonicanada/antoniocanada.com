@@ -127,6 +127,26 @@
       "source": "/store/:slug/",
       "destination": "/services/",
       "permanent": true
+    },
+    {
+      "source": "/blog/tag/:tag",
+      "destination": "/tags/:tag/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/tag/:tag/",
+      "destination": "/tags/:tag/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/tag/:tag/:page",
+      "destination": "/tags/:tag/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/tag/:tag/:page/",
+      "destination": "/tags/:tag/",
+      "permanent": true
     }
   ]
 }
