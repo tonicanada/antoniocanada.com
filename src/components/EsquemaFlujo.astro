@@ -40,11 +40,17 @@
 // español no lo entienda, es que le dice que esto es de otro país. Los
 // organismos van debajo como prueba de conocimiento local. Los proveedores
 // concretos (Fintoc, Wherex) van en su página de integración, no aquí.
+//
+// "Remuneraciones" salió de este panel: su rótulo dice "se alimenta solo, sin
+// digitar nada", y eso afirmaba que la nómina entra automática cuando la
+// integración de RRHH está en curso. En su lugar entró "Documentos", que estaba
+// en el panel de salidas siendo una ENTRADA — la lectura de la casilla para los
+// XML del SII está construida y corriendo en producción.
 const fuentes = [
   { nombre: "Facturación electrónica", detalle: "SII · AEAT · SUNAT · SAT" },
   { nombre: "Banco", detalle: "Cartolas y movimientos" },
   { nombre: "Compras", detalle: "Licitaciones y órdenes" },
-  { nombre: "Remuneraciones", detalle: "Sueldos y centros de costo" },
+  { nombre: "Documentos", detalle: "XML por correo y Drive" },
 ];
 
 // El tercer panel es otra categoría, no más de lo mismo. En el primero están
@@ -59,7 +65,6 @@ const canales = [
   { nombre: "WhatsApp", detalle: "Consultas y avisos" },
   { nombre: "Ecommerce", detalle: "Pedidos y stock" },
   { nombre: "Pagos", detalle: "Cobros conciliados" },
-  { nombre: "Documentos", detalle: "Correo y Drive" },
 ];
 
 // Cuatro por panel es el techo, pero cuatro leído como lista cerrada era otro
@@ -131,8 +136,8 @@ const anchoClass = "max-w-3xl mx-auto";
       La IA recibe la pregunta en lenguaje natural y la responde consultando
       ERPNext mediante MCP. ERPNext es la única fuente de verdad: por la
       izquierda se alimenta solo desde facturación electrónica, banco, compras y
-      remuneraciones, y por la derecha opera hacia fuera con WhatsApp,
-      ecommerce, pagos y documentos. En ambos lados son ejemplos: caben
+      los documentos que llegan por correo, y por la derecha opera hacia fuera
+      con WhatsApp, ecommerce y pagos. En ambos lados son ejemplos: caben
       cualquier otra fuente con API y cualquier otro canal.
     </figcaption>
 
