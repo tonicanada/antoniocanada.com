@@ -1621,3 +1621,46 @@ listado paginado). Es cosmético y no bloquea publicar, pero si se regenera, el
 objetivo es 3:1 con el mismo lenguaje: isométrica de líneas, acento naranjo, y
 el concepto de piezas modulares apoyadas en una base común — que es el
 argumento del Linux de los ERP.
+
+## La página de contacto se quedó fuera de la reorganización
+
+Y el selector de asunto lo delataba. Ofrecía **"Asesoría inicial (1h)"**, un
+servicio que se eliminó en la Fase 3 con 301 — o sea que alguien podía pedir por
+formulario algo que ya no se vende. Tres opciones más llevaban el nombre antiguo
+("Implementación ERPNext", "Automatización y personalización", "Diagnóstico de
+procesos") y **faltaba el hosting**, que es el único ingreso recurrente del
+negocio.
+
+Ahora las nueve opciones son las siete ofertas reales, el modelado de procesos y
+"otra cosa". Los `value` se mantienen en el formato anterior (minúsculas con
+guion bajo) porque son los que llegan al correo: así los avisos viejos y los
+nuevos se leen igual.
+
+### Lo demás que arrastraba
+
+- **~40 líneas de código muerto**: un script que precargaba el asunto desde
+  `?asunto=` en la URL. Comprobado en todo el sitio — **nadie enlaza así**. Y
+  dentro había un bloque que escribía `Precio: X €` en duro, que con Chile en UF
+  además estaría mal.
+- **El botón de WhatsApp en `bg-green-600` escrito a mano**: el único color
+  saturado del sitio, y sin anillo de foco. Ahora usa `Button` como el resto. El
+  evento `whatsapp_click` se conserva.
+- **`max-w-measure`** (columna estrecha) cuando el resto del sitio comparte
+  `wide`. De ahí parte de la sensación de descuadre.
+- **Sin centrado vertical**: el formulario cabe de sobra en una pantalla y
+  quedaba pegado arriba con un hueco largo debajo. Ahora `min-h` del alto de la
+  ventana menos el navbar, con el contenido centrado.
+- Se añadió una entradilla que enlaza a `/agendar/` — quien llega a contacto
+  muchas veces preferiría hablar, y no se le estaba ofreciendo.
+
+### Pendiente, a propósito, para después de publicar
+
+**El formulario sigue yendo a Formspree**, mientras el resto del sitio usa
+`/api/service-lead` con Resend — el endpoint que ahora registra el lead en el
+log y falla de forma visible. Así que los leads de *contacto* no pasan por nada
+de eso y aterrizan en un tercero: dos sistemas para lo mismo y dos bandejas que
+vigilar.
+
+Cambiarlo es lo correcto, pero **no el día antes de lanzar**: hay que probarlo en
+producción con un envío real, y si falla se pierden contactos sin enterarse.
+Mejor con la web ya viva.
