@@ -1,0 +1,92 @@
+---
+// El segundo esquema del artículo del mapa, para la sección en la que las dos
+// vías conviven. Es el punto más fino del argumento y el que peor se sostiene
+// solo con prosa: no se discute si conectar, sino QUÉ SE PUEDE HACER por cada
+// vía cuando las dos están abiertas.
+//
+// Deliberadamente NO es otra banda de cajas con flechas como el
+// `EsquemaCriterio`. Dos widgets idénticos seguidos se leen como el mismo
+// dibujo repetido y el lector deja de mirarlos; y además aquí no hay un flujo
+// que recorrer, hay un reparto de permisos. Dos columnas enfrentadas es la
+// forma que corresponde a un reparto.
+//
+// El reparto real es este, y cabe en una frase: por la vía directa, consultar;
+// por el ERP, todo lo que deja rastro. Los verbos van como fichas y no como
+// prosa porque lo que el lector va a hacer con esto es buscar el suyo.
+const vias = [
+  {
+    etiqueta: "Por la vía directa",
+    quien: "La persona, o la IA sin pasar por el ERP",
+    puede: ["Consultar un estado", "Mirar un dato", "Descargar un documento"],
+    porque: "Consultar no crea nada. Nadie tendrá que cuadrarlo después.",
+  },
+  {
+    etiqueta: "Por el ERP",
+    quien: "ERPNext, con su integración modelada",
+    puede: ["Emitir", "Pagar", "Contabilizar", "Conciliar"],
+    porque: "Todo lo que deja rastro entra por aquí, o el rastro queda partido.",
+  },
+];
+
+// Paneles blancos macizos sobre el fondo gris de la figura, por lo mismo que
+// en `EsquemaMapa` y `EsquemaCriterio`: sobre una página casi blanca, un panel
+// translúcido con filete claro no se lee como panel.
+const panelClass =
+  "flex flex-1 flex-col rounded-md border border-gray-300 bg-white p-3";
+---
+
+<figure class="not-prose my-8">
+  <figcaption class="sr-only">
+    Reparto entre las dos vías cuando conviven. Por la vía directa —la persona,
+    o la IA sin pasar por el ERP— se puede consultar un estado, mirar un dato o
+    descargar un documento, porque consultar no crea nada que haya que cuadrar
+    después. Por el ERP, con su integración modelada, se emite, se paga, se
+    contabiliza y se concilia: todo lo que deja rastro entra por ahí. Emitir por
+    la vía directa crea un hecho que el ERP no conoce, y alguien acabará
+    reconciliando a mano lo que nunca debió separarse.
+  </figcaption>
+
+  <div class="rounded-lg border border-gray-300 bg-gray-50 p-3 sm:p-4">
+    <div class="flex flex-col gap-3 sm:flex-row">
+      {
+        vias.map(({ etiqueta, quien, puede, porque }) => (
+          <div class={panelClass}>
+            <p class="text-[11px] font-semibold uppercase tracking-[0.15em] text-gray-500">
+              {etiqueta}
+            </p>
+            <p class="mt-1 text-xs font-bold leading-snug text-gray-900">
+              {quien}
+            </p>
+
+            <ul class="mt-2.5 flex flex-wrap gap-1.5">
+              {puede.map((verbo) => (
+                <li class="rounded border border-gray-300 bg-gray-50 px-2 py-0.5 text-[11px] leading-snug text-gray-700">
+                  {verbo}
+                </li>
+              ))}
+            </ul>
+
+            <!-- `mt-auto` para que las dos razones queden alineadas abajo aunque
+                 una columna tenga tres fichas y la otra cuatro: si flotaran a
+                 distinta altura, la comparación se leería como desorden. -->
+            <p class="mt-auto pt-2.5 text-[11px] leading-snug text-gray-600">
+              {porque}
+            </p>
+          </div>
+        ))
+      }
+    </div>
+
+    <!-- El aviso va FUERA de las dos columnas y a todo el ancho: no es una
+         propiedad de una de las vías, es lo que pasa cuando se cruzan. Fondo
+         gris y no un color de alarma, que en una página sin color sería el único
+         elemento teñido y se comería el esquema. -->
+    <p
+      class="mt-3 rounded-md border border-dashed border-gray-400 bg-gray-100 px-3 py-2.5 text-xs leading-snug text-gray-700"
+    >
+      <span class="font-bold text-gray-900">El cruce que rompe:</span> emitir por
+      la vía directa crea un hecho que el ERP no conoce. A partir de ahí alguien
+      reconcilia a mano lo que nunca debió separarse.
+    </p>
+  </div>
+</figure>

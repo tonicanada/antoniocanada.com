@@ -1,0 +1,231 @@
+---
+title: "Antes de conectar la IA a tus sistemas, decide qué habla con qué"
+description: "Cada sistema está lanzando su capa de IA y pidiéndote diez minutos. La pregunta previa es otra: qué sistemas conservas, cuáles absorbe el ERP y, en cada caso, si le habla la IA directamente o el ERP. Con un criterio y una plantilla para decidirlo."
+image: "/assets/images/erpnext/mapa-antes-de-la-ia/portada.webp"
+imageAspect: "completa"
+publishDate: 2026-09-04
+tags:
+  ["ERPNext", "IA", "MCP", "Integraciones", "Arquitectura", "Procesos"]
+urlSlug: "antes-de-conectar-la-ia-decide-que-habla-con-que"
+---
+
+import EsquemaMapa from "../../components/EsquemaMapa.astro";
+import EsquemaCriterio from "../../components/EsquemaCriterio.astro";
+import EsquemaDosVias from "../../components/EsquemaDosVias.astro";
+
+Recibo casi a diario el mismo correo con distinto remitente. Un sistema
+—rendición de gastos, firma electrónica, control de flotas, lo que sea— anuncia
+que ya tiene IA, promete que ahorra el 90 % del tiempo de alguien y me pide diez
+minutos de calendario.
+
+Puede que la promesa sea cierta. El problema es que ninguno de esos correos hace
+la pregunta que va antes:
+
+> ¿Ese sistema debería seguir existiendo en tu empresa?
+
+Porque ponerle IA a un sistema que no debería estar ahí no lo arregla: lo fija.
+Le añade una razón más para quedarse, un contrato más, un sitio más donde vive
+un dato que debería estar en otra parte.
+
+Un mapa ya decidido se ve así. Este es el de una empresa —el de la tuya será
+otro, y dar con él es justamente el trabajo del que va este artículo:
+
+<EsquemaMapa />
+
+Fíjate en tres cosas antes de seguir, porque son las tres que se discuten más
+abajo. La IA no llega a todo por el mismo camino: hay una rama que alcanza
+directa y otra que pasa por el ERP. Las dos ramas no tienen la misma
+profundidad, y esa asimetría no es un adorno del dibujo. Y abajo hay sistemas
+que se quedaron fuera.
+
+---
+
+## Lo que sí es cierto de todo esto
+
+La IA está al alcance de cualquiera y ya hoy es muy potente. Las empresas que la
+integren de verdad en sus procesos van a operar a otra velocidad que las que no,
+y esa diferencia se va a notar antes de lo que parece.
+
+Pero *integrarla en los procesos* es bastante más que preguntarle cosas a
+ChatGPT. Es decidir a qué sistemas puede llegar, con qué permisos, qué puede
+ejecutar y sobre qué estructura. Y eso no se compra: se diseña. Empieza por un
+plano.
+
+---
+
+## Test previo: sin API no hay IA
+
+Antes de cualquier criterio fino, hay un filtro que descarta media lista en cinco
+minutos: **¿ese sistema tiene una API?**
+
+Si la respuesta es que el software está instalado en el PC de alguien, que los
+datos viven en un archivo local, que se accede por escritorio remoto o que la
+única forma de sacar información es exportar a Excel a mano, ese sistema no tiene
+futuro en una empresa que quiera operar con IA. Y no es porque la IA no sea
+capaz: es porque **no hay dónde conectarse**. No hay superpoder que arregle la
+ausencia de una puerta.
+
+Ese test no dice qué hacer con el sistema. Dice que su continuidad no es una
+decisión pendiente.
+
+---
+
+## El mapa: el de hoy y el de destino
+
+Con lo que queda, el ejercicio es dibujar dos esquemas.
+
+**El de hoy.** Todos los sistemas que usa la empresa, sin maquillaje: el ERP o lo
+que haga sus veces, la contabilidad, el banco, la facturación electrónica, el
+CRM, la planilla de sueldos, el Drive donde de verdad está la información, y sí,
+también los Excel que sostienen procesos enteros. Casi ninguna empresa tiene este
+esquema escrito, y casi ninguna descubre lo mismo que esperaba al escribirlo.
+
+**El de destino.** Qué se conserva, qué se absorbe, qué desaparece y —esta es la
+parte que nadie hace— **quién habla con quién**.
+
+Ese ejercicio hay que hacerlo con lápiz afilado, porque la respuesta no es la
+misma para todos los sistemas. Y ahí es donde el ERP deja de ser «un programa
+más» y se convierte en la pieza que decide la forma del resto.
+
+---
+
+## El criterio: hecho económico o contexto
+
+Esta es la regla que uso, y creo que es la que falta en casi todas estas
+conversaciones:
+
+> Si la conversación con un sistema **produce un hecho económico** —algo que hay
+> que registrar, validar, auditar y conciliar—, la integración es del ERP. Si
+> solo aporta **contexto** —documentos, correos, conversaciones—, la IA puede ir
+> directa.
+
+<EsquemaCriterio />
+
+Que la IA lea un PDF del Drive o busque un correo en Gmail no cambia el estado
+de nada. No hay nada que cuadre a fin de mes, nada que declarar, nada que un
+auditor vaya a pedir. Meter esas conversaciones por dentro del ERP solo añade
+una capa que no aporta.
+
+Emitir una factura electrónica es lo contrario. No es enviar un mensaje: es un
+asiento contable, un folio, un XML que hay que guardar por años, un IVA que hay
+que declarar y un documento que tiene que aparecer luego en el registro de
+compras y ventas. Eso tiene que estar **modelado**: con validaciones, con
+reglas, con trazabilidad y guardado en base de datos como corresponde.
+
+Por eso la integración con el Servicio de Impuestos Internos es de ERPNext y no
+de la IA: consulta del RCV, emisión de DTE que quedan contabilizados en el mismo
+acto, proceso del XML, cuadratura posterior. Lo mismo con los bancos: la
+cartola, la conciliación y los pagos son estructura, no conversación.
+
+La diferencia práctica es sencilla. Si la IA emite la factura por su cuenta,
+tienes un documento. Si la emite a través del ERP, tienes un documento, un
+asiento, un saldo de cliente actualizado y una declaración que va a cuadrar.
+
+---
+
+## A veces hablan los dos, y hay que decidir qué dice cada uno
+
+No es siempre excluyente. Puede tener sentido que una persona consulte
+directamente el sitio del organismo tributario *y* que el ERP mantenga su
+integración estructurada en paralelo. Pero entonces la pregunta se vuelve más
+fina: **qué se puede hacer por cada vía**.
+
+Un reparto razonable suele ser este:
+
+<EsquemaDosVias />
+
+---
+
+## Un caso concreto: la rendición de gastos
+
+Volvamos al correo del principio. Supongamos que el sistema que ofrece su nueva
+IA es uno de rendición de gastos, y que la empresa efectivamente lo usa. Las tres
+preguntas, en este orden:
+
+**1. ¿Dónde está hoy en el mapa?** Quién lo usa, qué datos viven solo ahí, cómo
+llega esa información a la contabilidad. Con frecuencia la respuesta es «alguien
+descarga un informe y lo pica en el ERP a fin de mes», que ya es media respuesta.
+
+**2. ¿Sigue o lo absorbe el ERP?** ERPNext trae *Expense Claim* de forma nativa,
+con aprobaciones, centros de costo, contabilización y reembolso. Si el sistema
+externo no aporta algo que eso no cubra, mantenerlo significa pagar una
+suscripción por partir en dos un proceso que podía estar completo.
+
+**3. Si sigue, ¿quién le habla?** Y aquí aplica el criterio: una rendición
+aprobada es un hecho económico —un gasto, un centro de costo, un reembolso por
+pagar—, así que la integración es del ERP, no de la IA por su cuenta.
+
+Fíjate en que la IA no aparece hasta el final, y como consecuencia. Al revés
+—empezar conectando IA a cada satélite— lo que se consigue es multiplicar el
+número de sitios donde hay que arreglar lo mismo.
+
+---
+
+## La plantilla
+
+Esto cabe en cuatro columnas. Una fila por sistema:
+
+| Sistema | ¿Tiene API? | ¿Quién es dueño del dato? | ¿Quién le habla? |
+| --- | --- | --- | --- |
+| Facturación electrónica | Sí | ERP | ERP |
+| Banco | Sí | ERP | ERP |
+| Google Drive | Sí | Drive | IA directa |
+| Correo | Sí | Correo | IA directa |
+| Rendición de gastos | Sí | ERP | ERP, o se absorbe |
+| Software de escritorio | No | — | Nadie: sale del mapa |
+
+La tercera columna es la que ordena las demás. Cuando el dueño del dato es el
+ERP, la integración es del ERP aunque el proveedor te ofrezca su propio conector
+de IA. Cuando el dueño es el sistema externo y el dato es contexto, la IA puede
+ir directa sin dar el rodeo.
+
+Y la última columna admite «se absorbe» y admite «sale del mapa». Un esquema
+donde todo se conserva no es un esquema: es un inventario.
+
+---
+
+## Encima del mapa: MCP y skills
+
+Cuando el mapa está decidido, la parte de IA es casi la fácil, y se apoya en dos
+piezas distintas que conviene no confundir:
+
+- **MCP** define **a qué** puede acceder la IA. Es un estándar abierto, así que
+  un mismo *gateway* sirve para Claude, para ChatGPT o para un asistente propio,
+  sin atarte a un proveedor. En ERPNext hay una ventaja adicional y poco común:
+  el código es abierto y está completo, así que la IA puede entender de verdad
+  los DocTypes, las validaciones, los flujos de aprobación y las
+  personalizaciones de tu instalación.
+- **Las skills** definen **cómo** quieres que trabaje: cómo se contabiliza una
+  operación en tu empresa, cómo se procesa una compra, quién aprueba un pago, qué
+  pasos tiene tu cierre de mes. Son tus procedimientos, escritos de forma que la
+  IA los siga.
+- **El ERP** aporta la estructura sobre la que se ejecuta: plan contable,
+  artículos, precios, impuestos, permisos, flujos.
+
+Puedes ver cómo funciona eso en la práctica en
+[ERPNext + IA](/integraciones/mcp-ia/), y con qué otros sistemas se conecta el
+ERP en [integraciones](/integraciones/).
+
+Lo que no cambia es el orden. MCP y skills sobre un mapa decidido son una forma
+nueva de operar la empresa. Sobre un mapa sin decidir son una capa más de
+automatización encima del desorden, que es exactamente lo que ya se intentó con
+las macros.
+
+---
+
+## En resumen
+
+- Sin API, el sistema no tiene futuro. Ese filtro va primero.
+- Dibuja el esquema de hoy y el de destino. Nadie puede hacerlo por ti, porque
+  nadie más sabe qué datos viven realmente en cada sitio.
+- Si la conversación produce un hecho económico, la integración es del ERP. Si
+  solo aporta contexto, la IA va directa.
+- Si conviven las dos vías, decide qué se puede hacer por cada una.
+- La IA se conecta al final, cuando ya está claro quién es dueño de qué.
+
+Si estás evaluando ERPNext o pensando cómo aplicar IA a los procesos de tu
+empresa, [agenda una llamada](/agendar/). Reviso contigo qué sistemas usas hoy,
+te digo cuáles vale la pena conservar y cuáles no, y te muestro funcionando una
+IA conectada a ERPNext consultando información y ejecutando procesos reales
+dentro del ERP. A veces la conclusión es que ERPNext no encaja en tu caso, y
+también te lo digo.

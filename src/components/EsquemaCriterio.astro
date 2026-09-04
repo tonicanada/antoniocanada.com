@@ -1,0 +1,218 @@
+---
+// El esquema central del artículo del mapa. Hermano del `EsquemaFlujo` de la
+// home y con su mismo vocabulario —paneles de borde fino, monocromo, banda con
+// scroll en móvil— pero responde a otra pregunta. El de la home dice QUÉ hace
+// el sistema; este dice QUIÉN HABLA CON QUIÉN, que es lo que el artículo
+// discute.
+//
+// Dos carriles, y el esquema no repite el mapa de arriba porque no habla de lo
+// mismo. El mapa muestra el CABLEADO de una empresa concreta —quién habla con
+// quién, y qué se queda fuera—; esto muestra la CONSECUENCIA, que es la razón
+// por la que ese cableado es así y no al revés.
+//
+// El veredicto de "sin API" no está aquí a propósito: vive en el montón de
+// descartes del mapa, que es donde tiene sentido, porque no es un criterio
+// sobre cómo conectar un sistema sino sobre si el sistema sigue existiendo.
+//
+// La clave del diseño está en la fila de cierre de cada carril. Va en el MISMO
+// sitio en los dos, y es ahí donde cae el contraste: en el carril de contexto
+// no queda nada —y está bien— y en el de hecho económico quedan cuatro cosas
+// que alguien va a tener que cuadrar a fin de mes. Si esa fila cambiara de
+// posición o solo apareciera en un carril, el lector tendría que reconstruir la
+// comparación en la cabeza; puesta en la misma ranura, la lee.
+//
+// Y en el carril del hecho económico ERPNext va EN MEDIO, no al lado: la
+// posición de la caja es el argumento. Se ve que la conversación con el
+// organismo pasa por dentro del ERP en vez de esquivarlo.
+const rutas = [
+  {
+    etiqueta: "Contexto",
+    veredicto: "La IA va directa",
+    cadena: [
+      { tipo: "ia", nombre: "IA" },
+      { tipo: "flecha" },
+      {
+        tipo: "sistema",
+        nombre: "Drive, correo, conversaciones",
+        detalle: "Documentos y contexto",
+      },
+    ],
+    cierre: {
+      titulo: "Qué queda registrado",
+      // "Nada, y está bien" hace trabajo: sin esa coletilla, la fila se lee
+      // como una carencia del camino en vez de como la razón por la que ese
+      // camino es el correcto.
+      texto: "Nada, y está bien: leer un PDF no cambia el estado de nada.",
+    },
+  },
+  {
+    etiqueta: "Hecho económico",
+    veredicto: "Habla el ERP",
+    cadena: [
+      { tipo: "ia", nombre: "IA" },
+      { tipo: "flecha" },
+      {
+        tipo: "erp",
+        nombre: "ERPNext",
+        detalle: "Validaciones, permisos, reglas",
+      },
+      { tipo: "flecha" },
+      {
+        tipo: "sistema",
+        nombre: "Facturación electrónica y banco",
+        detalle: "SII · AEAT · cartolas",
+      },
+    ],
+    cierre: {
+      titulo: "Qué queda registrado",
+      items: [
+        "Asiento contable",
+        "Folio y XML",
+        "Saldo de cliente",
+        "IVA por declarar",
+      ],
+    },
+  },
+];
+
+// Las cajas se distinguen por relleno y peso de letra, no por color ni por
+// grosor de borde — la misma decisión que en la home, y por la misma razón: un
+// borde de 2 px en una fila de tres parece un descuido, y el color aquí sería
+// decorativo porque no codifica nada que el texto no diga ya.
+const cajaBase =
+  "flex flex-none snap-center flex-col justify-center rounded-md px-3 py-2.5";
+
+// La caja de IA no reparte ancho con las demás, y es a propósito por dos
+// razones. Con `flex-1` se llevaba media fila para decir una palabra de dos
+// letras, y una caja grande y vacía se lee como un hueco. Y fijándola estrecha
+// queda EN EL MISMO SITIO en los tres carriles: el actor es el mismo en todos,
+// así que el ojo lo reconoce como punto de partida común y compara lo que viene
+// después, que es de lo que trata el esquema.
+const anchoPorTipo = {
+  ia: "w-20 items-center",
+  sistema: "w-44 md:w-auto md:flex-1",
+  erp: "w-44 md:w-auto md:flex-1",
+};
+// Cajas BLANCAS MACIZAS sobre el fondo gris del carril, igual que en
+// `EsquemaMapa`: con `bg-white/70` sobre una página casi blanca lo único que
+// separaba una caja del fondo era un filete gris claro, y el esquema se leía
+// como texto flotando. Y por eso la de ERPNext tampoco se distingue por
+// relleno —sobre fondo gris, un relleno gris no destaca—, sino por tamaño de
+// letra, borde más oscuro y sombra.
+const cajaPorTipo = {
+  ia: `${cajaBase} ${anchoPorTipo.ia} border border-gray-300 bg-white`,
+  sistema: `${cajaBase} ${anchoPorTipo.sistema} border border-gray-300 bg-white`,
+  erp: `${cajaBase} ${anchoPorTipo.erp} border border-gray-400 bg-white shadow-sm`,
+};
+const nombrePorTipo = {
+  ia: "block text-xs font-bold leading-snug text-gray-900",
+  sistema: "block text-xs font-bold leading-snug text-gray-900",
+  erp: "block text-base font-extrabold leading-tight text-gray-900",
+};
+const detallePorTipo = {
+  ia: "mt-0.5 block text-[11px] leading-snug text-gray-600",
+  sistema: "mt-0.5 block text-[11px] leading-snug text-gray-600",
+  erp: "mt-0.5 block text-[11px] leading-snug text-gray-600",
+};
+
+// El aviso de "desliza" se calcula por carril en vez de ponerse uno global
+// debajo del esquema. A 390 px de ancho una cadena de dos cajas cabe entera
+// (80 + flecha + 176 px), así que un aviso único decía "desliza cada ruta"
+// cuando dos de las tres no tenían nada que deslizar — y un aviso que no se
+// corresponde con lo que se ve enseña al lector a ignorar los avisos. Con el
+// umbral sacado de los propios datos, si mañana cambia una cadena el aviso se
+// ajusta solo.
+const cajasDe = (cadena: { tipo: string }[]) =>
+  cadena.filter(({ tipo }) => tipo !== "flecha").length;
+
+const conectorClass =
+  "flex-none self-center px-1 text-lg leading-none text-gray-400";
+
+// `snap-x` sin `snap-mandatory`: en este repo `theme.extend.scrollSnapType`
+// redefine `.snap-mandatory` como `y mandatory`, así que añadirla a una banda
+// horizontal le impone el eje equivocado. Con `snap-x` a secas la fuerza de
+// anclaje se queda en el `proximity` que trae el preflight, que es lo que
+// queremos en una banda de dos o tres cajas.
+const bandaClass =
+  "flex snap-x gap-2 overflow-x-auto overscroll-x-contain pb-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-4 focus-visible:ring-offset-white md:gap-3 md:overflow-visible";
+---
+
+<!-- `not-prose` no es cosmético: este componente se inserta en MDX, y ahí
+     `@tailwindcss/typography` le pondría viñetas y sangría a los `ul` de las
+     cadenas y márgenes de párrafo a cada `span`. La retícula del esquema la
+     decide el componente. -->
+<figure class="not-prose my-8">
+  <figcaption class="sr-only">
+    Dos rutas según lo que produce la conversación con un sistema. Si solo
+    aporta contexto —documentos, correo, conversaciones—, la IA va directa y no
+    queda ningún registro, que es lo correcto. Si produce un hecho económico
+    —facturación electrónica, banco—, la conversación pasa por ERPNext, que
+    aplica validaciones, permisos y reglas, y deja asiento contable, folio y
+    XML, saldo de cliente e IVA por declarar.
+  </figcaption>
+
+  <ul class="space-y-3">
+    {
+      rutas.map(({ etiqueta, veredicto, cadena, cierre }) => (
+        <li class="rounded-lg border border-gray-300 bg-gray-50 p-3">
+          <!-- Etiqueta y veredicto en la misma línea: la etiqueta es la
+               condición y el veredicto la consecuencia, y separarlos en dos
+               filas rompía la relación que sostiene el carril. -->
+          <div class="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+            <p class="text-[11px] font-semibold uppercase tracking-[0.15em] text-gray-500">
+              {etiqueta}
+            </p>
+            <p class="text-xs font-bold text-gray-900">{veredicto}</p>
+          </div>
+
+          <div
+            role="group"
+            tabindex="0"
+            aria-label={`Ruta para ${etiqueta}`}
+            class={`mt-2.5 ${bandaClass}`}
+          >
+            {cadena.map((paso) =>
+              paso.tipo === "flecha" ? (
+                <span aria-hidden="true" class={conectorClass}>
+                  →
+                </span>
+              ) : (
+                <div class={cajaPorTipo[paso.tipo]}>
+                  <span class={nombrePorTipo[paso.tipo]}>{paso.nombre}</span>
+                  {paso.detalle && (
+                    <span class={detallePorTipo[paso.tipo]}>{paso.detalle}</span>
+                  )}
+                </div>
+              )
+            )}
+          </div>
+
+          {cajasDe(cadena) > 2 && (
+            <p aria-hidden="true" class="mt-1 text-[11px] text-gray-500 md:hidden">
+              Desliza para ver el resto de la ruta →
+            </p>
+          )}
+
+          <div class="mt-2.5 border-t border-gray-300 pt-2">
+            <p class="text-[11px] font-semibold uppercase tracking-[0.15em] text-gray-500">
+              {cierre.titulo}
+            </p>
+            {cierre.items ? (
+              <ul class="mt-1.5 flex flex-wrap gap-1.5">
+                {cierre.items.map((item) => (
+                  <li class="rounded border border-gray-300 bg-white px-2 py-0.5 text-[11px] leading-snug text-gray-700 shadow-sm">
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p class="mt-1 text-[11px] leading-snug text-gray-600">
+                {cierre.texto}
+              </p>
+            )}
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+</figure>
