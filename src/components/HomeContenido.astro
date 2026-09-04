@@ -1,4 +1,7 @@
 ---
+import Button from "./Button.astro";
+import Panel from "./Panel.astro";
+
 const agendarUrl =
   import.meta.env.PUBLIC_AGENDAR_URL ||
   import.meta.env.PUBLIC_GOOGLE_CALENDAR_BOOKING_URL ||
@@ -33,9 +36,7 @@ const agendarUrl =
 </p>
 
 <!-- Una sola acción, y sin tener que volver arriba a buscarla -->
-<div
-  class="mt-8 rounded-lg border border-gray-300 bg-white/70 p-6 sm:p-8 backdrop-blur-sm"
->
+<Panel class="mt-8 sm:p-8">
   <h2 class="text-xl sm:text-2xl font-semibold text-gray-900">
     ¿Hablamos de tu caso?
   </h2>
@@ -45,24 +46,23 @@ const agendarUrl =
     lo digo en la misma llamada.
   </p>
   <div class="mt-5 flex flex-col sm:flex-row gap-3">
-    <a
+    <Button
       href={agendarUrl}
       data-ev="service_cta_click"
       data-ev-params={JSON.stringify({"service_name": "agendar", "cta_text": "Agendar llamada", "cta_location": "home_banda_cta"})}
-      class="px-5 py-3 text-sm sm:text-base font-semibold bg-black text-white rounded-md hover:bg-gray-900 transition text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 focus-visible:ring-offset-white"
     >
       Agendar llamada
-    </a>
-    <a
+    </Button>
+    <Button
       href="/services"
+      variant="secondary"
       data-ev="service_cta_click"
       data-ev-params={JSON.stringify({"service_name": "services", "cta_text": "Ver servicios", "cta_location": "home_banda_cta"})}
-      class="px-5 py-3 text-sm sm:text-base font-semibold border border-black text-black rounded-md hover:bg-gray-100 transition text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 focus-visible:ring-offset-white"
     >
       Ver servicios
-    </a>
+    </Button>
   </div>
-</div>
+</Panel>
 
 <p class="mt-8 text-sm text-gray-600">
   También escribo sobre <a

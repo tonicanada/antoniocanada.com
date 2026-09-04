@@ -1,4 +1,5 @@
 ---
+import Button from "./Button.astro";
 const agendarUrl =
   import.meta.env.PUBLIC_AGENDAR_URL ||
   import.meta.env.PUBLIC_GOOGLE_CALENDAR_BOOKING_URL ||
@@ -41,30 +42,34 @@ const agendarUrl =
     <div
       class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 w-full max-w-lg mx-auto items-stretch"
     >
-      <a
+      <Button
         href={agendarUrl}
+        class="w-full leading-snug"
         data-ev="service_cta_click"
         data-ev-params={JSON.stringify({
           service_name: "agendar",
           cta_text: "Agendar llamada (15–20 min)",
           cta_location: "home_hero",
         })}
-        class="px-4 py-3 text-sm sm:text-base font-semibold bg-black text-white rounded-md hover:bg-gray-900 transition w-full text-center flex items-center justify-center leading-snug focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 focus-visible:ring-offset-white"
       >
-        Agendar llamada (15–20 min)
-      </a>
-      <a
+        <span class="flex flex-col">
+          <span>Agendar llamada</span>
+          <span class="text-sm font-normal opacity-90">(15–20 min)</span>
+        </span>
+      </Button>
+      <Button
         href="/erpnext"
+        variant="secondary"
+        class="w-full leading-snug"
         data-ev="service_cta_click"
         data-ev-params={JSON.stringify({
           service_name: "erpnext",
           cta_text: "Ver cómo funciona",
           cta_location: "home_hero",
         })}
-        class="px-4 py-3 text-sm sm:text-base font-semibold border border-black text-black rounded-md hover:bg-gray-100 transition w-full text-center flex items-center justify-center leading-snug focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 focus-visible:ring-offset-white"
       >
         Ver cómo funciona
-      </a>
+      </Button>
     </div>
 
     <p class="mt-6 text-center text-sm text-gray-600 max-w-xl mx-auto">

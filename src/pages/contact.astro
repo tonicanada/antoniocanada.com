@@ -1,8 +1,13 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import Button from "../components/Button.astro";
 ---
 
-<BaseLayout sideBarActiveItemID="contact">
+<BaseLayout
+  title="Contacto"
+  description="Escríbeme para hablar de ERPNext, integraciones o una migración: formulario, WhatsApp o una llamada de 15–20 minutos sin coste."
+  sideBarActiveItemID="contact"
+>
   <section class="py-16 sm:py-20">
     <div class="max-w-3xl mx-auto px-4 sm:px-6">
       <h1 class="text-4xl font-bold mb-10 text-center">Contáctame</h1>
@@ -75,12 +80,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
         <input type="hidden" name="_redirect" value="https://antoniocanada.com/mensaje-enviado" />
 
-        <button
-          type="submit"
-          class="w-full bg-black text-white font-semibold py-2 px-4 rounded hover:bg-neutral-800 transition"
-        >
-          Enviar mensaje
-        </button>
+        <Button type="submit" class="w-full">Enviar mensaje</Button>
       </form>
 
       <div class="mt-10 text-center">

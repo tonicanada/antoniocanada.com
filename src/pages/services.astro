@@ -2,6 +2,8 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import ProductCard from "../components/ProductCard.astro";
 import TablaComponentes from "../components/TablaComponentes.astro";
+import Panel from "../components/Panel.astro";
+import Button from "../components/Button.astro";
 import { paises } from "../data/servicios";
 
 // El titular tiene que comunicar ALCANCE: aquí llega quien ya sabe lo que
@@ -85,7 +87,7 @@ import { paises } from "../data/servicios";
            contenido del componente cambia (el SII no es Veri*Factu). Y ver las
            dos tablas juntas obligaría a explicar por qué el mismo componente
            cuesta distinto. -->
-      <div class="mt-8 rounded-lg border border-gray-300 bg-white/70 p-5 backdrop-blur-sm">
+      <Panel class="mt-8">
         <p class="text-sm font-semibold text-gray-900">Los importes, por país</p>
         <p class="mt-2 text-sm text-gray-600">
           El precio y el contenido de cada componente cambian según el país — la
@@ -95,18 +97,19 @@ import { paises } from "../data/servicios";
         <div class="mt-4 flex flex-wrap gap-3">
           {
             Object.values(paises).map((p) => (
-              <a
+              <Button
                 href={p.url}
+                variant="secondary"
+                size="sm"
                 data-ev="service_cta_click"
                 data-ev-params={JSON.stringify({
                   service_name: `pais-${p.codigo}`,
                   cta_text: p.nombre,
                   cta_location: "services_precios_pais",
                 })}
-                class="rounded-md border border-black px-4 py-2 text-sm font-semibold text-black transition hover:bg-gray-100"
               >
                 {p.nombre} · {p.moneda}
-              </a>
+              </Button>
             ))
           }
         </div>
@@ -114,12 +117,10 @@ import { paises } from "../data/servicios";
           ¿En otro país? También trabajo en México, Perú y Bolivia — el precio
           se cotiza igual, componente por componente.
         </p>
-      </div>
+      </Panel>
     </section>
 
-    <section
-      class="mt-14 rounded-lg border border-gray-300 bg-white/70 p-6 backdrop-blur-sm"
-    >
+    <Panel as="section" class="mt-14">
       <h2 class="text-xl font-semibold text-gray-900">
         Empieza por la llamada
       </h2>
@@ -130,7 +131,7 @@ import { paises } from "../data/servicios";
         ahí mismo.
       </p>
       <div class="mt-5">
-        <a
+        <Button
           href="/services/consulta-inicial/"
           data-ev="service_cta_click"
           data-ev-params={JSON.stringify({
@@ -138,11 +139,10 @@ import { paises } from "../data/servicios";
             cta_text: "Agendar la consulta inicial",
             cta_location: "services_cierre",
           })}
-          class="inline-block rounded-md bg-black px-5 py-3 text-sm font-semibold text-white transition hover:bg-gray-900 sm:text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 focus-visible:ring-offset-white"
         >
           Agendar la consulta inicial
-        </a>
+        </Button>
       </div>
-    </section>
+    </Panel>
   </div>
 </BaseLayout>
