@@ -230,13 +230,13 @@ export const tramosProceso: TramoProceso[] = [
     nombre: "Medio",
     queIncluye:
       "Documento propio con estados y aprobaciones, más su informe.",
-    ejemplos: "Aprobación de compras por monto · solicitudes desde terreno",
+    ejemplos: "Aprobación de compras por monto · solicitudes desde sucursales",
   },
   {
     nombre: "Complejo",
     queIncluye:
       "Varios documentos enlazados, cálculos, y efecto en contabilidad o inventario.",
-    ejemplos: "Control de subcontratos · provisiones · resultado por obra",
+    ejemplos: "Control de subcontratos · provisiones · resultado por proyecto",
   },
 ];
 

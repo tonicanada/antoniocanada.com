@@ -1114,3 +1114,41 @@ promesa de obra en curso escrita en una web comercial resta.
   la página estaba casi aislada en la arquitectura nueva.
 - CTA en singular, y `Panel`/`Button` en vez de repetir el marcado de tarjeta
   cuatro veces a mano.
+
+## "Obras": concreción sí, vocabulario sectorial no
+
+Había 14 menciones visibles de "obra/obras" repartidas por el embudo principal:
+la home (dos veces, incluida la pregunta de ejemplo del esquema), la tarjeta de
+`/services`, la meta y la entradilla de la migración, y **tres de tres** de los
+ejemplos de pregunta de `/integraciones/mcp-ia`.
+
+El problema es dónde estaban, no cuántas eran. La home y `/services` son las
+páginas que alguien ve **antes de saber nada**: un hotel, una distribuidora o
+una empresa de software lee "tus obras" y concluye en dos segundos que esto no
+es para él. Y ese es justo el mercado objetivo definido — empresas con muchos
+sistemas fragmentados, no constructoras.
+
+**El principio:** la concreción es lo que hace persuasivo un texto y el
+vocabulario sectorial es lo que lo hace excluyente. No se arregla siendo más
+vago —"optimizamos tus procesos de negocio" no excluye a nadie y tampoco
+convence a nadie— sino usando una palabra **concreta en más sectores**.
+"Proyecto" es casi gratis: igual de concreto, sirve para agencias, arquitectos,
+consultoras, software y eventos, el módulo de ERPNext se llama *Projects*, y en
+una constructora chilena nadie se confunde.
+
+Cambiado en: home (esquema, ×2), tarjeta de `/services`, meta y entradilla de la
+migración, el ejemplo de permisos ("jefe de obra" → "jefe de proyecto"),
+`sii-chile` ("en qué proyecto u obra"), y dos de los tres ejemplos de tramo de
+proceso, que también tenían vocabulario de construcción ("solicitudes desde
+terreno" → "desde sucursales", "resultado por obra" → "por proyecto").
+
+**Sin tocar**, a propósito: la sección "Construcción, en concreto" de `/chile`,
+el párrafo de sector de `desarrollo-integraciones` y el CV. Ahí está encuadrado
+como *"el sector que conozco mejor, porque llevo años dentro de una constructora
+chilena"* — eso es credibilidad, no restricción. La diferencia es la que separa
+"esto es para constructoras" de "esto lo he hecho en un sector exigente".
+
+Y en `mcp-ia` los ejemplos pasan de tres a cuatro, con uno por área
+—proyecto, cobros, inventario, compras de obra—: que el sector aparezca como uno
+de varios lee más fuerte que como el único, **sin perder concreción**. Se
+conserva igual un ejemplo de subcontratos en los tramos, por el mismo motivo.
