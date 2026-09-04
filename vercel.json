@@ -107,6 +107,26 @@
       "source": "/services/automatizacion-erpnext/",
       "destination": "/services/desarrollo-integraciones/",
       "permanent": true
+    },
+    {
+      "source": "/store",
+      "destination": "/services/",
+      "permanent": true
+    },
+    {
+      "source": "/store/",
+      "destination": "/services/",
+      "permanent": true
+    },
+    {
+      "source": "/store/:slug",
+      "destination": "/services/",
+      "permanent": true
+    },
+    {
+      "source": "/store/:slug/",
+      "destination": "/services/",
+      "permanent": true
     }
   ]
 }

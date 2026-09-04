@@ -1485,3 +1485,92 @@ Lo que **sí** se arregla cuando el fichero se libere, y son dos cosas concretas
 
 Tres casos son pocos, pero tres casos concretos con cifras baten a diez logos
 sin nada detrás.
+
+## Pasada de auditoría previa a publicar
+
+Barrido sistemático de las 125 páginas generadas: contenido de plantilla,
+metadatos, huérfanas, enlaces internos y externos, formularios y variables de
+entorno. Lo que salió, por orden de gravedad.
+
+### 1. La tienda del template, publicada con Lorem ipsum
+
+`/store`, `/store/item1`, `/item2` e `/item3` — cuatro páginas con el texto de
+relleno de Astrofy que nunca se quitó. **Y estaban en el sitemap**, así que
+Google las iba a rastrear e indexar en el dominio. Nadie las enlazaba desde
+fuera, pero el sitemap basta para que se indexen.
+
+Eliminadas (páginas, contenido y `StoreItemLayout`), con 301 a `/services/` por
+si alguna quedó indexada. Queda una limpieza pendiente: `src/content/config.ts`
+sigue declarando la colección `store` y el build avisa de que el directorio no
+existe — ese fichero lo tenía otra sesión abierta.
+
+### 2. Dos páginas generaban `/courses`, y la que ganaba escondía un bug
+
+`src/pages/courses.astro` y `src/pages/courses/[...page].astro` competían por la
+misma ruta. Ganaba la primera, que **no pasaba `title`** a `BaseLayout` — de ahí
+que `/courses` mostrara el título de la home — y leía `course.data.price` y
+`badgeImage`, campos que **no existen en el esquema**: código muerto que siempre
+renderizaba vacío.
+
+Eliminada, y al hacerlo se destapó lo que la duplicidad tapaba: la página
+superviviente construía `url: "/cursos/" + entry.slug`, con **el prefijo
+equivocado** (el sitio sirve `/courses`) y **el slug equivocado** (nombre de
+archivo en vez de `urlSlug`). Sus dos únicos enlaces apuntaban a 404, y nunca se
+había visto porque esa página no se renderizaba. Corregido.
+
+### 3. El formulario perdía leads en silencio
+
+Lo más caro del lanzamiento. En `src/pages/api/service-lead.ts`:
+
+```js
+if (notifyEnabled && apiKey) { ...enviar el correo... }
+```
+
+**Sin `RESEND_API_KEY`, el bloque se salta y la respuesta es `ok: true`.** El
+visitante ve "gracias", el aviso no llega a nadie, y como no hay base de datos
+el lead no queda en ninguna parte. La asimetría era lo peligroso: un fallo de
+envío sí se veía (lo capturaba el `catch`), así que **la mala configuración era
+el único caso silencioso** — justo el que dura semanas sin detectarse.
+
+Tres cambios:
+
+- **El lead se registra en el log antes de intentar el correo.** Si el envío
+  falla por cualquier motivo, sigue siendo recuperable desde los logs de Vercel.
+- **Una clave ausente devuelve 500** con un mensaje que invita a escribir por
+  correo. Perder un lead en silencio es peor que mostrar un error.
+- **El `catch` ya no devuelve `err.message` al navegador**, que podía filtrar el
+  texto de error de Resend o rutas internas. El detalle va al log.
+
+### 4. No había `.env.example`
+
+Ocho variables usadas en el código y ninguna lista de referencia, así que no
+había forma de comprobar qué le falta a producción. Creado, con las
+imprescindibles separadas de las opcionales y una nota de qué pasa si falta cada
+una.
+
+### 5. Falsos positivos y cosas que no eran
+
+- "TODO" apareció en las 125 páginas: es la palabra española *todo*.
+- "placeholder" en 12: son atributos `placeholder` de formularios, legítimos.
+- Las 27 páginas huérfanas son etiquetas del blog y páginas post-acción
+  (`/gracias`, `/cancelado`, `/mensaje-enviado`), huérfanas por diseño.
+- **`www.tecton.cl` no está roto: tarda 17 segundos** en responder. El primer
+  `curl` venció a los 15 y dio 000. Funciona, pero esa lentitud es mala
+  experiencia para quien haga clic desde los casos reales — y es hosting de
+  Tecton, no de esta web.
+- LinkedIn devuelve 999 a `curl` (bloquea bots), así que **esa comprobación no
+  es concluyente**. Sí es un aviso que haya **dos perfiles distintos**
+  enlazados: `/in/antoniocanada/` y `/in/canadamomblant/`. Hay que decidir cuál.
+- El enlace de la agenda (`calendar.app.google/...`) responde 200. Era el más
+  crítico: si estuviera roto, se rompería el embudo entero.
+
+### Pendiente de esta pasada
+
+- Quitar la colección `store` de `src/content/config.ts` (elimina el aviso del
+  build).
+- Decidir qué perfil de LinkedIn es el correcto y unificar.
+- `src/pages/api/stripe-webhook-bootcamp-nov2025.ts` está muerto: el endpoint
+  que lo alimentaba devuelve 410. Se puede borrar con su variable de entorno.
+- Definir `RESEND_API_KEY` en Vercel **antes** de publicar. Ahora el formulario
+  falla de forma visible si no está, que es mejor que perder leads, pero mejor
+  que no falte.
