@@ -1,5 +1,5 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageLayout from "../../layouts/PageLayout.astro";
 import ServiceLeadForm from "../../components/ServiceLeadForm.astro";
 import { paises } from "../../data/servicios";
 
@@ -8,95 +8,77 @@ import { paises } from "../../data/servicios";
 // vez. Sin esta página, el visitante no sabe que después de migrar hay alguien
 // manteniendo el sistema, que es justo la duda que frena a quien ya se quemó
 // con un proveedor que desapareció.
-
 ---
 
-<BaseLayout
-  title="Hosting, soporte y actualizaciones de ERPNext"
+<PageLayout
+  title="Hosting, soporte y actualizaciones"
+  headTitle="Hosting, soporte y actualizaciones de ERPNext"
   description="Tu ERPNext alojado con respaldos comprobados, monitoreo, actualizaciones de versión y soporte. La parte que hace que la implantación siga sirviendo en tres años."
-  enableGridBackground={false}
+  kicker="Servicio"
+  lead="Un ERP no es un proyecto que se entrega y se olvida: es un sistema del que depende tu facturación. Esta es la parte que hace que siga funcionando cuando pase un año — y que hace que puedas llamar a alguien cuando algo se rompe un día 30."
+  sideBarActiveItemID="services"
 >
-  <div class="max-w-3xl mx-auto py-10 px-4">
-    <p class="text-sm font-semibold uppercase tracking-[0.2em] text-gray-500">
-      Servicio
-    </p>
-    <h1 class="mt-2 text-3xl sm:text-4xl font-semibold text-gray-900">
-      Hosting, soporte y actualizaciones
-    </h1>
+  <h2>Qué incluye</h2>
+  <ul>
+    <li>
+      <strong>Alojamiento</strong> en nuestros servidores, dimensionado a tu
+      volumen.
+    </li>
+    <li>
+      <strong>Respaldos comprobados.</strong> No basta con que el respaldo
+      corra: hay que verificar que restaura. Es la diferencia entre tener copias
+      y tener copias que sirven.
+    </li>
+    <li>
+      <strong>Monitoreo</strong> del sistema y de las sincronizaciones — si la
+      conexión con el organismo fiscal o con el banco deja de traer datos, salta
+      un aviso en vez de descubrirse en el cierre.
+    </li>
+    <li>
+      <strong>Actualizaciones de versión</strong>, con las personalizaciones
+      probadas antes de aplicarlas. Es lo que evita que el sistema se quede
+      congelado en la versión del día de la implantación.
+    </li>
+    <li>
+      <strong>Soporte</strong> para el equipo: dudas, incidencias y ajustes
+      pequeños.
+    </li>
+  </ul>
 
-    <p class="mt-4 text-lg text-gray-700">
-      Un ERP no es un proyecto que se entrega y se olvida: es un sistema del que
-      depende tu facturación. Esta es la parte que hace que siga funcionando
-      cuando pase un año — y que hace que puedas llamar a alguien cuando algo se
-      rompe un día 30.
-    </p>
+  <h2>Por qué alojado con nosotros</h2>
+  <p>
+    Porque el sistema tiene partes que no son solo ERPNext: la conexión con el
+    organismo fiscal, la del banco, el gateway de IA. Todo eso hay que
+    desplegar, vigilar y actualizar de forma coordinada, y coordinar eso a
+    través de la infraestructura de un tercero convierte cada incidencia en una
+    conversación a tres bandas.
+  </p>
+  <p>
+    Si prefieres alojarlo tú, se puede — ERPNext es software libre y no hay
+    atadura de ningún tipo, ni con nosotros ni con nadie. En ese caso el soporte
+    se cotiza aparte y algunas de las garantías de arriba dejan de estar en mi
+    mano, así que te lo diré con claridad antes de firmar.
+  </p>
 
-    <h2 class="mt-10 text-2xl font-semibold text-gray-900">Qué incluye</h2>
-    <ul class="mt-4 list-disc space-y-2 pl-6 text-gray-700">
-      <li>
-        <strong class="font-semibold">Alojamiento</strong> en nuestros
-        servidores, dimensionado a tu volumen.
-      </li>
-      <li>
-        <strong class="font-semibold">Respaldos comprobados.</strong> No basta
-        con que el respaldo corra: hay que verificar que restaura. Es la
-        diferencia entre tener copias y tener copias que sirven.
-      </li>
-      <li>
-        <strong class="font-semibold">Monitoreo</strong> del sistema y de las
-        sincronizaciones — si la conexión con el organismo fiscal o con el banco
-        deja de traer datos, salta un aviso en vez de descubrirse en el cierre.
-      </li>
-      <li>
-        <strong class="font-semibold">Actualizaciones de versión</strong>, con
-        las personalizaciones probadas antes de aplicarlas. Es lo que evita que
-        el sistema se quede congelado en la versión del día de la implantación.
-      </li>
-      <li>
-        <strong class="font-semibold">Soporte</strong> para el equipo: dudas,
-        incidencias y ajustes pequeños.
-      </li>
-    </ul>
+  <h2>Cuánto cuesta</h2>
+  <p>
+    Es una <strong>cuota mensual</strong> según número de usuarios, volumen de
+    documentos e integraciones activas. El importe está en la página de tu país —
+    {
+      Object.values(paises).map((p, i) => (
+        <>
+          {i > 0 && " o "}
+          <a href={p.url}>{p.nombre}</a>
+        </>
+      ))
+    }
+    — junto con el desglose de todos los componentes.
+  </p>
 
-    <h2 class="mt-10 text-2xl font-semibold text-gray-900">
-      Por qué alojado con nosotros
-    </h2>
-    <p class="mt-3 text-gray-700">
-      Porque el sistema tiene partes que no son solo ERPNext: la conexión con el
-      organismo fiscal, la del banco, el gateway de IA. Todo eso hay que
-      desplegar, vigilar y actualizar de forma coordinada, y coordinar eso a
-      través de la infraestructura de un tercero convierte cada incidencia en
-      una conversación a tres bandas.
-    </p>
-    <p class="mt-3 text-gray-700">
-      Si prefieres alojarlo tú, se puede — ERPNext es software libre y no hay
-      atadura de ningún tipo, ni con nosotros ni con nadie. En ese caso el
-      soporte se cotiza aparte y algunas de las garantías de arriba dejan de
-      estar en mi mano, así que te lo diré con claridad antes de firmar.
-    </p>
-
-    <h2 class="mt-10 text-2xl font-semibold text-gray-900">Cuánto cuesta</h2>
-    <p class="mt-3 text-gray-700">
-      Es una <strong class="font-semibold text-gray-900">cuota mensual</strong>
-      según número de usuarios, volumen de documentos e integraciones activas.
-      El importe está en la página de tu país —
-      {
-        Object.values(paises).map((p, i) => (
-          <>
-            {i > 0 && " o "}
-            <a href={p.url} class="underline underline-offset-2">{p.nombre}</a>
-          </>
-        ))
-      }
-      — junto con el desglose de todos los componentes.
-    </p>
-
-    <div class="mt-12">
-      <ServiceLeadForm
-        servicio="hosting-soporte"
-        heading="¿Cuánto sería en tu caso?"
-        subheading="Déjame tus datos y cuántos usuarios y sociedades tienes; te paso la cuota que te corresponde."
-      />
-    </div>
-  </div>
-</BaseLayout>
+  <ServiceLeadForm
+    slot="footer"
+    servicio="hosting-soporte"
+    heading="¿Cuánto sería en tu caso?"
+    subheading="Déjame tus datos y cuántos usuarios y sociedades tienes; te paso la cuota que te corresponde."
+  />
+</PageLayout>

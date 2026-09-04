@@ -1,23 +1,22 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
+import PageLayout from "../layouts/PageLayout.astro";
 import ServiceLeadForm from "../components/ServiceLeadForm.astro";
 ---
 
-<BaseLayout title="Agendar llamada" sideBarActiveItemID="services">
-  <div class="max-w-3xl mx-auto py-10 px-4">
-    <h1 class="text-3xl font-bold mb-4">Agendar llamada (15–20 min)</h1>
-
-    <p class="mb-6 text-lg text-gray-700">
-      Antes de agendar, déjame tus datos y el objetivo de la llamada para prepararme.
-    </p>
-
-    <ServiceLeadForm
-      servicio="agendar-llamada-home"
-      heading="Antes de agendar"
-      subheading="Completa el formulario y al enviar te llevaré a la agenda para elegir un horario."
-      ctaLabel="Enviar y agendar"
-      submitMode="booking"
-    />
-  </div>
-</BaseLayout>
-
+<PageLayout
+  title="Agendar llamada (15–20 min)"
+  headTitle="Agendar llamada"
+  description="Reserva una llamada de 15–20 minutos, sin coste, para revisar tu caso y decidir el siguiente paso."
+  kicker="Sin coste"
+  lead="Antes de agendar, déjame tus datos y el objetivo de la llamada para prepararme."
+  sideBarActiveItemID="services"
+>
+  <ServiceLeadForm
+    slot="footer"
+    servicio="agendar-llamada-home"
+    heading="Antes de agendar"
+    subheading="Completa el formulario y al enviar te llevaré a la agenda para elegir un horario."
+    ctaLabel="Enviar y agendar"
+    submitMode="booking"
+  />
+</PageLayout>

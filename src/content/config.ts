@@ -41,6 +41,11 @@ const integracionSchema = z.object({
   description: z.string(),
   publishDate: z.coerce.date(),
   image: z.string(),
+  /** Qué parte de la portada se conserva al recortarla a banda 3:1. Por defecto
+      el centro, que sirve cuando el motivo va centrado; en una foto con el
+      contenido abajo —un rótulo, un pie— hay que bajarlo o se corta. Acepta
+      cualquier valor de `object-position`: "center", "bottom", "50% 70%". */
+  imagePosition: z.string().optional(),
   tags: uniqueTags,
   github: z.string().optional(),
   demo: z.string().optional(),
