@@ -100,6 +100,24 @@ const razones = [
           </p>
         </section>
 
+        {/* Va aquí, entre el titular y el primer bloque de texto: la página
+            arrancaba con dos párrafos seguidos y le faltaba aire. `srcset` con
+            dos tamaños porque el ancho máximo de la columna es 900 px y servir
+            1344 a un móvil es tirar ancho de banda. Sin `loading="lazy"`: está
+            en la primera pantalla, y diferir lo que ya se ve retrasa el pintado
+            en vez de adelantarlo. */}
+        <figure class="mt-8">
+          <img
+            src="/assets/images/erpnext/por-que-erpnext/portada.webp"
+            srcset="/assets/images/erpnext/por-que-erpnext/portada-800.webp 800w, /assets/images/erpnext/por-que-erpnext/portada.webp 1344w"
+            sizes="(min-width: 1024px) 900px, 100vw"
+            width="1344"
+            height="768"
+            alt="Diagrama isométrico: piezas modulares encajadas sobre una base común, como los módulos de un ERP sobre un sistema único"
+            class="w-full rounded-lg border border-gray-300"
+          />
+        </figure>
+
         <section class="py-10" aria-labelledby="por-que-linux">
           <h2 id="por-que-linux" class="text-2xl font-semibold text-gray-900">
             Por qué esa comparación

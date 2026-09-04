@@ -1185,3 +1185,32 @@ otro fallo silencioso posible.
 Diseño: la retícula de `GridBackground`, monocromo, `gray-900` para el titular y
 `gray-500/600` para lo secundario. Sin negro pleno — está reservado al botón de
 agendar.
+
+## Imagen de portada para /erpnext
+
+Generada con `genimg` (el envoltorio de la API de Google AI Studio que vive en
+`~/.local/bin/genimg`, con la clave en `~/.config/genimg/api-key`). Tres
+variantes a 16:9, monocromas, y el prompt insistía en **sin ningún texto**:
+los generadores escriben mal las letras casi siempre, y la página ya tiene las
+palabras.
+
+Elegida la variante con más contraste (desviación de luminancia 43 frente a 29 y
+18 de las otras dos). Descartada la más contenida porque el motivo salía
+diminuto —en una columna de 900 px se habría leído como un garabato— y porque su
+tono crema no es el blanco del sitio.
+
+**Conversión: 1.553 KB de PNG → 52 KB de WebP** a 1344 px, más una versión de
+800 px (12 KB) para móvil vía `srcset`. Servir 1344 a un teléfono es tirar ancho
+de banda, y el ancho máximo de la columna son 900 px.
+
+Sin `loading="lazy"` a propósito: está en la primera pantalla, y diferir lo que
+ya se ve retrasa el pintado en vez de adelantarlo.
+
+Colocada entre el titular y "Por qué esa comparación", que es donde la página
+arrancaba con dos párrafos seguidos sin aire.
+
+**Nota sobre las dos imágenes de esta página**, que son cosas distintas y
+conviene no confundirlas: la de `public/og/erpnext.png` es la tarjeta social
+—invisible en la página, sólo se ve al compartir el enlace— y lleva el titular
+escrito porque en una tarjeta compartida el texto es el gancho. Esta otra es la
+portada visible del cuerpo y no lleva texto.
