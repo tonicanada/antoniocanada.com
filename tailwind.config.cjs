@@ -1,8 +1,26 @@
 /** @type {import('tailwindcss').Config} */
+// La medida del texto corrido del sitio, escrita una sola vez. La usan el tema
+// `prose` (el cuerpo de los artículos) y la utilidad `text-body`, que es la que
+// hay que poner en el texto corrido que cae FUERA de `prose`: los paneles de
+// cierre que van en el `slot="footer"`, las rejillas marcadas `not-prose` y las
+// páginas compuestas a mano.
+//
+// Por ahí se colaba la otra escala. `text-base` de Tailwind es 16 px con
+// interlineado 1,5, y puesto junto a un párrafo de `prose` —17 px con 1,75— la
+// diferencia es de 4 px por renglón: se ve, y se lee como un descuido. Pasaba
+// en la rejilla de procesos de /construccion, justo debajo de su párrafo de
+// entrada.
+const cuerpo = { fontSize: '1.0625rem', lineHeight: '1.75' };
+
 module.exports = {
 	content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
 	theme: {
 		extend: {
+			// Ver la nota de `cuerpo` arriba: esto es lo que hace que `text-body`
+			// exista como utilidad y valga lo mismo que un párrafo de `prose`.
+			fontSize: {
+				body: [cuerpo.fontSize, { lineHeight: cuerpo.lineHeight }],
+			},
 			// Los dos únicos anchos de columna del sitio. Antes había tres, y ninguno
 			// era una decisión: 900 px en el `main` por defecto, 768 px (`max-w-3xl`)
 			// en las páginas de servicio, y `min(750px, 80vw)` en los artículos.
@@ -49,8 +67,8 @@ module.exports = {
 						// si lo pusieran los dos, gana el más estrecho por accidente.
 						maxWidth: 'none',
 						color: theme('colors.gray.700'),
-						fontSize: '1.0625rem',
-						lineHeight: '1.75',
+						fontSize: cuerpo.fontSize,
+						lineHeight: cuerpo.lineHeight,
 						'--tw-prose-headings': theme('colors.gray.900'),
 						'--tw-prose-bold': theme('colors.gray.900'),
 						'--tw-prose-links': theme('colors.gray.900'),
