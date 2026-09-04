@@ -72,16 +72,55 @@ const agendarUrl =
       </Button>
     </div>
 
-    <p class="mt-6 text-center text-sm text-gray-600 max-w-xl mx-auto">
-      Soy <strong class="font-semibold text-gray-800">Antonio Cañada</strong>.
-      Más de 10 años dirigiendo áreas de administración y finanzas, ahora
-      implementando ERPNext en Chile, España y Bolivia. Fundador de
-      <strong class="font-semibold text-gray-800">Bizmotion</strong>.
-      <a
-        href="/about-me"
-        class="underline underline-offset-2 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
-        >Sobre mí</a
-      >
-    </p>
+    <!-- La foto va aquí y no sobre el `h1`, a propósito. Lo que se vende es que
+         alguien confíe la contabilidad de su empresa a una persona concreta, así
+         que la cara hace trabajo real de confianza — pero esta línea ya es la
+         credencial, y la foto sólo la firma. Grande y arriba costaba ~150 px de
+         un hero que mide `100dvh` menos el navbar, y empujaba los dos botones
+         fuera de la primera pantalla en un portátil; a 44 px cuesta cero,
+         porque el bloque no crece más que la propia línea de texto.
+         (No va el logo de Bizmotion: pide un reconocimiento de marca que la
+         marca aún no tiene, y compite con el dominio, que es el nombre.)
+
+         Y se esconde en `lg`, que es exactamente donde `BaseLayout` abre la
+         barra lateral (`lg:drawer-open`): ahí ya hay un retrato de 136 px en la
+         misma pantalla, y dos veces la misma cara a medio metro de distancia se
+         lee como descuido. Por debajo de `lg` la barra lateral vive dentro del
+         drawer y la home no mostraba ninguna cara — justo en el dispositivo por
+         el que llega el tráfico de LinkedIn. La foto aparece donde falta y
+         desaparece donde ya está; si algún día la barra lateral cambia de punto
+         de corte, este `lg:hidden` tiene que cambiar con ella.
+
+         Con la foto oculta el texto vuelve a ir centrado (`lg:text-center`):
+         alineado a la izquierda sólo tiene sentido cuando hay un retrato al
+         lado que le dé un borde.
+
+         `alt=""` no es un olvido: el texto de al lado ya dice el nombre, y un
+         `alt` con el nombre haría que un lector de pantalla lo leyera dos veces
+         seguidas. El texto pasa a la izquierda porque centrado, con la foto a
+         un lado, el bloque queda descuadrado. -->
+    <div
+      class="mt-6 flex max-w-xl mx-auto items-center justify-center gap-3 text-left lg:text-center"
+    >
+      <img
+        src="/profile.webp"
+        alt=""
+        width="44"
+        height="44"
+        decoding="async"
+        class="h-11 w-11 flex-none rounded-full object-cover lg:hidden"
+      />
+      <p class="text-sm text-gray-600">
+        Soy <strong class="font-semibold text-gray-800">Antonio Cañada</strong>.
+        Más de 10 años dirigiendo áreas de administración y finanzas, ahora
+        implementando ERPNext en Chile, España y Bolivia. Fundador de
+        <strong class="font-semibold text-gray-800">Bizmotion</strong>.
+        <a
+          href="/about-me"
+          class="underline underline-offset-2 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
+          >Sobre mí</a
+        >
+      </p>
+    </div>
   </div>
 </div>
