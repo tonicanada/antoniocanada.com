@@ -1,9 +1,35 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PaginatedList from "../../components/PaginatedList.astro";
+import Panel from "../../components/Panel.astro";
+import Button from "../../components/Button.astro";
 import { getCollection } from "astro:content";
 import createSlug from "../../lib/createSlug";
 
+// Esta página era una pila de cuatro tarjetas idénticas —vídeo de presentación,
+// mapa de procesos, short de IA, vídeo de ecommerce— más una lista paginada de
+// dos artículos. Abría con una definición de enciclopedia ("un sistema ERP de
+// código abierto para gestionar todas las áreas de tu empresa") y no
+// argumentaba nada.
+//
+// El problema de fondo era de papel: la home responde POR QUÉ UNIFICAR,
+// /services QUÉ SE VENDE y /integraciones CON QUÉ SE CONECTA. La pregunta que
+// faltaba en todo el embudo es "¿por qué este ERP y no SAP, Odoo o lo que ya
+// tengo?", que es justo la objeción entre "necesito unificar" y "te contrato".
+// Esta página existe para eso.
+//
+// Se quitó el vídeo introductorio: no aparece en el top 10 del canal (el décimo
+// tiene 29 vistas/mes), así que no se gana la atención donde ya está la
+// audiencia, y su registro —recorrido de funcionalidades— contesta una pregunta
+// que nadie hizo en una página que decide una elección. El mapa de procesos
+// responde "qué módulos tiene" mejor y en tres segundos. Sigue en YouTube.
+//
+// Se quitó también "Próximamente agregaré más recursos y tutoriales": una
+// promesa de obra en curso escrita en una web comercial resta.
+//
+// La comparativa con SAP/Odoo/Dynamics/NetSuite estaba enterrada bajo cuatro
+// vídeos, dentro de una lista titulada "Artículos". Son 158 líneas atacando
+// exactamente la objeción de esta página: sube a bloque destacado.
 export async function getStaticPaths({ paginate }) {
   const posts = await getCollection("erpnext");
   posts.sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
@@ -11,113 +37,250 @@ export async function getStaticPaths({ paginate }) {
 }
 
 const { page } = Astro.props;
+const esPrimeraPagina = !page.url.prev;
+
+// Cifras comprobadas el 2026-09-04 en la API de GitHub (frappe/erpnext).
+// Redondeadas a propósito: una cifra exacta envejece y hay que mantenerla.
+// Y se dan como texto y no como gráfico — un gráfico de estrellas es una
+// métrica para desarrolladores, y a un director de administración 38.867
+// estrellas no le dicen nada. El argumento es longevidad, adopción y licencia.
+const github = {
+  estrellas: "casi 39.000",
+  forks: "más de 12.000",
+  url: "https://github.com/frappe/erpnext",
+};
+
+const razones = [
+  {
+    titulo: "El código es tuyo",
+    texto:
+      "Licencia GPL. No hay licencias por usuario que suban cada año, ni un proveedor que pueda subirte el precio porque ya no te puedes ir. Si mañana quieres cambiar de quien te lo mantiene, te llevas el sistema entero.",
+  },
+  {
+    titulo: "Un sistema, no seis",
+    texto:
+      "Contabilidad, inventario, compras, ventas, proyectos u obras, y personas dentro del mismo sistema. No integrado: dentro. Es lo que hace que se pueda responder una pregunta que cruza dos áreas.",
+  },
+  {
+    titulo: "Extensible de verdad",
+    texto:
+      "No sólo configurable. Se le añaden documentos, campos, estados, validaciones e informes propios, así que tus procesos caben tal como son en vez de al revés.",
+  },
+  {
+    titulo: "Sin cajas negras para la IA",
+    texto:
+      "Al ser abierto, un asistente de IA no sólo ve tus datos: puede leer el código que los produce. Sabe cómo se calcula ese informe y qué significa ese campo que alguien añadió. Con un sistema cerrado eso es imposible, y con uno de escritorio ni eso.",
+  },
+];
 ---
 
 <BaseLayout
-  title="ERPNext"
-  description="Guías sobre ERPNext: cómo funciona la contabilidad y las operaciones, y en qué se diferencia de los ERP cerrados."
+  title="ERPNext: el Linux de los ERP"
+  description="Por qué ERPNext y no SAP, Odoo o el sistema que ya tienes: código abierto con licencia GPL, en producción desde 2010, extensible de verdad y sin cajas negras para la IA."
   sideBarActiveItemID="erpnext"
 >
-  <!-- Sección personalizada con presentación -->
-  <section class="pb-12">
-    <h1 class="text-3xl font-bold mb-4">ERPNext</h1>
-    <p class="mb-6 text-lg">
-      En esta sección te presento ERPNext, un sistema ERP de código abierto para
-      gestionar todas las áreas de tu empresa. Aquí tienes un video
-      introductorio que preparé para explicar sus beneficios y funcionalidades.
-    </p>
+  {
+    esPrimeraPagina && (
+      <>
+        <section class="pb-4">
+          <p class="text-sm font-semibold uppercase tracking-[0.2em] text-gray-500">
+            Por qué ERPNext
+          </p>
+          <h1 class="mt-2 text-3xl sm:text-4xl font-semibold text-gray-900">
+            ERPNext es el Linux de los ERP
+          </h1>
+          <p class="mt-4 max-w-2xl text-lg text-gray-600">
+            Código abierto, comunidad grande, aburrido en el mejor sentido de la
+            palabra: lleva funcionando desde 2010.{" "}
+            <strong class="font-semibold text-gray-800">
+              Con la diferencia de que tú no lo administras — de eso me encargo
+              yo.
+            </strong>
+          </p>
+        </section>
 
-    <div
-      class="aspect-w-16 aspect-h-9 w-full rounded-lg shadow-lg overflow-hidden mb-6"
-    >
-      <iframe
-        src="https://www.youtube.com/embed/kgBMb0ijOmM"
-        title="Presentación ERPNext"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen
-        class="w-full h-full border-0"
-      ></iframe>
-    </div>
+        <section class="py-10" aria-labelledby="por-que-linux">
+          <h2 id="por-que-linux" class="text-2xl font-semibold text-gray-900">
+            Por qué esa comparación
+          </h2>
+          <p class="mt-3 max-w-2xl text-base text-gray-600">
+            Linux es el sistema operativo que mueve internet: los servidores en
+            los que corre tu banco, tu correo y esta página. Nadie lo eligió por
+            entusiasmo, lo eligieron porque es sólido, porque nadie te puede
+            echar de él y porque lleva décadas sin romperse.
+          </p>
+          <p class="mt-3 max-w-2xl text-base text-gray-600">
+            ERPNext juega ese papel entre los ERP: misma familia de licencia,
+            mismo modelo de comunidad más servicios, misma neutralidad de
+            proveedor. El código empezó en 2006 para la empresa familiar de su
+            fundador, el proyecto se formalizó en 2008 y la primera versión se
+            publicó en 2010. Hoy tiene{" "}
+            <a
+              href={github.url}
+              rel="noopener"
+              class="underline underline-offset-2 hover:text-gray-900"
+            >
+              {github.estrellas} estrellas y {github.forks} forks
+            </a>{" "}
+            en GitHub — y los forks importan más que las estrellas, porque son
+            gente construyendo encima.
+          </p>
+        </section>
 
-    <p class="text-base">
-      Próximamente agregaré más recursos y tutoriales para ayudarte a
-      implementar ERPNext en tu empresa.
-    </p>
-  </section>
+        {/* Es el argumento más oportuno ahora mismo, y el que la analogía de
+            Linux cierra sola: nadie escribe su propio kernel. */}
+        <Panel as="section" class="my-6" aria-labelledby="propio-erp">
+          <h2 id="propio-erp" class="text-xl font-semibold text-gray-900">
+            «Con IA me construyo mi propio ERP»
+          </h2>
+          <p class="mt-3 text-base text-gray-600">
+            Es una tentación razonable, y hoy más que nunca: con un asistente de
+            IA se puede levantar algo que funcione. El problema es que{" "}
+            <strong class="font-semibold text-gray-800">
+              construirlo es el 10% del trabajo y mantenerlo es el 90%
+            </strong>
+            . Cuando el SII cambie un formato, cuando haya que migrar la base de
+            datos, cuando aparezca un fallo en el cálculo de un impuesto — no
+            hay comunidad, no hay actualizaciones, y la persona que lo escribió
+            se convierte en el único punto de fallo de la empresa.
+          </p>
+          <p class="mt-3 text-base text-gray-600">
+            Es como ponerse a escribir Linux: probablemente saldría algo, y
+            después habría que mantenerlo para siempre.
+          </p>
+          <p class="mt-3 text-base text-gray-600">
+            Y no hace falta elegir entre genérico y hecho a medida. ERPNext es
+            abierto y extensible, así que la elección real es{" "}
+            <a
+              href="/services/migracion-erpnext/#procesos"
+              class="font-semibold text-gray-900 underline underline-offset-2"
+            >
+              a medida sobre una base que alguien más mantiene
+            </a>{" "}
+            frente a a medida hasta el kernel.
+          </p>
+        </Panel>
 
-  <section class="pb-12">
-    <div class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-      <h2 class="text-2xl font-semibold mb-3">Mapa de procesos de ERPNext</h2>
-      <p class="text-base text-gray-700 mb-6">
-        Este mapa resume cómo ERPNext conecta ventas, compras, inventario,
-        contabilidad, proyectos y operaciones en un sistema único.
-      </p>
+        <section class="py-10" aria-labelledby="razones">
+          <h2 id="razones" class="text-2xl font-semibold text-gray-900">
+            Qué te da en concreto
+          </h2>
+          <dl class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
+            {
+              razones.map((r) => (
+                <div>
+                  <dt class="font-semibold text-gray-900">{r.titulo}</dt>
+                  <dd class="mt-1 text-base text-gray-600">{r.texto}</dd>
+                </div>
+              ))
+            }
+          </dl>
+        </section>
 
-      <img
-        src="/assets/images/erpnext/erpnext_metromap_es.webp"
-        alt="Mapa de procesos de ERPNext en español"
-        loading="lazy"
-        class="w-full rounded-lg shadow-lg"
-      />
-    </div>
-  </section>
+        <Panel as="section" class="my-6" aria-labelledby="comparativa">
+          <p class="text-sm font-semibold uppercase tracking-[0.2em] text-gray-500">
+            La respuesta larga
+          </p>
+          <h2 id="comparativa" class="mt-2 text-xl font-semibold text-gray-900">
+            ERPNext frente a SAP, Odoo, Dynamics y NetSuite
+          </h2>
+          <p class="mt-3 text-base text-gray-600">
+            Comparativa a fondo: qué cuesta cada uno de verdad —licencias,
+            implantación, mantenimiento—, cuánto tarda cada implantación, y en
+            qué casos otro ERP es la mejor opción, que también los hay.
+          </p>
+          <div class="mt-5">
+            <Button href="/erpnext/erpnext-vs-sap-odoo-dynamics-y-netsuite-comparativa-completa-para-empresas/">
+              Leer la comparativa
+            </Button>
+          </div>
+        </Panel>
 
-  <section class="pb-12">
-    <div class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-      <h2 class="text-2xl font-semibold mb-3">ERPNext + IA en acción</h2>
-      <p class="text-base text-gray-700 mb-6">
-        Demo rápida de automatización sobre ERPNext: emitir una factura y
-        enviarla por email con OpenClaw.
-      </p>
-
-      <div class="mx-auto w-full max-w-[400px]">
-        <div
-          class="relative w-full overflow-hidden rounded-lg bg-black shadow-lg aspect-[9/16]"
-          data-short-hover-player
-        >
-          <iframe
-            data-short-iframe
-            class="absolute inset-0 h-full w-full border-0"
-            src="https://www.youtube-nocookie.com/embed/vG_Yv2dNY38?rel=0&mute=1&playsinline=1"
-            title="ERPNext + IA en acción"
+        <section class="py-10" aria-labelledby="mapa">
+          <h2 id="mapa" class="text-2xl font-semibold text-gray-900">
+            Qué hay dentro
+          </h2>
+          <p class="mt-3 max-w-2xl text-base text-gray-600">
+            Cómo se conectan ventas, compras, inventario, contabilidad,
+            proyectos y operaciones. Es la respuesta visual a «¿cubre lo que
+            hago yo?»: casi siempre sí, y lo que falta se añade.
+          </p>
+          <img
+            src="/assets/images/erpnext/erpnext_metromap_es.webp"
+            alt="Mapa de procesos de ERPNext: ventas, compras, inventario, contabilidad, proyectos y operaciones conectados"
             loading="lazy"
-            referrerpolicy="strict-origin-when-cross-origin"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen
-          ></iframe>
-        </div>
-      </div>
-    </div>
-  </section>
+            class="mt-6 w-full rounded-lg border border-gray-300"
+          />
+        </section>
 
-  <section class="pb-12">
-    <div class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-      <h2 class="text-2xl font-semibold mb-3">Ecommerce conectado con ERPNext</h2>
-      <p class="text-base text-gray-700 mb-6">
-        En este video muestro una compra online conectada con ERPNext: pedido,
-        pago con Stripe, factura generada y su impacto directo en inventario y
-        contabilidad.
-      </p>
+        {/* Estas dos demuestran; el vídeo de presentación que había aquí
+            describía. La prueba gana a la descripción, así que ocupan el sitio
+            que tenía él. */}
+        <section class="py-10" aria-labelledby="demos">
+          <h2 id="demos" class="text-2xl font-semibold text-gray-900">
+            Funcionando, no en diapositivas
+          </h2>
 
-      <div class="mx-auto w-full max-w-4xl">
-        <div class="aspect-video aspect-w-16 aspect-h-9 w-full overflow-hidden rounded-lg bg-black shadow-lg">
-          <iframe
-            class="h-full w-full border-0"
-            src="https://www.youtube-nocookie.com/embed/PL19FGIEi_g?si=d2yG_z8mnwFdSGzV&rel=0"
-            title="Ecommerce conectado con ERPNext"
-            loading="lazy"
-            referrerpolicy="strict-origin-when-cross-origin"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen
-          ></iframe>
-        </div>
-      </div>
-    </div>
-  </section>
+          <div class="mt-6 grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_18rem]">
+            <div>
+              <h3 class="font-semibold text-gray-900">
+                Una venta online completa
+              </h3>
+              <p class="mt-1 text-base text-gray-600">
+                Pedido, pago con Stripe, factura emitida, y su impacto directo
+                en inventario y contabilidad. Sin que nadie digite nada entre
+                paso y paso.
+              </p>
+              <div
+                class="mt-4 aspect-video w-full overflow-hidden rounded-lg border border-gray-300 bg-black"
+              >
+                <iframe
+                  class="h-full w-full border-0"
+                  src="https://www.youtube-nocookie.com/embed/PL19FGIEi_g?rel=0"
+                  title="Ecommerce conectado con ERPNext"
+                  loading="lazy"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen></iframe>
+              </div>
+            </div>
 
-  <!-- Lista paginada de artículos -->
+            <div>
+              <h3 class="font-semibold text-gray-900">La IA operando el ERP</h3>
+              <p class="mt-1 text-base text-gray-600">
+                Emitir una factura y enviarla por correo, pedido en lenguaje
+                natural.{" "}
+                <a
+                  href="/integraciones/mcp-ia/"
+                  class="underline underline-offset-2 hover:text-gray-900"
+                >
+                  Cómo funciona
+                </a>
+                .
+              </p>
+              <div
+                class="relative mt-4 aspect-[9/16] w-full overflow-hidden rounded-lg border border-gray-300 bg-black"
+                data-short-hover-player
+              >
+                <iframe
+                  data-short-iframe
+                  class="absolute inset-0 h-full w-full border-0"
+                  src="https://www.youtube-nocookie.com/embed/vG_Yv2dNY38?rel=0&mute=1&playsinline=1"
+                  title="ERPNext + IA en acción"
+                  loading="lazy"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen></iframe>
+              </div>
+            </div>
+          </div>
+        </section>
+      </>
+    )
+  }
+
   <PaginatedList
-    title="Artículos"
+    title={esPrimeraPagina ? "Para leer" : "ERPNext"}
     urlPrefix="/erpnext"
     page={page}
     cardProps={(entry) => ({
@@ -130,25 +293,87 @@ const { page } = Astro.props;
     })}
   />
 
-  <section class="py-12">
-    <div class="rounded-lg border border-gray-200 bg-white p-6 text-center shadow-sm">
-      <h2 class="text-2xl font-semibold mb-3">
-        ¿Quieres ver cómo encajaría ERPNext en tu empresa?
-      </h2>
-      <p class="mx-auto mb-6 max-w-2xl text-base text-gray-700">
-        Podemos revisar tus procesos, necesidades y prioridades para definir el
-        mejor siguiente paso.
-      </p>
-      <a href="/agendar" class="btn btn-primary">Agendar una reunión</a>
-    </div>
-  </section>
+  {
+    esPrimeraPagina && (
+      <>
+        <section class="py-10" aria-labelledby="siguiente">
+          <h2 id="siguiente" class="text-2xl font-semibold text-gray-900">
+            Y a partir de aquí
+          </h2>
+          <ul class="mt-4 space-y-2 text-base text-gray-700">
+            <li>
+              <a
+                href="/integraciones/"
+                class="font-semibold text-gray-900 underline underline-offset-2"
+              >
+                Con qué se conecta
+              </a>{" "}
+              — facturación electrónica, banco, compras, IA.
+            </li>
+            <li>
+              <a
+                href="/services/migracion-erpnext/"
+                class="font-semibold text-gray-900 underline underline-offset-2"
+              >
+                Cómo es una migración
+              </a>{" "}
+              — en qué orden se hace y qué se cobra en cada parte.
+            </li>
+            <li>
+              <a
+                href="/chile/"
+                class="font-semibold text-gray-900 underline underline-offset-2"
+              >
+                En Chile
+              </a>{" "}
+              (SII, DTE, RCV) o{" "}
+              <a
+                href="/espana/"
+                class="font-semibold text-gray-900 underline underline-offset-2"
+              >
+                en España
+              </a>{" "}
+              (Veri*Factu), con sus precios.
+            </li>
+          </ul>
+        </section>
+
+        <Panel as="section" class="my-6">
+          <h2 class="text-xl font-semibold text-gray-900">
+            ¿Encajaría en tu empresa?
+          </h2>
+          <p class="mt-2 max-w-2xl text-base text-gray-600">
+            En una llamada de 15–20 minutos, sin coste, reviso qué sistemas usas
+            hoy y te digo si ERPNext tiene sentido en tu caso. A veces la
+            respuesta es que no, y también te lo digo.
+          </p>
+          <div class="mt-5">
+            <Button
+              href="/agendar/"
+              data-ev="service_cta_click"
+              data-ev-params={JSON.stringify({
+                service_name: "agendar",
+                cta_text: "Agendar llamada",
+                cta_location: "erpnext_cierre",
+              })}
+            >
+              Agendar llamada
+            </Button>
+          </div>
+        </Panel>
+      </>
+    )
+  }
 
   <script>
+    // El short arranca solo, en silencio, cuando entra en pantalla: es vertical
+    // y corto, así que verlo es más barato que decidir si pulsarlo.
     const player = document.querySelector("[data-short-hover-player]");
     const iframe = player?.querySelector("[data-short-iframe]");
 
     if (player instanceof HTMLElement && iframe instanceof HTMLIFrameElement) {
-      const baseSrc = "https://www.youtube-nocookie.com/embed/vG_Yv2dNY38?rel=0&mute=1&playsinline=1";
+      const baseSrc =
+        "https://www.youtube-nocookie.com/embed/vG_Yv2dNY38?rel=0&mute=1&playsinline=1";
       const autoplaySrc = `${baseSrc}&autoplay=1`;
       const observer = new IntersectionObserver(
         ([entry]) => {

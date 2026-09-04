@@ -1013,3 +1013,104 @@ Los commits 84ac310 y 481e3e7 se hicieron con `git add -A` y el segundo arrastr�
 home. Era trabajo terminado y coherente, sólo mal atribuido; no se reescribió
 porque la rama está compartida con una sesión activa y un force-push le habría
 divergido el historial. A partir de ahí se listan las rutas explícitamente.
+
+---
+
+# /erpnext: la página que faltaba en el embudo
+
+## El diagnóstico
+
+Era una pila de cuatro tarjetas idénticas —vídeo de presentación, mapa de
+procesos, short de IA, vídeo de ecommerce—, después una lista paginada de dos
+artículos, y un CTA. Todas las secciones con el mismo marcado de tarjeta escrito
+a mano, sin jerarquía entre ellas.
+
+El problema de fondo era de **papel**, no de diseño. La home responde *por qué
+unificar*, `/services` *qué se vende* y `/integraciones` *con qué se conecta*.
+La pregunta que faltaba en todo el embudo es **"¿por qué este ERP y no SAP, Odoo
+o lo que ya tengo?"** — justo la objeción entre "necesito unificar" y "te
+contrato". La página abría con una definición de enciclopedia y no argumentaba
+nada.
+
+Y había un embudo roto por la Fase 1: el botón secundario del hero dice "Ver
+cómo funciona" y aterriza aquí, pero el mecanismo ya lo cuentan el esquema de la
+home y `/integraciones`. **Pendiente: cambiar ese botón a "Por qué ERPNext"** —
+no se hizo en el mismo commit porque otra sesión tenía `HeroSection.astro`
+modificado.
+
+## La tesis: el Linux de los ERP
+
+Titular: **"ERPNext es el Linux de los ERP"**, con la cláusula que cierra la
+objeción que la analogía abre — *"con la diferencia de que tú no lo administras:
+de eso me encargo yo"*. Sin esa cláusula, a un gerente no técnico Linux le suena
+a "difícil, para programadores, sin soporte", y le entregas una objeción nueva.
+
+La analogía es fuerte porque **transfiere una creencia que el comprador ya
+tiene**: la ansiedad real ante el código abierto es "¿esto es un juguete?", y
+eso no se responde con argumentos sino con Linux, que es aburrido, sólido y está
+en todas partes. Y es cierta en lo que importa: misma familia de licencia (GPL),
+mismo modelo de comunidad más servicios, misma neutralidad de proveedor.
+
+Sustituye al titular que el plan reservaba para esta página ("El Excel que pega
+tus sistemas es tu sistema más crítico"), que es un planteamiento de problema —
+trabajo de la home. Esta página decide una elección, y Linux es un argumento de
+elección.
+
+## «Con IA me construyo mi propio ERP»
+
+El argumento más oportuno ahora mismo, y la analogía lo cierra sola: nadie
+escribe su propio kernel. El punto no es que no puedas construirlo, es que
+**construirlo es el 10% del trabajo y mantenerlo es el 90%** — sin comunidad,
+sin actualizaciones, sin cumplimiento fiscal cuando el organismo cambie un
+formato, y con quien lo escribió convertido en el único punto de fallo de la
+empresa.
+
+Con remate a favor: no hay que elegir entre genérico y hecho a medida. La
+elección real es *a medida sobre una base que alguien más mantiene* frente a *a
+medida hasta el kernel*, y enlaza al modelado de procesos.
+
+## Datos, comprobados
+
+- Código desde **2006** (empresa familiar del fundador), Frappe Technologies en
+  **2008**, primera versión de ERPNext en **2010**. **No 2013**, que era la
+  suposición de partida.
+- `frappe/erpnext` en GitHub: **casi 39.000 estrellas y más de 12.000 forks**,
+  GPL-3.0 (comprobado en la API el 2026-09-04). Redondeados a propósito: una
+  cifra exacta envejece y hay que mantenerla.
+- Se dan **como texto y no como gráfico**. Un gráfico de estrellas es una
+  métrica para desarrolladores; a un director de administración 38.867 estrellas
+  no le dicen nada, e insinuaría que la curva de crecimiento es el argumento
+  cuando el argumento es longevidad, adopción y licencia. Sería además otro dato
+  que envejece, como la UF. Y de los dos números, los **forks** dicen más:
+  son gente construyendo encima.
+
+## Fuera el vídeo introductorio
+
+No aparece en el top 10 del canal, y el décimo tiene 29 vistas/mes: no se está
+ganando la atención donde ya está la audiencia. Y su registro —"te presento
+ERPNext, un sistema ERP de código abierto… sus beneficios y funcionalidades"— es
+la versión en vídeo del hero biográfico y de las tarjetas genéricas de
+servicios, que es justo lo que se ha ido quitando.
+
+No se baja al final: seguiría costando peso de página, un iframe y una cosa más
+compitiendo por el clic. Sigue en YouTube. Si se quiere un vídeo introductorio
+en esta página, el que merece ese sitio es uno nuevo haciendo el argumento de
+Linux.
+
+Se quitó también **"Próximamente agregaré más recursos y tutoriales"**: una
+promesa de obra en curso escrita en una web comercial resta.
+
+## El resto de la reorganización
+
+- **La comparativa sube a bloque destacado** con su propio botón. Son 158 líneas
+  atacando exactamente la objeción de la página y estaba debajo de cuatro
+  vídeos, dentro de una lista titulada "Artículos".
+- **Las dos demos ocupan el sitio del vídeo de presentación**, con un titular
+  que dice qué prueban ("Funcionando, no en diapositivas") en vez de ser una
+  galería. La prueba gana a la descripción.
+- **El mapa de procesos** se reencuadra como "Qué hay dentro" — la respuesta
+  visual a "¿cubre lo que hago yo?" — en vez de decoración.
+- **Salidas a integraciones, migración y las páginas de país**, que no existían:
+  la página estaba casi aislada en la arquitectura nueva.
+- CTA en singular, y `Panel`/`Button` en vez de repetir el marcado de tarjeta
+  cuatro veces a mano.
