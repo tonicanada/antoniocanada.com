@@ -65,6 +65,11 @@ export type Variante = {
   precio?: number;
   /** El componente no se ofrece en ese país. */
   noAplica?: boolean;
+  /** Sustituye al importe en la columna de precio, para lo que no tiene un
+      número único (el modelado va por tramos, no por precio fijo). Un hueco en
+      esa columna se lee como "sin decidir", que es lo que la cabecera
+      adaptativa vino a evitar. */
+  precioNota?: string;
 };
 
 export type ComponenteServicio = {
@@ -109,17 +114,29 @@ export const componentes: ComponenteServicio[] = [
     queEs:
       "Instalación, empresas, plan de cuentas, impuestos, usuarios y permisos por perfil. El sistema funcionando con tu estructura real.",
     modo: "fijo",
+    paises: {
+      cl: { precio: 40 },
+      es: { precio: 1500 },
+    },
   },
   {
     nombre: "Modelado de tus procesos",
     enlace: "/services/migracion-erpnext/#procesos",
     queEs:
-      "Los flujos que tu empresa ya tiene, entendidos, depurados y modelados dentro del sistema: aprobaciones, estados de documento, controles y responsables por perfil. Precio fijo por proceso, según su alcance.",
+      "Los flujos que tu empresa ya tiene, entendidos, depurados y modelados dentro del sistema: aprobaciones, estados de documento, controles y responsables por perfil. Precio fijo por proceso, según su tramo.",
+    // Tres tramos y no un precio único, así que la cifra va en la descripción
+    // de cada país: un "desde" ancla bajo y no explica nada.
     modo: "fijo",
     paises: {
       cl: {
+        precioNota: "10, 20 o 40 UF",
         queEs:
-          "Los flujos que tu empresa ya tiene, entendidos, depurados y modelados dentro del sistema. En construcción, por ejemplo: control de subcontratos, resultado por obra, cajas chicas, provisiones y permisos por perfil. Precio fijo por proceso, según su alcance.",
+          "Los flujos que tu empresa ya tiene, entendidos, depurados y modelados dentro del sistema. En construcción, por ejemplo: control de subcontratos, resultado por obra, cajas chicas, provisiones y permisos por perfil. 10, 20 o 40 UF por proceso según su tramo.",
+      },
+      es: {
+        precioNota: "400, 800 o 1.500 €",
+        queEs:
+          "Los flujos que tu empresa ya tiene, entendidos, depurados y modelados dentro del sistema: aprobaciones, estados de documento, controles y responsables por perfil. 400, 800 o 1.500 € por proceso según su tramo.",
       },
     },
   },
@@ -130,10 +147,12 @@ export const componentes: ComponenteServicio[] = [
     modo: "fijo",
     paises: {
       cl: {
+        precio: 24,
         queEs:
           "Plan de cuentas chileno, impuestos para el F29, y la conexión con el SII: emisión de DTE con folios CAF, recepción, RCV y aceptación o reclamo.",
       },
       es: {
+        precio: 900,
         queEs:
           "Plan contable español, IVA y retenciones, y emisión con Veri*Factu: PDF con QR validable ante Hacienda, incluidas las facturas rectificativas.",
       },
@@ -155,21 +174,32 @@ export const componentes: ComponenteServicio[] = [
     modo: "fijo",
     paises: {
       cl: {
+        precio: 18,
         queEs:
           "Precio fijo por integración. En Chile: banco vía Fintoc, licitaciones vía Wherex, IA por MCP, ecommerce y pagos.",
       },
       es: {
+        precio: 700,
         queEs:
           "Precio fijo por integración: banco, IA por MCP, ecommerce y pagos. Las de sourcing local se evalúan según la plataforma que uses.",
       },
     },
   },
   {
-    nombre: "Hosting, soporte y actualizaciones",
+    nombre: "Infraestructura",
     enlace: "/services/hosting-soporte/",
     queEs:
-      "El sistema alojado en nuestros servidores, con respaldos, monitoreo, actualizaciones de versión y soporte. Cuota mensual.",
+      "El sistema alojado con respaldos automáticos, monitorización, SSL y dominio, actualizaciones de seguridad y recuperación ante incidencias. No incluye soporte funcional.",
     modo: "mensual",
+    paises: { cl: { precio: 2 }, es: { precio: 79 } },
+  },
+  {
+    nombre: "Sistema mantenido",
+    enlace: "/services/hosting-soporte/",
+    queEs:
+      "Todo lo anterior más lo que mantiene tu sistema al día: actualizaciones de ERPNext con tus personalizaciones probadas, mantenimiento de las apps instaladas, actualizaciones de la localización fiscal y una hora mensual de soporte.",
+    modo: "mensual",
+    paises: { cl: { precio: 6 }, es: { precio: 249 } },
   },
   {
     nombre: "Capacitación",
@@ -177,6 +207,10 @@ export const componentes: ComponenteServicio[] = [
     queEs:
       "Bloques de horas, para usuarios o para equipos técnicos que van a mantener y extender el sistema.",
     modo: "fijo",
+    paises: {
+      cl: { precio: 10 },
+      es: { precio: 400 },
+    },
   },
 ];
 
@@ -225,18 +259,21 @@ export const tramosProceso: TramoProceso[] = [
     queIncluye:
       "Sobre documentos que ya existen: campos, validaciones, permisos y un informe.",
     ejemplos: "Cajas chicas · asignación de sueldos a centro de costo",
+    precios: { cl: 10, es: 400 },
   },
   {
     nombre: "Medio",
     queIncluye:
       "Documento propio con estados y aprobaciones, más su informe.",
     ejemplos: "Aprobación de compras por monto · solicitudes desde sucursales",
+    precios: { cl: 20, es: 800 },
   },
   {
     nombre: "Complejo",
     queIncluye:
       "Varios documentos enlazados, cálculos, y efecto en contabilidad o inventario.",
     ejemplos: "Control de subcontratos · provisiones · resultado por proyecto",
+    precios: { cl: 40, es: 1500 },
   },
 ];
 
@@ -268,6 +305,7 @@ function importe(pais: Pais, precio: number): string {
       style: "currency",
       currency: pais.monedaReferencia,
       maximumFractionDigits: 0,
+      useGrouping: "always",
     }).format(precio * ufActual.valor);
     return `${uf} UF (≈ ${pesos})`;
   }
@@ -276,6 +314,7 @@ function importe(pais: Pais, precio: number): string {
     style: "currency",
     currency: pais.unidad,
     maximumFractionDigits: 0,
+    useGrouping: "always",
   }).format(precio);
 }
 
@@ -286,6 +325,9 @@ function importe(pais: Pais, precio: number): string {
 export function comoSeCobra(c: ComponenteServicio, pais?: Pais): string {
   if (c.modo === "gratis") return etiquetas.gratis;
   if (!pais) return etiquetas[c.modo];
+
+  const nota = c.paises?.[pais.codigo]?.precioNota;
+  if (nota) return `${etiquetas[c.modo]} — ${nota}`;
 
   const precio = c.paises?.[pais.codigo]?.precio;
   if (precio == null) return etiquetas[c.modo];

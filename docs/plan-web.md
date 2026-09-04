@@ -1664,3 +1664,101 @@ vigilar.
 Cambiarlo es lo correcto, pero **no el día antes de lanzar**: hay que probarlo en
 producción con un envío real, y si falla se pierden contactos sin enterarse.
 Mejor con la web ya viva.
+
+---
+
+# Precios publicados
+
+## Los componentes, derivados del suelo de 3.000 €
+
+Antonio fijó el suelo: **por debajo de 3.000 € una migración no le mueve**, y no
+quería limitarse por arriba porque un proyecto puede ser de 10.000.
+
+Publicar *"desde 3.000 €"* era la salida obvia y es la que ya se había
+descartado: un "desde" ancla bajo y no explica nada. **La tabla de componentes
+resuelve el problema sin rangos**: se ponen precios de forma que la suma mínima
+caiga en el suelo, y el techo se explica solo porque más componentes es más
+dinero.
+
+| Componente | Chile | España |
+|---|---|---|
+| Consulta inicial | gratis | gratis |
+| Blueprint | 8 UF | 300 € |
+| Puesta en marcha | 40 UF | 1.500 € |
+| Modelado de procesos | 10 / 20 / 40 UF | 400 / 800 / 1.500 € |
+| Localización fiscal | 24 UF | 900 € |
+| Migración de datos | presupuesto | presupuesto |
+| Cada integración | 18 UF | 700 € |
+| Infraestructura | 2 UF/mes | 79 €/mes |
+| Sistema mantenido | 6 UF/mes | 249 €/mes |
+| Capacitación | 10 UF | 400 € |
+
+**Proyecto mínimo realista** (blueprint + puesta en marcha + localización + un
+proceso simple): 3.100 € / 82 UF. **Proyecto grande** (más migración de datos,
+tres integraciones, seis procesos y capacitación): por encima de 10.000 €. Las
+dos cifras que Antonio tenía en la cabeza, sin escribir ningún rango.
+
+Chile va en cifras redondas de UF y **no convirtiendo**: es el criterio que ya
+estaba escrito — fijar por mercado, usar la conversión sólo como control de
+cordura.
+
+## El hosting en dos niveles, partido por riesgo
+
+La propuesta de partida era 79 €/mes con el hosting, los respaldos, las
+actualizaciones de ERPNext, el mantenimiento de las apps propias **y las
+actualizaciones de la localización fiscal**; más un segundo nivel a 149 € que
+añadía una hora de soporte.
+
+El problema es de coste real: un ERPNext en producción corre en un VPS de 30–60 €
+al mes más el almacenamiento de respaldos, así que de 79 € queda muy poco. Y
+tres de esas líneas no son hosting — actualizar ERPNext en una instancia
+**personalizada** significa probar el código propio contra la versión nueva, y
+sobre todo, **cuando el SII o la AEAT cambian un formato son días de trabajo, es
+obligatorio, y cae sobre todos los clientes a la vez**. Con cinco clientes a
+79 € eso son 395 € al mes para absorber un cambio normativo.
+
+Así que el corte no es "una hora de soporte": es **"mantengo tu servidor"**
+frente a **"mantengo tu sistema legal"**.
+
+- **Infraestructura, 79 € / 2 UF** — hosting, respaldos verificados,
+  monitorización, SSL y dominio, actualizaciones de seguridad, recuperación ante
+  incidencias.
+- **Sistema mantenido, 249 € / 6 UF** — lo anterior más actualizaciones de
+  ERPNext con las personalizaciones probadas, mantenimiento de las apps propias,
+  **actualizaciones de la localización fiscal**, una hora mensual de soporte y
+  prioridad.
+
+Eso justifica el salto de precio, y el segundo nivel se vende solo a cualquiera
+que use facturación electrónica — que son todos los clientes objetivo.
+
+## Tres decisiones de la página de hosting
+
+**La exclusión, explícita y en negrita.** Es lo más importante de la página:
+sin ella, la cuota compra preguntas ilimitadas, una incidencia semanal se lleva
+el margen del año y se acaba evitando al cliente — que es peor que no haberlo
+cobrado. Y se dice en la misma frase que **la hora no se acumula**, para no
+discutirlo en abril.
+
+**Tres meses incluidos, no un año.** Incluir doce meses esconde el ingreso
+recurrente: el cliente ancla en "3.000 y ya está" y al duodécimo mes recibe una
+factura que vive como nueva, justo en el momento de máxima probabilidad de fuga.
+Y son 948 € regalados sobre un proyecto de 3.000. Tres meses es el periodo de
+arranque, en el que habría acompañamiento de todos modos: 237 € que no se
+regalan realmente. La página dice el porqué en voz alta.
+
+**La cláusula de salida.** *"Te entrego los respaldos completos y el sistema es
+tuyo"* — GPL, documentado, te lo llevas a otro proveedor. Cuesta cero, es
+verdad, desactiva el miedo que frena cualquier suscripción, y **es la respuesta
+al bus factor que quedó abierta** al elegir la voz en singular.
+
+## Nota de formato
+
+`Intl` con `es-ES` agrupa en "min2": 1500 sale sin separador y 15.000 con. Es la
+convención de la RAE, pero la del sitio es punto como separador de miles
+siempre, y un "1500 €" junto a un "$1.635.160" se lee como descuido. Se fuerza
+con `useGrouping: "always"`.
+
+Y el modelado de procesos no tiene un importe único sino tres tramos: en vez de
+dejar un hueco en la columna de precio —que se lee como "sin decidir", justo lo
+que la cabecera adaptativa vino a evitar— muestra los tres mediante el campo
+`precioNota`.

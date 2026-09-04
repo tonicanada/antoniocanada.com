@@ -1,84 +1,187 @@
 ---
 import PageLayout from "../../layouts/PageLayout.astro";
+import Panel from "../../components/Panel.astro";
+import Button from "../../components/Button.astro";
 import ServiceLeadForm from "../../components/ServiceLeadForm.astro";
-import { paises } from "../../data/servicios";
+import { componentes, comoSeCobra, paises } from "../../data/servicios";
 
-// Página nueva. Es el único ingreso recurrente del negocio y hasta ahora no
-// existía en la web: las seis tarjetas anteriores eran todas proyectos de una
-// vez. Sin esta página, el visitante no sabe que después de migrar hay alguien
-// manteniendo el sistema, que es justo la duda que frena a quien ya se quemó
-// con un proveedor que desapareció.
+// Dos niveles, y el corte NO es "una hora de soporte": es "mantengo tu
+// servidor" frente a "mantengo tu sistema legal".
+//
+// El motivo es de coste real. Un ERPNext en producción corre en un VPS de
+// 30–60 € al mes más el almacenamiento de respaldos, así que de una cuota de
+// 79 € queda muy poco. Y tres de las líneas que parecían caber ahí no son
+// hosting: actualizar ERPNext en una instancia PERSONALIZADA significa probar
+// el código propio contra la versión nueva, y sobre todo, cuando el SII o la
+// AEAT cambian un formato eso son días de trabajo, es obligatorio y cae sobre
+// todos los clientes a la vez. Meter la localización fiscal en el nivel de
+// infraestructura sería regalar lo más valioso de la lista.
+//
+// La exclusión va explícita y en negrita a propósito: sin ella, 79 € compran
+// preguntas ilimitadas y el margen del año se lo lleva una sola incidencia.
+const niveles = [
+  {
+    componente: "Infraestructura",
+    resumen: "Que el servidor esté en pie y los respaldos sirvan.",
+    incluye: [
+      "Hosting de producción, dimensionado a tu volumen",
+      "Respaldos automáticos, y verificados: no basta con que corran, hay que comprobar que restauran",
+      "Monitorización del sistema y de las sincronizaciones — si la conexión con el organismo fiscal o con el banco deja de traer datos, salta un aviso en vez de descubrirse en el cierre",
+      "Certificado SSL y dominio o subdominio",
+      "Actualizaciones de seguridad del servidor",
+      "Recuperación ante incidencias de infraestructura",
+    ],
+  },
+  {
+    componente: "Sistema mantenido",
+    resumen: "Todo lo anterior, y que el sistema siga al día y en regla.",
+    incluye: [
+      "Actualizaciones controladas de ERPNext y Frappe, con tus personalizaciones probadas antes de aplicarlas",
+      "Mantenimiento de las apps propias instaladas en tu sistema",
+      "Actualizaciones de la localización fiscal contratada — cuando el SII o la AEAT cambian algo, lo asumo yo",
+      "Una hora mensual de soporte funcional o técnico, y pequeños ajustes de configuración",
+      "Prioridad de atención",
+    ],
+  },
+].map((n) => ({
+  ...n,
+  datos: componentes.find((c) => c.nombre === n.componente)!,
+}));
 ---
 
 <PageLayout
   title="Hosting, soporte y actualizaciones"
-  headTitle="Hosting, soporte y actualizaciones de ERPNext"
-  description="Tu ERPNext alojado con respaldos comprobados, monitoreo, actualizaciones de versión y soporte. La parte que hace que la implantación siga sirviendo en tres años."
+  headTitle="Hosting y mantenimiento de ERPNext: dos niveles"
+  description="Tu ERPNext alojado con respaldos verificados y monitorización, y un segundo nivel que mantiene el sistema al día: actualizaciones de versión con tus personalizaciones probadas y de la localización fiscal."
   kicker="Servicio"
-  lead="Un ERP no es un proyecto que se entrega y se olvida: es un sistema del que depende tu facturación. Esta es la parte que hace que siga funcionando cuando pase un año — y que hace que puedas llamar a alguien cuando algo se rompe un día 30."
+  lead="Un ERP no es un proyecto que se entrega y se olvida: es un sistema del que depende tu facturación. Esta es la parte que hace que siga funcionando cuando pase un año — y que puedas llamar a alguien cuando algo se rompe un día 30."
   sideBarActiveItemID="services"
 >
-  <h2>Qué incluye</h2>
-  <ul>
-    <li>
-      <strong>Alojamiento</strong> en nuestros servidores, dimensionado a tu
-      volumen.
-    </li>
-    <li>
-      <strong>Respaldos comprobados.</strong> No basta con que el respaldo
-      corra: hay que verificar que restaura. Es la diferencia entre tener copias
-      y tener copias que sirven.
-    </li>
-    <li>
-      <strong>Monitoreo</strong> del sistema y de las sincronizaciones — si la
-      conexión con el organismo fiscal o con el banco deja de traer datos, salta
-      un aviso en vez de descubrirse en el cierre.
-    </li>
-    <li>
-      <strong>Actualizaciones de versión</strong>, con las personalizaciones
-      probadas antes de aplicarlas. Es lo que evita que el sistema se quede
-      congelado en la versión del día de la implantación.
-    </li>
-    <li>
-      <strong>Soporte</strong> para el equipo: dudas, incidencias y ajustes
-      pequeños.
-    </li>
-  </ul>
-
-  <h2>Por qué alojado con nosotros</h2>
+  <h2>Dos niveles</h2>
   <p>
-    Porque el sistema tiene partes que no son solo ERPNext: la conexión con el
-    organismo fiscal, la del banco, el gateway de IA. Todo eso hay que
-    desplegar, vigilar y actualizar de forma coordinada, y coordinar eso a
-    través de la infraestructura de un tercero convierte cada incidencia en una
-    conversación a tres bandas.
-  </p>
-  <p>
-    Si prefieres alojarlo tú, se puede — ERPNext es software libre y no hay
-    atadura de ningún tipo, ni con nosotros ni con nadie. En ese caso el soporte
-    se cotiza aparte y algunas de las garantías de arriba dejan de estar en mi
-    mano, así que te lo diré con claridad antes de firmar.
+    La diferencia no es una hora de soporte: es <strong>mantener tu servidor</strong>
+    frente a <strong>mantener tu sistema al día y en regla</strong>. Si usas
+    facturación electrónica, el segundo es el que te interesa — cuando el
+    organismo cambia un formato, alguien tiene que ponerse.
   </p>
 
-  <h2>Cuánto cuesta</h2>
-  <p>
-    Es una <strong>cuota mensual</strong> según número de usuarios, volumen de
-    documentos e integraciones activas. El importe está en la página de tu país —
+  <div class="not-prose my-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
     {
-      Object.values(paises).map((p, i) => (
-        <>
-          {i > 0 && " o "}
-          <a href={p.url}>{p.nombre}</a>
-        </>
+      niveles.map((n) => (
+        <Panel class="flex flex-col">
+          <p class="text-sm font-semibold uppercase tracking-[0.15em] text-gray-500">
+            {n.componente}
+          </p>
+          <p class="mt-2 text-base text-gray-600">{n.resumen}</p>
+          <ul class="mt-4 flex-1 space-y-2 text-sm text-gray-700">
+            {n.incluye.map((i) => (
+              <li class="flex gap-2">
+                <span aria-hidden="true" class="text-gray-400">
+                  ·
+                </span>
+                <span>{i}</span>
+              </li>
+            ))}
+          </ul>
+          <dl class="mt-5 border-t border-gray-200 pt-4 text-sm">
+            {Object.values(paises).map((p) => (
+              <div class="flex justify-between gap-3 py-0.5">
+                <dt class="text-gray-600">{p.nombre}</dt>
+                <dd class="font-semibold text-gray-900">
+                  {comoSeCobra(n.datos, p).replace("Mensual — ", "")} / mes
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </Panel>
       ))
     }
-    — junto con el desglose de todos los componentes.
+  </div>
+
+  {/* Lo más importante de la página. Sin esta frase, la cuota compra preguntas
+      ilimitadas: una incidencia semanal se lleva el margen del año y acabas
+      evitando al cliente, que es peor que no haberlo cobrado. */}
+  <Panel as="section" class="my-8">
+    <h2 class="mt-0 text-xl font-semibold text-gray-900">Qué no incluye</h2>
+    <p class="mt-3 text-base text-gray-600">
+      Ninguno de los dos niveles incluye <strong class="font-semibold text-gray-800"
+        >soporte funcional continuo, configuraciones nuevas, desarrollos a
+        medida ni integraciones nuevas</strong
+      >. Eso se cotiza aparte —
+      <a href="/services/desarrollo-integraciones/">desarrollo e integraciones</a>
+      — o sale de la hora mensual del segundo nivel si cabe en ella.
+    </p>
+    <p class="mt-3 text-base text-gray-600">
+      Y esa hora <strong class="font-semibold text-gray-800">no se acumula</strong>:
+      si un mes no la usas, no se guarda para el siguiente. Lo digo aquí para no
+      tener que discutirlo en abril.
+    </p>
+  </Panel>
+
+  <h2>Los tres primeros meses van incluidos</h2>
+  <p>
+    Con una <a href="/services/migracion-erpnext/">migración</a>, los tres
+    primeros meses de suscripción están dentro del proyecto. Es el periodo en que
+    el sistema se asienta y en el que vas a necesitarme cerca de todos modos, así
+    que no tiene sentido facturarlo aparte.
+  </p>
+  <p>
+    No incluyo el año entero a propósito, y prefiero decir por qué: haría que la
+    cuota pareciera gratis y que al duodécimo mes te llegara una factura que
+    vivirías como nueva. Mejor que sepas desde el principio qué cuesta mantener
+    el sistema, porque es un coste real y es el que hace que dentro de tres años
+    siga funcionando.
   </p>
 
-  <ServiceLeadForm
-    slot="footer"
-    servicio="hosting-soporte"
-    heading="¿Cuánto sería en tu caso?"
-    subheading="Déjame tus datos y cuántos usuarios y sociedades tienes; te paso la cuota que te corresponde."
-  />
+  <h2>Por qué alojado conmigo</h2>
+  <p>
+    Porque tu sistema tiene partes que no son sólo ERPNext: la conexión con el
+    organismo fiscal, la del banco, el gateway de IA. Todo eso hay que
+    desplegar, vigilar y actualizar de forma coordinada, y hacerlo a través de la
+    infraestructura de un tercero convierte cada incidencia en una conversación
+    a tres bandas.
+  </p>
+  <p>
+    Si prefieres alojarlo tú, se puede: ERPNext es software libre y no hay
+    atadura de ningún tipo. En ese caso el mantenimiento se cotiza aparte y
+    algunas de las garantías de arriba dejan de estar en mi mano — te lo diré con
+    claridad antes de firmar, no después.
+  </p>
+
+  <Panel as="section" class="my-8">
+    <h2 class="mt-0 text-xl font-semibold text-gray-900">Y si te quieres ir</h2>
+    <p class="mt-3 text-base text-gray-600">
+      <strong class="font-semibold text-gray-800"
+        >Te entrego los respaldos completos y el sistema es tuyo.</strong
+      > ERPNext es software libre con licencia GPL: puedes llevártelo a otro
+      proveedor, a tu propio servidor o a tu equipo interno. Todo queda
+      documentado precisamente para que eso sea posible.
+    </p>
+    <p class="mt-3 text-base text-gray-600">
+      Lo digo porque es la duda razonable de cualquiera que contrata una
+      suscripción, y porque la respuesta juega a mi favor: si te quedas, es
+      porque te conviene, no porque no puedas salir.
+    </p>
+  </Panel>
+
+  <h2>Qué cubren estas cuotas</h2>
+  <p>
+    Las cuotas de arriba corresponden a una sociedad y hasta unos diez usuarios.
+    Suben por sociedad adicional y por integración activa — el desglose completo,
+    con el resto de los componentes de un proyecto, está en
+    <a href={paises.cl.url}>la página de Chile</a> o
+    <a href={paises.es.url}>la de España</a>.
+  </p>
+
+  <div class="not-prose mt-6">
+    <Button href="/agendar/" variant="secondary">Agendar una llamada</Button>
+  </div>
+
+  <div class="not-prose mt-12">
+    <ServiceLeadForm
+      servicio="hosting_soporte"
+      heading="¿Cuánto sería en tu caso?"
+      subheading="Déjame tus datos y cuántos usuarios y sociedades tienes; te paso la cuota que te corresponde."
+    />
+  </div>
 </PageLayout>
