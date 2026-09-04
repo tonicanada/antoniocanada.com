@@ -174,4 +174,4 @@ with open(path) as f:
 - [Repositorio en GitHub](https://github.com/tonicanada/conversor_nominas_bancos_chile)
 - [PyPI del proyecto](https://pypi.org/project/conversor-nominas-bancos-chile/)
 
-Si te gustó este artículo, ¡dale a 👏 y compártelo! Puedes seguirme en mi [LinkedIn](https://www.linkedin.com/in/canadamomblant/), [Twitter](https://twitter.com/toni_canada), [Facebook](https://www.facebook.com/toni.canada) o [Medium](https://tonicanada.medium.com/).
+Si te gustó este artículo, ¡compártelo! Puedes seguirme en [LinkedIn](https://www.linkedin.com/in/antoniocanada/), [Twitter](https://twitter.com/toni_canada), [Facebook](https://www.facebook.com/toni.canada) o [Medium](https://tonicanada.medium.com/).

@@ -1558,9 +1558,14 @@ una.
   `curl` venció a los 15 y dio 000. Funciona, pero esa lentitud es mala
   experiencia para quien haga clic desde los casos reales — y es hosting de
   Tecton, no de esta web.
-- LinkedIn devuelve 999 a `curl` (bloquea bots), así que **esa comprobación no
-  es concluyente**. Sí es un aviso que haya **dos perfiles distintos**
-  enlazados: `/in/antoniocanada/` y `/in/canadamomblant/`. Hay que decidir cuál.
+- LinkedIn devuelve 999 a `curl` (bloquea bots), así que esa comprobación no
+  fue concluyente. Pero había **dos perfiles distintos** enlazados y eso sí era
+  un problema: `/in/antoniocanada/` (el correcto, y el que ya usaba el menú
+  lateral) y `/in/canadamomblant/`, el antiguo, en **cuatro posts del blog**
+  importados de Medium. Unificado a `/in/antoniocanada/`.
+- En esos mismos posts apareció otro residuo de la importación: dos pedían
+  *"dale a 👏"* — el aplauso de Medium, un botón que en este sitio no existe.
+  Se le estaba pidiendo al lector algo que no podía hacer. Corregido.
 - El enlace de la agenda (`calendar.app.google/...`) responde 200. Era el más
   crítico: si estuviera roto, se rompería el embudo entero.
 
@@ -1568,9 +1573,24 @@ una.
 
 - Quitar la colección `store` de `src/content/config.ts` (elimina el aviso del
   build).
-- Decidir qué perfil de LinkedIn es el correcto y unificar.
 - `src/pages/api/stripe-webhook-bootcamp-nov2025.ts` está muerto: el endpoint
   que lo alimentaba devuelve 410. Se puede borrar con su variable de entorno.
 - Definir `RESEND_API_KEY` en Vercel **antes** de publicar. Ahora el formulario
   falla de forma visible si no está, que es mejor que perder leads, pero mejor
   que no falte.
+
+### Nota sobre los secretos en Vercel
+
+La captura del panel confirmó que las seis variables que importan **sí están
+definidas** en producción, así que el formulario avisa hoy — el arreglo de la
+pérdida silenciosa es red de seguridad, no un incendio activo.
+
+Pero Vercel marca `RESEND_API_KEY` y `STRIPE_SECRET_KEY` como *"Needs
+Attention"*: están guardadas como variables normales y **no como secretos**, o
+sea que su valor es legible para cualquiera con acceso al proyecto. Lo que dice
+el aviso es lo correcto — rotarlas en el origen (Resend y Stripe) y volver a
+guardarlas marcadas como *Secret*.
+
+De las dos, **la de Stripe es la urgente**: con una clave secreta de Stripe se
+pueden crear cargos. La de Resend permite enviar correo en nombre del dominio.
+Es un arreglo del panel, no del repositorio.
