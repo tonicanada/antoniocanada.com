@@ -1,0 +1,161 @@
+---
+import PageLayout from "../layouts/PageLayout.astro";
+import Panel from "../components/Panel.astro";
+import Button from "../components/Button.astro";
+import ServiceLeadForm from "../components/ServiceLeadForm.astro";
+
+// Un sector, a fondo, y no cinco por encima. El plan lo decidió así: hay
+// experiencia en maquinaria, inmobiliarias y arquitectura, pero un sector con
+// detalle real convierte más que cinco descripciones genéricas — y construcción
+// es el único con evidencia pública detrás.
+//
+// Aquí sí se usa "obra" sin reservas. El vocabulario sectorial se sacó de la
+// home y de /services porque allí excluye; en la página del sector es
+// precisamente lo que demuestra que se conoce el terreno.
+//
+// Cuidado con lo que se afirma: la lista de procesos son los que en
+// construcción hay que modelar, y enlazan a los tramos de precio. No se dice
+// que los ocho estén empaquetados como producto — lo que está en producción es
+// la integración con el SII en cuatro empresas del grupo, y eso sí se afirma.
+const procesos = [
+  {
+    nombre: "Resultado por obra",
+    texto:
+      "Cada obra con su propio estado de resultados: materiales, subcontratos, remuneraciones y gastos generales imputados donde corresponde. No una estimación al cierre, sino el dato al día.",
+  },
+  {
+    nombre: "Control de subcontratos",
+    texto:
+      "El contrato, sus estados de pago, las retenciones y las garantías, con el avance real contra lo pactado. Es donde se escapa el margen y donde casi siempre hay un Excel paralelo.",
+  },
+  {
+    nombre: "Permisos por perfil",
+    texto:
+      "El bodeguero ve su bodega, el jefe de obra la suya, el contador el libro, el auditor lo que audita, el administrador de contrato su contrato. Es la parte que decide si la gente usa el sistema o lo esquiva.",
+  },
+  {
+    nombre: "Bodega e inventario por obra",
+    texto:
+      "Existencias por obra y no solo por empresa, con traslados entre bodegas y el consumo imputado al centro de costo que lo consumió.",
+  },
+  {
+    nombre: "Cajas chicas",
+    texto:
+      "Rendiciones por obra, con su respaldo y su aprobación, contabilizadas sin que nadie transcriba un Excel a fin de mes.",
+  },
+  {
+    nombre: "Provisiones",
+    texto:
+      "Lo comprometido y no facturado, que es la diferencia entre un resultado por obra que sirve y uno que engaña.",
+  },
+  {
+    nombre: "Remuneraciones a centro de costo",
+    texto:
+      "El sueldo de cada persona imputado a la obra en la que trabajó. Sin esto, el resultado por obra es incompleto por definición.",
+  },
+  {
+    nombre: "Activos fijos",
+    texto:
+      "Depreciación y ubicación: qué equipo está en qué obra, desde cuándo, y qué cuesta tenerlo ahí.",
+  },
+];
+---
+
+<PageLayout
+  title="ERPNext para constructoras"
+  headTitle="ERPNext para constructoras: resultado por obra, subcontratos y bodega"
+  description="Un ERP que entiende qué es una obra: resultado por obra al día, control de subcontratos con estados de pago y retenciones, bodega por obra, cajas chicas y provisiones. Con la conexión al SII funcionando."
+  kicker="Sector"
+  lead="En construcción la unidad de análisis no es la empresa, es la obra. Y ahí es donde casi todos los ERP dejan a medias: te dan el resultado de la sociedad y el de cada obra lo arma una persona en Excel, dos meses tarde."
+  sideBarActiveItemID="services"
+>
+  <h2>Por qué un ERP genérico se queda corto</h2>
+  <p>
+    Un ERP estándar sabe llevar la contabilidad de una empresa. En construcción
+    eso no basta, porque las preguntas que importan son por obra: cuánto llevas
+    gastado, cuánto queda por facturar, qué margen tienes de verdad, cuánto has
+    pagado a este subcontratista y cuánto le retienes.
+  </p>
+  <p>
+    Para responderlas hay que imputar bien cada peso —material, subcontrato,
+    sueldo, provisión— al centro de costo que le corresponde, y eso no se
+    configura: <strong>se modela</strong>. Es la diferencia entre un sistema que
+    te obliga a montar un Excel paralelo y uno donde el resultado por obra sale
+    del propio sistema porque los datos entraron bien desde el principio.
+  </p>
+
+  <h2>Los procesos que hay que modelar</h2>
+  <p>
+    Esto es lo que en construcción no viene de fábrica en ningún ERP y hay que
+    construir encima. Cada uno se modela y se cotiza por separado —
+    <a href="/services/migracion-erpnext/#procesos"
+      >precio fijo por proceso según su alcance</a
+    >, con el tramo asignado en el estudio previo — así que no hace falta
+    contratarlos todos ni empezar por todos.
+  </p>
+
+  <dl class="not-prose my-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
+    {
+      procesos.map((p) => (
+        <div>
+          <dt class="font-semibold text-gray-900">{p.nombre}</dt>
+          <dd class="mt-1 text-base text-gray-600">{p.texto}</dd>
+        </div>
+      ))
+    }
+  </dl>
+
+  <h2>Y encima, lo que ya es obligatorio</h2>
+  <p>
+    Una constructora chilena factura, recibe cientos de facturas de proveedores
+    al mes y cede facturas a factoring. Todo eso está resuelto y conectado al
+    SII: emisión de DTE, recepción y clasificación automática de los XML,
+    aceptación o reclamo, RCV, y las cesiones a factoring —donde el RUT del
+    factoring redirige el pago, así que un dato mal puesto le paga al proveedor
+    una factura que ya cobró otro.
+    <a href="/integraciones/sii-chile/">Cómo funciona</a>.
+  </p>
+
+  <Panel as="section" class="my-8">
+    <h2 class="mt-0 text-xl font-semibold text-gray-900">
+      Esto no es teoría de folleto
+    </h2>
+    <p class="mt-3 text-base text-gray-600">
+      Conozco el sector porque llevo años dentro de una constructora chilena
+      dirigiendo su administración y finanzas, no porque lo haya leído. El
+      sistema corre en producción en <strong class="font-semibold text-gray-800"
+        >cuatro empresas del grupo</strong
+      >, sobre un histórico de más de cien mil facturas de compra, sincronizando
+      a diario con el SII.
+    </p>
+    <p class="mt-3 text-base text-gray-600">
+      Eso significa que las decisiones de diseño están tomadas con el problema
+      delante: por qué el consumo de bodega tiene que imputarse al centro de
+      costo en el momento del retiro y no al cierre, por qué las retenciones de
+      subcontrato necesitan su propio estado, o por qué los permisos del
+      bodeguero no pueden ser los del jefe de obra.
+    </p>
+    <div class="mt-5">
+      <Button href="/casos-reales/" variant="secondary">Ver los casos</Button>
+    </div>
+  </Panel>
+
+  <h2>Sectores vecinos</h2>
+  <p>
+    El mismo enfoque —modelar los procesos que el sector necesita en vez de
+    forzar la operación al molde del software— lo he aplicado en
+    <strong>empresas de maquinaria</strong> (control de leasings),
+    <strong>inmobiliarias</strong> y <strong>oficinas de arquitectura</strong>
+    (registro de horas por proyecto, como en cualquier empresa que vende tiempo).
+    Construcción es el que tengo documentado a fondo; si tu caso es uno de los
+    otros, la conversación empieza igual.
+  </p>
+
+  <div class="not-prose mt-12">
+    <ServiceLeadForm
+      servicio="construccion"
+      heading="¿Cuántas obras llevas?"
+      subheading="Déjame tus datos y cuántas obras y sociedades manejas; luego podrás elegir un horario en mi agenda."
+    />
+  </div>
+</PageLayout>

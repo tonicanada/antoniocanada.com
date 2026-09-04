@@ -1311,3 +1311,75 @@ también como tarjeta social. Modo `banda` (el que trae por defecto), que recort
 a 3:1 quitando 80 px arriba y abajo: verificado que el recorte no toca el motivo,
 porque ahí sólo hay fondo. El modo `completa` habría quedado peor — mete la
 imagen en una caja 16:9 con bandas vacías y sale más alta.
+
+---
+
+# Fase 4 — Construcción, a fondo
+
+Un sector con detalle real y no cinco por encima, que es lo que el plan decidió
+desde el principio: hay experiencia en maquinaria, inmobiliarias y arquitectura,
+pero **construcción es el único con evidencia pública detrás**, y un sector
+documentado convierte más que cinco descripciones genéricas.
+
+Página nueva en **`/construccion`**. Plano y no `/sectores/construccion`: con un
+solo sector, la jerarquía sobra, y así la URL sirve de landing para intención de
+búsqueda ("erp para constructoras", "software gestión de obras").
+
+**No entra en el menú**, que ya tiene nueve entradas. Se llega desde `/chile` y
+desde la página de migración; el tráfico que importa llegará por buscador.
+
+## La tesis
+
+**En construcción la unidad de análisis no es la empresa, es la obra.** Un ERP
+estándar sabe llevar la contabilidad de una sociedad; las preguntas que importan
+aquí son por obra —cuánto llevas gastado, cuánto queda por facturar, qué margen
+hay de verdad, cuánto le retienes a este subcontratista— y responderlas exige
+imputar bien cada peso al centro de costo que le toca. Eso no se configura: se
+modela. Es la diferencia entre un sistema que te obliga a montar un Excel
+paralelo y uno donde el resultado por obra sale del propio sistema.
+
+## Los ocho procesos
+
+Resultado por obra · control de subcontratos (estados de pago, retenciones,
+garantías) · permisos por perfil · bodega e inventario por obra · cajas chicas ·
+provisiones · remuneraciones a centro de costo · activos fijos con depreciación
+y ubicación.
+
+Cada uno enlaza a los **tramos de precio** de la migración, así que la lista no
+es un folleto de promesas: es lo que entra en un presupuesto, por separado y sin
+tener que contratarlos todos.
+
+## Qué se afirma y qué no
+
+La lista son **los procesos que en construcción hay que modelar**, no ocho
+productos empaquetados. Lo que sí se afirma, porque es verdad, es que la
+integración con el SII corre en producción en cuatro empresas del grupo sobre un
+histórico de más de cien mil facturas de compra.
+
+Y el argumento de credibilidad no es la lista, es el porqué: *"las decisiones de
+diseño están tomadas con el problema delante — por qué el consumo de bodega
+tiene que imputarse al centro de costo en el momento del retiro y no al cierre,
+por qué las retenciones de subcontrato necesitan su propio estado, o por qué los
+permisos del bodeguero no pueden ser los del jefe de obra"*. Eso es lo que
+distingue conocer un sector de haberlo leído.
+
+## Vocabulario
+
+**Aquí "obra" se usa sin reservas.** Se sacó de la home y de `/services` porque
+allí excluye a quien no es constructora; en la página del sector es exactamente
+lo que demuestra que se conoce el terreno. La regla es la misma de siempre: la
+concreción persuade, el vocabulario sectorial excluye — y en esta página excluir
+es el objetivo.
+
+## La sección de /chile se acortó
+
+Tenía la lista completa, que ahora vive desarrollada en su propia página. El
+mismo contenido en dos URLs es justo lo que la Fase 0 vino a arreglar en el
+dominio y la barra final, así que en `/chile` queda un resumen de tres líneas
+con enlace.
+
+## Pendiente
+
+La página no tiene portada, mientras el resto de páginas de `PageLayout` sí. Se
+puede generar con `genimg` siguiendo el patrón de las otras dos (21:9,
+monocroma, pocas piezas grandes para que se lea en móvil).
