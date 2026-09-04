@@ -12,9 +12,111 @@ import { paises } from "../data/servicios";
 // encasilla el negocio en contabilidad y deja fuera inventario, obras,
 // sourcing, ecommerce y MCP, que no pasan por el cierre mensual. La frase se
 // conserva en el subtítulo, donde acompaña sin gobernar.
+// Las respuestas llevan HTML porque varias necesitan un enlace o una negrita, y
+// partirlas en trozos para pintarlas con JSX haría el texto ilegible aquí, que
+// es donde hay que releerlo cuando cambie un precio o un servicio.
+const preguntas = [
+  {
+    p: "¿Y si te pasa algo a ti, o decides dedicarte a otra cosa?",
+    r: `<p>Es la pregunta correcta y la contesto sin rodeos. <strong>ERPNext es
+      software libre con licencia GPL</strong>: no es mi producto, no hay
+      licencia que dependa de mí y hay una comunidad y empresas en todo el mundo
+      que trabajan con él. El código de lo que se desarrolle para ti queda en tu
+      sistema, documentado, y los respaldos son tuyos.</p>
+      <p>Eso significa que otro proveedor puede continuar el trabajo leyendo lo
+      que hay. Con un ERP propietario o con un desarrollo cerrado, esa salida no
+      existe: es la razón principal por la que trabajo con software libre y no
+      un detalle ideológico. Lo cuento con más detalle en
+      <a href="/services/hosting-soporte/#irse">qué pasa si te quieres ir</a>.</p>`,
+  },
+  {
+    p: "¿Trabajas solo?",
+    r: `<p>La relación la llevo yo: hablas con quien implementa, y eso es
+      deliberado — es lo que hace que una decisión se tome en la llamada y no en
+      un comité. Para partes concretas del trabajo colaboro con otros
+      desarrolladores de la comunidad ERPNext, con los que ya he sacado
+      proyectos adelante.</p>
+      <p>No te voy a vender un departamento que no tengo. Lo que sí digo es que
+      el tamaño del proveedor importa menos que dos cosas: que el sistema sea
+      libre y que quede documentado. Las dos están cubiertas.</p>`,
+  },
+  {
+    p: "¿Cuánto cuesta lo mínimo?",
+    r: `<p>Un proyecto pequeño —una sociedad, la facturación electrónica de tu
+      país y un proceso modelado— sale alrededor de
+      <strong>3.000 € en España</strong> u <strong>80 UF en Chile</strong>,
+      sumando los componentes de la tabla de arriba. De ahí sube según cuántas
+      sociedades, cuántos procesos y cuánto histórico traigas.</p>
+      <p>No hay un "desde" escondido: el desglose está publicado componente por
+      componente en <a href="/chile/">la página de Chile</a> y
+      <a href="/espana/">la de España</a>, y el
+      <a href="/services/diagnostico-procesos/">estudio previo</a> es lo que
+      convierte ese rango en una cifra.</p>`,
+  },
+  {
+    p: "Ya tenemos un sistema que funciona. ¿Merece la pena moverlo?",
+    r: `<p>Si tu sistema te da hoy las respuestas que necesitas, no. Los motivos
+      por los que sí suele merecer la pena son concretos: tienes varios sistemas
+      que no se hablan y una persona pegándolos en Excel; tienes varias
+      sociedades y consolidar es un trabajo manual; o arrastras un programa de
+      escritorio sin API, lo que además te deja fuera de cualquier uso serio de
+      IA sobre tus datos.</p>
+      <p>Ese último punto es el que más ha cambiado: sin API no hay forma de que
+      un modelo consulte tu operación. Con ERPNext sí — es lo que hace el
+      <a href="/integraciones/mcp-ia/">gateway de IA</a>.</p>`,
+  },
+  {
+    p: "¿Tenemos que cambiar cómo trabajamos para encajar en el ERP?",
+    r: `<p>No es el enfoque. Tus procesos se
+      <a href="/services/migracion-erpnext/#procesos">modelan</a> dentro del
+      sistema con sus estados, aprobaciones y responsables, en vez de doblar la
+      operación al molde del software.</p>
+      <p>Dicho eso, en el camino casi siempre aparecen pasos que existen sólo
+      porque el sistema viejo los obligaba. Esos los vas a querer quitar, y te
+      los señalaré — pero es tu decisión, no una condición.</p>`,
+  },
+  {
+    p: "¿Se puede quedar en nuestros propios servidores?",
+    r: `<p>Sí. Lo recomendable es alojarlo conmigo, porque tu sistema no es sólo
+      ERPNext —lleva la conexión con el organismo fiscal, la del banco, el
+      gateway de IA— y todo eso hay que desplegar y actualizar de forma
+      coordinada. Si lo alojas tú, cada incidencia pasa a ser una conversación a
+      tres bandas.</p>
+      <p>Si aun así lo prefieres, se puede y no hay atadura de ningún tipo: el
+      mantenimiento se cotiza aparte y te diré antes de firmar qué garantías
+      dejan de estar en mi mano. Los dos niveles de cuota están en
+      <a href="/services/hosting-soporte/">hosting y mantenimiento</a>.</p>`,
+  },
+  {
+    p: "¿Y nuestros datos históricos?",
+    r: `<p>Se traen: maestros —clientes, proveedores, artículos— y el histórico
+      de movimientos y saldos, con la profundidad que decidas. Es la única línea
+      del presupuesto que no lleva precio fijo, porque depende de cuántos años
+      quieras conservar y de si el sistema de origen tiene API o hay que sacar
+      los datos de informes.</p>
+      <p>En un caso real fueron más de cien mil facturas de compra migradas, así
+      que el volumen rara vez es el problema; el formato de origen sí.</p>`,
+  },
+];
+// Mismo patrón que /chile y /espana. Las respuestas de arriba llevan HTML para
+// poder enlazar, y el schema pide texto plano, así que se limpia aquí en vez de
+// mantener dos versiones del mismo texto a mano y que se desincronicen.
+const soloTexto = (html: string) =>
+  html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: preguntas.map((q) => ({
+    "@type": "Question",
+    name: q.p,
+    acceptedAnswer: { "@type": "Answer", text: soloTexto(q.r) },
+  })),
+};
 ---
 
 <BaseLayout
+  schema={faqSchema}
   title="Servicios: implantar ERPNext y mantenerlo"
   description="Migración a ERPNext, hosting con soporte y actualizaciones, desarrollo e integraciones a medida, y capacitación técnica. Con el detalle de cómo se cobra cada parte."
   sideBarActiveItemID="services"
@@ -159,6 +261,41 @@ import { paises } from "../data/servicios";
           se cotiza igual, componente por componente.
         </p>
       </Panel>
+    </section>
+
+    {/* Las preguntas que de verdad frenan la decisión, y que hasta ahora sólo
+        se respondían si el cliente se atrevía a preguntarlas en la llamada. La
+        del bus factor es la primera a propósito: es la objeción real de
+        contratar a alguien pequeño, y la respuesta juega a favor. Van en
+        <details> nativo, sin JavaScript: buscable por Ctrl+F, indexable, y
+        funciona con el teclado sin que yo escriba nada. */}
+    <section class="mt-14" aria-labelledby="preguntas">
+      <h2 id="preguntas" class="text-2xl font-semibold text-gray-900">
+        Preguntas que conviene hacer antes de firmar
+      </h2>
+      <p class="mt-2 max-w-2xl text-body text-gray-600">
+        Estas me las hacen en casi todas las llamadas. Prefiero que las leas
+        antes y no que te queden dentro.
+      </p>
+
+      <div class="mt-6 divide-y divide-gray-200 border-y border-gray-200">
+        {
+          preguntas.map((q) => (
+            <details class="group py-4">
+              <summary class="flex cursor-pointer items-start justify-between gap-4 font-semibold text-gray-900 marker:content-none [&::-webkit-details-marker]:hidden">
+                <span>{q.p}</span>
+                <span
+                  aria-hidden="true"
+                  class="mt-1 shrink-0 text-gray-400 transition-transform group-open:rotate-45"
+                >
+                  +
+                </span>
+              </summary>
+              <div class="mt-3 space-y-3 text-body text-gray-600" set:html={q.r} />
+            </details>
+          ))
+        }
+      </div>
     </section>
 
     <Panel as="section" class="mt-14">
