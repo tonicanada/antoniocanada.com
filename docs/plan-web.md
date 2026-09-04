@@ -948,3 +948,68 @@ Cobrar en pesos de verdad se puede desde una cuenta española (Stripe distingue
 moneda de presentación de moneda de liquidación, con ~2% de comisión de
 conversión), pero necesita el cuidado del CLP sin decimales y para un solo
 producto es prematuro.
+
+## Modelado de procesos: el componente que faltaba
+
+La composición decía instalación, localización fiscal, migración de datos e
+integraciones. **Eso lo puede ofrecer cualquiera** — instalar ERPNext y
+conectarle el SII es trabajo que cotiza cualquier integrador. Lo que de verdad
+se vende es que el sistema refleje cómo trabaja esa empresa, y ese trabajo no
+estaba en la tabla: la oferta se leía como un producto genérico siendo lo
+contrario.
+
+Había además un vacío de secuencia. Entre "puesta en marcha" (instalación,
+cuentas, permisos base) y el desarrollo a medida —que vivía en otra página, no
+como componente— no había nada, y ahí se va la mayor parte del esfuerzo.
+
+### Por qué precio fijo aunque cada empresa tenga sus procesos
+
+La objeción es razonable y la respuesta es que el **contenido** varía mucho y la
+**forma** mucho menos. Modelado en ERPNext, un proceso casi siempre se
+descompone en las mismas piezas: un documento (o campos sobre uno existente),
+estados y transiciones, permisos por rol, validaciones, un informe, a veces una
+tarea programada. "Aprobación de compras por monto" y "aprobación de vacaciones
+por jefatura" son negocios distintos y casi el mismo trabajo, así que el
+esfuerzo correlaciona con cuántas piezas hacen falta, no con de qué va.
+
+Un precio plano sí sería un error —cajas chicas no es control de subcontratos—,
+de ahí los tres tramos, definidos por lo que **contienen** y no por el sector:
+Simple (sobre documentos existentes), Medio (documento propio con estados y
+aprobaciones), Complejo (varios documentos enlazados con efecto en contabilidad
+o inventario).
+
+**La pieza que hace que funcione: el tramo se asigna en el blueprint.** El
+cliente sale de ahí con su lista de procesos, cada uno en su tramo y el total
+sumado, antes de comprometerse a la implantación. Eso además justifica el
+blueprint mucho mejor: deja de ser un trámite y pasa a ser lo que define el
+alcance.
+
+Descartado "por presupuesto": metería una segunda línea sin precio y, peor, el
+cliente no podría estimar nada hasta después de pagar el blueprint — la
+opacidad que la tabla vino a quitar. Descartada la bolsa de horas: vende tiempo
+en vez de resultado e invita a contar horas.
+
+Riesgo asumido: de vez en cuando un proceso que parecía medio resulta complejo
+y se cobra de menos. Asumible porque el tramo se asigna después del blueprint y
+porque la definición dice qué incluye. Un proceso que no quepa en ningún tramo
+va por presupuesto, como excepción.
+
+### El solapamiento con /services/desarrollo-integraciones
+
+Esa página ya decía que construye "los módulos que tu operación necesita", así
+que sin aclararlo el visitante veía lo mismo en dos sitios. La distinción, ahora
+escrita en las dos: el **componente** es el modelado que va dentro de la
+implantación; la **página** es la misma capacidad comprada después, cuando el
+negocio pide algo nuevo y el sistema ya está en marcha.
+
+Y en `/chile`, los ejemplos de construcción —subcontratos, permisos por perfil,
+cajas chicas, provisiones— dejan de leerse como capacidades sueltas y pasan a
+ser ejemplos de un componente que se cotiza, con enlace a los tramos.
+
+### Nota de proceso
+
+Los commits 84ac310 y 481e3e7 se hicieron con `git add -A` y el segundo arrastró
+`EsquemaFlujo.astro`, que era trabajo de otra sesión sobre el esquema de la
+home. Era trabajo terminado y coherente, sólo mal atribuido; no se reescribió
+porque la rama está compartida con una sesión activa y un force-push le habría
+divergido el historial. A partir de ahí se listan las rutas explícitamente.

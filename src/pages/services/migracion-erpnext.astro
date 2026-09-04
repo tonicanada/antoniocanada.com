@@ -2,6 +2,7 @@
 import PageLayout from "../../layouts/PageLayout.astro";
 import ServiceLeadForm from "../../components/ServiceLeadForm.astro";
 import TablaComponentes from "../../components/TablaComponentes.astro";
+import { tramosProceso } from "../../data/servicios";
 
 // Sustituye a implementacion-erpnext, que era una página de 24 líneas con cuatro
 // viñetas genéricas ("flujos a medida", "capacitación a usuarios"). Esta es la
@@ -10,6 +11,7 @@ import TablaComponentes from "../../components/TablaComponentes.astro";
 const piezas = [
   "Estudio de procesos y blueprint",
   "Puesta en marcha de ERPNext",
+  "Modelado de tus procesos",
   "Localización fiscal",
   "Migración de datos",
 ];
@@ -62,6 +64,16 @@ const piezas = [
       siempre se hace mal y la que decide si la gente usa el sistema.
     </li>
     <li>
+      <strong><a href="#procesos">Modelado de tus procesos</a>.</strong> Aquí es
+      donde se va la mayor parte del valor. Tu empresa ya tiene procesos, y no
+      se trata de que cambies cómo trabajas para encajar en el ERP: se trata de
+      entenderlos, depurarlos —en el camino casi siempre aparecen pasos que
+      existen sólo porque el sistema viejo los obligaba— y dejarlos modelados
+      dentro del sistema, con sus estados, sus aprobaciones y sus responsables.
+      Es lo que hace que el ERP sea de verdad la fuente de verdad y no otro
+      sitio donde apuntar cosas.
+    </li>
+    <li>
       <strong>Localización fiscal.</strong> La facturación electrónica de tu
       país, conectada de verdad:
       <a href="/integraciones/sii-chile/">SII en Chile</a>,
@@ -76,6 +88,56 @@ const piezas = [
       sistema viejo el primer día.
     </li>
   </ol>
+
+  <h2 id="procesos">Cómo se cobra el modelado de procesos</h2>
+  <p>
+    La pregunta razonable es: si cada empresa tiene sus procesos, ¿cómo puede
+    haber precio fijo? Porque el <strong>contenido</strong> varía mucho y la
+    <strong>forma</strong> mucho menos. Modelado en ERPNext, un proceso casi
+    siempre se descompone en las mismas piezas: un documento —o campos sobre uno
+    que ya existe—, estados y transiciones, permisos por rol, validaciones que
+    impiden el error, y un informe. "Aprobación de compras por monto" y
+    "aprobación de vacaciones por jefatura" son negocios distintos y casi el
+    mismo trabajo.
+  </p>
+  <p>
+    Lo que sí sería un error es un precio plano: cajas chicas no es control de
+    subcontratos. Así que tres tramos, definidos por lo que contienen y no por
+    el sector:
+  </p>
+
+  <div class="not-prose overflow-x-auto">
+    <table class="w-full min-w-[34rem] border-collapse text-left text-sm">
+      <thead>
+        <tr class="border-b border-gray-400">
+          <th scope="col" class="py-3 pr-4 font-semibold text-gray-900">Tramo</th>
+          <th scope="col" class="py-3 pr-4 font-semibold text-gray-900">Qué incluye</th>
+          <th scope="col" class="py-3 font-semibold text-gray-900">Ejemplos</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          tramosProceso.map((t) => (
+            <tr class="border-b border-gray-200 align-top">
+              <th scope="row" class="py-3 pr-4 font-semibold text-gray-900">
+                {t.nombre}
+              </th>
+              <td class="py-3 pr-4 text-gray-600">{t.queIncluye}</td>
+              <td class="py-3 text-gray-600">{t.ejemplos}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    Y la pieza que hace que esto funcione: <strong>el tramo se asigna en el
+    <a href="/services/diagnostico-procesos/">blueprint</a></strong>, no a
+    ciegas. Sales de ahí con tu lista de procesos, cada uno en su tramo y el
+    total sumado — antes de comprometerte a la implantación. Si algún proceso no
+    cabe en ningún tramo, ese va por presupuesto; pero es la excepción.
+  </p>
 
   <h2>Qué se cobra en esta parte</h2>
   <div class="not-prose my-6 lg:-mx-24">

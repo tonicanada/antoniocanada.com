@@ -111,6 +111,19 @@ export const componentes: ComponenteServicio[] = [
     modo: "fijo",
   },
   {
+    nombre: "Modelado de tus procesos",
+    enlace: "/services/migracion-erpnext/#procesos",
+    queEs:
+      "Los flujos que tu empresa ya tiene, entendidos, depurados y modelados dentro del sistema: aprobaciones, estados de documento, controles y responsables por perfil. Precio fijo por proceso, según su alcance.",
+    modo: "fijo",
+    paises: {
+      cl: {
+        queEs:
+          "Los flujos que tu empresa ya tiene, entendidos, depurados y modelados dentro del sistema. En construcción, por ejemplo: control de subcontratos, resultado por obra, cajas chicas, provisiones y permisos por perfil. Precio fijo por proceso, según su alcance.",
+      },
+    },
+  },
+  {
     nombre: "Localización fiscal",
     queEs:
       "La contabilidad y la facturación electrónica de tu país, configuradas y conectadas. Precio fijo por país.",
@@ -166,6 +179,72 @@ export const componentes: ComponenteServicio[] = [
     modo: "fijo",
   },
 ];
+
+/**
+ * Tramos del modelado de procesos.
+ *
+ * Por qué precio fijo y no "por presupuesto", aunque cada empresa tenga sus
+ * procesos: el CONTENIDO varía, pero la FORMA mucho menos. Modelado en ERPNext,
+ * un proceso casi siempre se descompone en las mismas piezas — un documento (o
+ * campos sobre uno que ya existe), estados y transiciones, permisos por rol,
+ * validaciones, un informe, a veces una tarea programada. "Aprobación de
+ * compras por monto" y "aprobación de vacaciones por jefatura" son negocios
+ * distintos y casi el mismo trabajo, así que el esfuerzo correlaciona con
+ * cuántas de esas piezas hacen falta, no con de qué va el proceso.
+ *
+ * Un precio plano sí sería un error: cajas chicas no es control de
+ * subcontratos. De ahí los tramos, definidos por lo que CONTIENEN y no por el
+ * sector.
+ *
+ * La pieza que hace que esto funcione: **el tramo se asigna en el blueprint**,
+ * no a ciegas. El cliente sale de ahí con su lista de procesos, cada uno en su
+ * tramo, y el total sumado antes de comprometerse a la implantación.
+ *
+ * Descartado "por presupuesto": metería una segunda línea sin precio en la
+ * tabla y, peor, el cliente no podría estimar nada hasta después de pagar el
+ * blueprint — la opacidad que la tabla vino a quitar. Y descartada la bolsa de
+ * horas: vende tiempo en vez de resultado, invita a contar horas, y el cliente
+ * no sabe qué va a tener al final.
+ *
+ * El riesgo que queda: de vez en cuando un proceso que parecía medio resulta
+ * complejo y ese se cobra de menos. Es asumible porque el tramo se asigna
+ * después del blueprint y porque la definición dice qué incluye, así que lo que
+ * queda fuera se habla antes. Un proceso que no quepa en ningún tramo va por
+ * presupuesto, como excepción y no como norma.
+ */
+export type TramoProceso = {
+  nombre: string;
+  queIncluye: string;
+  ejemplos: string;
+  precios?: Partial<Record<CodigoPais, number>>;
+};
+
+export const tramosProceso: TramoProceso[] = [
+  {
+    nombre: "Simple",
+    queIncluye:
+      "Sobre documentos que ya existen: campos, validaciones, permisos y un informe.",
+    ejemplos: "Cajas chicas · asignación de sueldos a centro de costo",
+  },
+  {
+    nombre: "Medio",
+    queIncluye:
+      "Documento propio con estados y aprobaciones, más su informe.",
+    ejemplos: "Aprobación de compras por monto · solicitudes desde terreno",
+  },
+  {
+    nombre: "Complejo",
+    queIncluye:
+      "Varios documentos enlazados, cálculos, y efecto en contabilidad o inventario.",
+    ejemplos: "Control de subcontratos · provisiones · resultado por obra",
+  },
+];
+
+/** Precio de un tramo en un país, ya formateado, o null si aún no está puesto. */
+export function precioTramo(t: TramoProceso, pais: Pais): string | null {
+  const precio = t.precios?.[pais.codigo];
+  return precio == null ? null : importe(pais, precio);
+}
 
 const etiquetas: Record<ModoCobro, string> = {
   gratis: "Gratis",

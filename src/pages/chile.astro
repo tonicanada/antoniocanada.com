@@ -17,7 +17,7 @@ const pais = paises.cl;
 
 <BaseLayout
   title="ERPNext en Chile: SII, DTE y contabilidad chilena"
-  description="Implantación de ERPNext en Chile con la conexión al SII funcionando: emisión y recepción de DTE, folios CAF, RCV, plan de cuentas chileno y conciliación bancaria. Precios en pesos."
+  description="Implantación de ERPNext en Chile con la conexión al SII funcionando: emisión y recepción de DTE, folios CAF, RCV, plan de cuentas chileno y conciliación bancaria. Precios en UF."
   sideBarActiveItemID="services"
 >
   <div class="pb-12 mt-5">
@@ -105,6 +105,14 @@ const pais = paises.cl;
         provisiones, y activos fijos con su depreciación y su ubicación.
       </p>
       <p class="mt-3 max-w-2xl text-base text-gray-600">
+        Cada una de esas es un proceso que se modela dentro del sistema, y se
+        cotiza como tal:
+        <a href="/services/migracion-erpnext/#procesos" class="underline underline-offset-2"
+          >precio fijo por proceso según su alcance</a
+        >, con el tramo asignado en el estudio previo. No es una lista de
+        promesas: es lo que entra en el presupuesto y en qué orden.
+      </p>
+      <p class="mt-3 max-w-2xl text-base text-gray-600">
         También he trabajado con empresas de maquinaria (control de leasings),
         inmobiliarias y oficinas de arquitectura (ingreso de horas por proyecto).
       </p>
@@ -116,9 +124,10 @@ const pais = paises.cl;
       </h2>
       <p class="mt-3 max-w-2xl text-base text-gray-600">
         Un proyecto no es un precio único: son estas piezas, y no todas hacen
-        falta en todos los casos. Importes en pesos chilenos. Lo predecible va a
-        precio fijo; sólo una línea va por presupuesto, y abajo está explicado
-        por qué.
+        falta en todos los casos. Los importes van en UF —la convención chilena
+        para que un precio no se mueva con el peso— con su referencia en pesos
+        al lado. Lo predecible va a precio fijo; sólo una línea va por
+        presupuesto, y abajo está explicado por qué.
       </p>
       <div class="mt-6">
         <TablaComponentes pais={pais} />
