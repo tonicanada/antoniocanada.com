@@ -7,16 +7,20 @@ module.exports = {
 			// era una decisión: 900 px en el `main` por defecto, 768 px (`max-w-3xl`)
 			// en las páginas de servicio, y `min(750px, 80vw)` en los artículos.
 			//
-			// `measure` es la medida de lectura: 43rem ≈ 66 caracteres con el cuerpo a
-			// 17 px, que es el rango donde el ojo no pierde el renglón al saltar de
-			// línea. Todo lo que sea texto seguido va aquí.
+			// `wide` es el ancho de página, y es el único que se usa: dentro de una
+			// página TODO comparte ese borde —texto, paneles, tablas, rejillas de
+			// tarjetas y vídeos—, que es lo que hace que no se lea como un descuadre.
+			// Ver la nota "Una sola medida" en `global.css`.
 			//
-			// `wide` es para rejillas y tablas —tarjetas, comparativas, listados—, que
-			// no se leen por renglones y agradecen el espacio. 56rem son los 900 px de
-			// antes menos un pelo, así que las páginas que ya usaban el `main` por
-			// defecto no se mueven.
+			// `measure` (48rem) queda para una página que de verdad sea sólo un bloque
+			// centrado y estrecho — hoy únicamente el formulario de /contact. No es la
+			// medida por defecto de nada: se probó estrechar el texto de todas las
+			// páginas a esta medida y, viniendo de 56rem, se veía angosto.
+			//
+			// 56rem son los 900 px de antes menos un pelo, así que las páginas que ya
+			// usaban el `main` por defecto no se mueven.
 			maxWidth: {
-				measure: '43rem',
+				measure: '48rem',
 				wide: '56rem',
 			},
 			animation: {
@@ -116,7 +120,18 @@ module.exports = {
 			},
 		},
 	},
-	plugins: [require("@tailwindcss/typography"), require("daisyui"), require("@tailwindcss/aspect-ratio")],
+	// Sin `@tailwindcss/aspect-ratio`. El plugin es de la época en que Tailwind no
+	// traía `aspect-ratio` (v2) y, cargado sobre la v3, registra un plugin con el
+	// mismo nombre que el del núcleo y se lleva por delante sus utilidades con
+	// nombre: `aspect-video` y `aspect-square` NO generaban ni una regla CSS.
+	// Sobrevivían las de valor arbitrario (`aspect-[9/16]`), que son otra ruta.
+	//
+	// El síntoma estaba en /erpnext: el vídeo de ecommerce llevaba `aspect-video`,
+	// no recibía proporción ninguna y se quedaba en el alto por defecto de un
+	// iframe (150 px) — un vídeo achatado de 3,5:1. La única página que usaba las
+	// clases del plugin (`aspect-w-16 aspect-h-9`, en el MDX del bootcamp) ya usa
+	// `aspect-video`.
+	plugins: [require("@tailwindcss/typography"), require("daisyui")],
 	daisyui: {
 		// Solo el tema que el sitio usa de verdad (`data-theme="lofi"`). Con `themes: true`
 		// daisyUI compilaba los 32 temas: 144 KB de CSS, de los que 120 eran reglas

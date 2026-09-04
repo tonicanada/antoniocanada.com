@@ -48,12 +48,18 @@ const scopeLabel = "Trabajo realizado:";
         </blockquote>
 
         <div class="mt-auto pt-6 border-t border-gray-100 flex items-end justify-between gap-4">
-          <div>
+          {/* `min-w-0` en el nombre y `whitespace-nowrap` en el enlace: en tres
+              columnas la tarjeta baja de 280 px y "Ver empresa" partía en dos
+              líneas ("Ver / empresa") mientras el nombre de al lado seguía sin
+              partir. Lo que tiene que ceder es el nombre, que es texto. */}
+          <div class="min-w-0">
             <p class="text-sm font-semibold text-gray-900">{reference.person}</p>
             <p class="text-xs text-gray-500">{reference.role}</p>
           </div>
 
-          <span class="text-sm text-gray-700 underline underline-offset-4">Ver empresa</span>
+          <span class="whitespace-nowrap text-sm text-gray-700 underline underline-offset-4">
+            Ver empresa
+          </span>
         </div>
       </article>
     </a>

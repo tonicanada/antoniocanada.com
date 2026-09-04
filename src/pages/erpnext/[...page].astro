@@ -89,7 +89,7 @@ const razones = [
           <h1 class="mt-2 text-3xl sm:text-4xl font-semibold text-gray-900">
             ERPNext es el Linux de los ERP
           </h1>
-          <p class="mt-4 max-w-2xl text-lg text-gray-600">
+          <p class="mt-4 text-lg text-gray-600">
             Código abierto, comunidad grande, aburrido en el mejor sentido de la
             palabra: lleva funcionando desde 2010.{" "}
             <strong class="font-semibold text-gray-800">
@@ -103,13 +103,13 @@ const razones = [
           <h2 id="por-que-linux" class="text-2xl font-semibold text-gray-900">
             Por qué esa comparación
           </h2>
-          <p class="mt-3 max-w-2xl text-base text-gray-600">
+          <p class="mt-3 text-base text-gray-600">
             Linux es el sistema operativo que mueve internet: los servidores en
             los que corre tu banco, tu correo y esta página. Nadie lo eligió por
             entusiasmo, lo eligieron porque es sólido, porque nadie te puede
             echar de él y porque lleva décadas sin romperse.
           </p>
-          <p class="mt-3 max-w-2xl text-base text-gray-600">
+          <p class="mt-3 text-base text-gray-600">
             ERPNext juega ese papel entre los ERP: misma familia de licencia,
             mismo modelo de comunidad más servicios, misma neutralidad de
             proveedor. El código empezó en 2006 para la empresa familiar de su
@@ -200,7 +200,7 @@ const razones = [
           <h2 id="mapa" class="text-2xl font-semibold text-gray-900">
             Qué hay dentro
           </h2>
-          <p class="mt-3 max-w-2xl text-base text-gray-600">
+          <p class="mt-3 text-base text-gray-600">
             Cómo se conectan ventas, compras, inventario, contabilidad,
             proyectos y operaciones. Es la respuesta visual a «¿cubre lo que
             hago yo?»: casi siempre sí, y lo que falta se añade.
@@ -221,8 +221,27 @@ const razones = [
             Funcionando, no en diapositivas
           </h2>
 
-          <div class="mt-6 grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_18rem]">
-            <div>
+          {/* Los dos vídeos son de proporción opuesta: 16/9 y un short 9/16.
+              Con las dos columnas apiladas cada una a su aire, la del short
+              medía 18rem y 512 px de alto contra los ~300 del horizontal, y la
+              sección se leía como una columna cargada al lado de un hueco.
+
+              La rejilla es explícita de 2×2 —los dos textos en la primera fila,
+              los dos vídeos en la segunda— y no dos columnas independientes.
+              Es lo único que garantiza que los vídeos empiecen a la misma
+              altura aunque los textos de encima no midan lo mismo, que es lo
+              que pasa aquí: el del short tiene una línea más porque su columna
+              es más estrecha. El orden del HTML es el de lectura en móvil
+              (texto, vídeo, texto, vídeo) y la colocación en rejilla sólo
+              entra en `lg`.
+
+              Y la columna del short mide 13rem: a 9/16 da 370 px de alto,
+              prácticamente el mismo que el 16/9 de al lado a 608 px de ancho.
+              Los dos vídeos acaban midiendo lo mismo sin recortar ninguno. */}
+          <div
+            class="mt-6 grid grid-cols-1 gap-x-8 lg:grid-cols-[minmax(0,1fr)_13rem] lg:grid-rows-[auto_auto]"
+          >
+            <div class="lg:col-start-1 lg:row-start-1">
               <h3 class="font-semibold text-gray-900">
                 Una venta online completa
               </h3>
@@ -231,8 +250,11 @@ const razones = [
                 en inventario y contabilidad. Sin que nadie digite nada entre
                 paso y paso.
               </p>
+            </div>
+
+            <div class="mt-4 lg:col-start-1 lg:row-start-2">
               <div
-                class="mt-4 aspect-video w-full overflow-hidden rounded-lg border border-gray-300 bg-black"
+                class="aspect-video w-full overflow-hidden rounded-lg border border-gray-300 bg-black"
               >
                 <iframe
                   class="h-full w-full border-0"
@@ -245,7 +267,7 @@ const razones = [
               </div>
             </div>
 
-            <div>
+            <div class="mt-8 lg:col-start-2 lg:row-start-1 lg:mt-0">
               <h3 class="font-semibold text-gray-900">La IA operando el ERP</h3>
               <p class="mt-1 text-base text-gray-600">
                 Emitir una factura y enviarla por correo, pedido en lenguaje
@@ -254,12 +276,16 @@ const razones = [
                   href="/integraciones/mcp-ia/"
                   class="underline underline-offset-2 hover:text-gray-900"
                 >
-                  Cómo funciona
-                </a>
-                .
+                  Cómo funciona</a
+                >.
               </p>
+            </div>
+
+            <div class="mt-4 lg:col-start-2 lg:row-start-2">
+              {/* En móvil el short no ocupa todo el ancho de la columna: a
+                  9/16 saldría un vídeo de más de una pantalla de alto. */}
               <div
-                class="relative mt-4 aspect-[9/16] w-full overflow-hidden rounded-lg border border-gray-300 bg-black"
+                class="relative mx-auto aspect-[9/16] w-40 overflow-hidden rounded-lg border border-gray-300 bg-black sm:w-52 lg:w-full"
                 data-short-hover-player
               >
                 <iframe
@@ -342,7 +368,7 @@ const razones = [
           <h2 class="text-xl font-semibold text-gray-900">
             ¿Encajaría en tu empresa?
           </h2>
-          <p class="mt-2 max-w-2xl text-base text-gray-600">
+          <p class="mt-2 text-base text-gray-600">
             En una llamada de 15–20 minutos, sin coste, reviso qué sistemas usas
             hoy y te digo si ERPNext tiene sentido en tu caso. A veces la
             respuesta es que no, y también te lo digo.
