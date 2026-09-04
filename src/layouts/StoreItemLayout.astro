@@ -1,15 +1,13 @@
 ---
 import { type StoreSchema } from "../content/config";
-import BaseLayout from "./BaseLayout.astro";
-import dayjs from "dayjs";
-import localizedFormat from "dayjs/plugin/localizedFormat";
+import PageLayout from "./PageLayout.astro";
+import Button from "../components/Button.astro";
 
 export interface Props extends StoreSchema {}
 
 const {
   title,
   description,
-  updatedDate,
   heroImage,
   pricing,
   oldPricing,
@@ -18,44 +16,38 @@ const {
   custom_link,
   custom_link_label,
 } = Astro.props;
-
-dayjs.extend(localizedFormat);
-const displayDate = dayjs(updatedDate).format("ll");
-import { Image } from "astro:assets";
 ---
 
-<BaseLayout title={title} description={description} image={heroImage} enableGridBackground={false}>
-  <main class="md:flex md:justify-center">
-    <article class="prose prose-lg max-w-[750px] prose-img:mx-auto">
-      {
-        heroImage && (
-          <Image width={750} height={422} format="webp" src={heroImage} alt={title} class="w-full mb-6" />
-        )
-      }
-      <div class="">
-        <h1 class="title my-2 text-4xl font-bold">
-          {title}
-          {badge && <div class="badge badge-secondary mx-2">{badge}</div>}
-        </h1>
-        <div class="flex place-content-between items-center">
-          <div class="grow md:grow-0">
-            <span class="text-xl mr-1"> {pricing}</span>
-            <span class="text-md opacity-50 line-through">{oldPricing}</span>
-          </div>
-          <div>
-            {
-              custom_link && (
-                <a class="btn btn-outline grow md:grow-0 ml-4" href={custom_link} target="_blank">
-                  {custom_link_label}
-                </a>
-              )
-            }
-            <a class="btn btn-primary grow md:grow-0 ml-4" href={checkoutUrl} target="_blank">Buy Now</a>
-          </div>
-        </div>
+<PageLayout
+  title={title}
+  description={description}
+  image={heroImage}
+  kicker={badge}
+  sideBarActiveItemID="store"
+>
+  <Fragment slot="lead">
+    <div class="flex flex-wrap items-center justify-between gap-4 not-prose">
+      <div>
+        <span class="text-xl font-semibold text-gray-900">{pricing}</span>
+        {oldPricing && <span class="ml-2 text-base text-gray-500 line-through">{oldPricing}</span>}
       </div>
-      <div class="divider my-2"></div>
-      <slot />
-    </article>
-  </main>
-</BaseLayout>
+      <div class="flex flex-wrap gap-3">
+        {
+          custom_link && (
+            <Button href={custom_link} variant="secondary" size="sm" target="_blank" rel="noopener">
+              {custom_link_label}
+            </Button>
+          )
+        }
+        {
+          checkoutUrl && (
+            <Button href={checkoutUrl} size="sm" target="_blank" rel="noopener">
+              Comprar
+            </Button>
+          )
+        }
+      </div>
+    </div>
+  </Fragment>
+  <slot />
+</PageLayout>

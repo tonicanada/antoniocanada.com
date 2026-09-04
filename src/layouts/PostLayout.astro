@@ -1,67 +1,45 @@
 ---
+// Ahora es una capa fina sobre `PageLayout`: lo único propio de un post es que
+// muestra fecha y etiquetas. La medida, el padding, la tipografía y la retícula
+// las decide el layout común, así que un artículo y una página de servicio ya
+// empiezan en la misma vertical y se leen con el mismo cuerpo.
+//
+// El bloque `<style is:global>` que había aquí para los `hr` se ha ido al tema
+// de `prose` en tailwind.config.cjs, que es donde puede aplicarse también a las
+// páginas `.astro`.
 import { type BlogSchema } from "../content/config";
-import BaseLayout from "./BaseLayout.astro";
-import dayjs from "dayjs";
-import localizedFormat from "dayjs/plugin/localizedFormat";
+import PageLayout from "./PageLayout.astro";
 
-export interface Props extends BlogSchema {}
+export interface Props extends BlogSchema {
+  kicker?: string;
+  meta?: boolean;
+  sideBarActiveItemID?: string;
+}
 
-const { title, description, publishDate, updatedDate, image, badge, tags = [] } = Astro.props;
-dayjs.extend(localizedFormat);
-const displayDate = dayjs(publishDate).format("DD-MM-YYYY");
-const displayUpdatedDate = updatedDate ? dayjs(updatedDate).format("DD-MM-YYYY") : null;
+const {
+  title,
+  description,
+  publishDate,
+  updatedDate,
+  image,
+  tags = [],
+  kicker,
+  meta = true,
+  sideBarActiveItemID,
+} = Astro.props;
 ---
 
-<BaseLayout
+<PageLayout
   title={title}
   description={description}
   image={image}
+  kicker={kicker}
+  publishDate={publishDate}
+  updatedDate={updatedDate}
+  tags={tags}
+  meta={meta}
   ogType="article"
-  enableGridBackground={false}
-  mainClass="w-full px-0 py-6 overflow-hidden [&_ul>li]:leading-tight"
+  sideBarActiveItemID={sideBarActiveItemID}
 >
-  <article
-    class="content-article prose prose-base md:prose-lg mx-auto w-full min-w-0 max-w-full prose-img:mx-auto"
-    style="width: min(750px, 80vw);"
-  >
-    <!-- {image && <Image width={750} height={422} format="webp" src={image} alt={title} class="w-full mb-6" />} -->
-    {image && <img src={image} alt={title} class="w-full rounded-lg mb-3" />}
-    <header class="not-prose mb-3 w-full min-w-0">
-      <h1 class="my-0 max-w-full break-words text-2xl sm:text-3xl md:text-4xl font-bold leading-tight">{title}</h1>
-      <div class="mt-2 flex max-w-full flex-wrap items-center gap-x-3 gap-y-2 text-sm text-gray-600">
-        {publishDate && <time datetime={dayjs(publishDate).format("YYYY-MM-DD")}>{displayDate}</time>}
-        {
-          displayUpdatedDate && (
-            <span>
-              Actualizado <time datetime={dayjs(updatedDate).format("YYYY-MM-DD")}>{displayUpdatedDate}</time>
-            </span>
-          )
-        }
-        {badge && <span class="badge badge-secondary badge-sm">{badge}</span>}
-        {
-          tags &&
-            tags.map((tag) => (
-              <a href={`/tags/${tag}`} class="badge badge-outline badge-sm max-w-full whitespace-normal break-words no-underline">
-                {tag}
-              </a>
-            ))
-        }
-      </div>
-    </header>
-    <div class="divider my-1"></div>
-    <slot />
-  </article>
-</BaseLayout>
-
-<style is:global>
-  .content-article hr {
-    margin-top: 2.25rem;
-    margin-bottom: 1.75rem;
-  }
-
-  .content-article hr + h2,
-  .content-article hr + h3,
-  .content-article hr + h4 {
-    margin-top: 0;
-  }
-</style>
+  <slot />
+</PageLayout>

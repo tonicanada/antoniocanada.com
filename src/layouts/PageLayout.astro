@@ -1,0 +1,169 @@
+---
+// El layout único de página. Sustituye a las dos familias que convivían:
+//
+//   A) `PostLayout`, para el contenido MDX: `main` sin padding, artículo con
+//      `width: min(750px, 80vw)` puesto en un `style` inline, tipografía
+//      `prose md:prose-lg` y retícula apagada.
+//   B) Las páginas de servicio `.astro`: el `main` de 900 px con OTRO
+//      envoltorio `max-w-3xl px-4 py-10` dentro —padding doble— y cada `h2` y
+//      cada `p` con sus utilidades escritas a mano.
+//
+// El resultado eran tres anchos de columna, dos escalas tipográficas y dos
+// ritmos verticales en el mismo sitio, y la incoherencia se notaba al saltar de
+// /services/migracion-erpnext a /integraciones/mcp-ia. Aquí la medida, el
+// padding, la cabecera y el ritmo se deciden una vez.
+//
+// `min(750px, 80vw)` merece una nota, porque era el origen de la sensación de
+// descuadre: al ser un porcentaje del viewport, el margen lateral crecía con la
+// pantalla —39 px en un móvil, 77 px en una tableta— mientras el resto del
+// sitio usaba un `px-4` fijo. Dos páginas seguidas no empezaban en la misma
+// vertical. Ahora el ancho es fijo y lo que respira es el padding.
+import BaseLayout from "./BaseLayout.astro";
+import dayjs from "dayjs";
+
+export interface Props {
+  /** El <h1> visible. */
+  title: string;
+  /** El <title> del <head>, si tiene que decir algo distinto al <h1>. */
+  headTitle?: string;
+  description?: string;
+  /** La línea en versalitas sobre el título: "Servicio", "Integración"... */
+  kicker?: string;
+  /** Párrafo de entrada. También puede venir como <slot name="lead"> si lleva enlaces. */
+  lead?: string;
+  image?: string;
+  /** Qué parte de la portada se conserva al recortarla. Ver `imagePosition` en
+      el esquema de la colección. */
+  imagePosition?: string;
+  /** La imagen va bajo la cabecera, no sobre ella: primero se lee de qué va. */
+  showImage?: boolean;
+  publishDate?: Date;
+  updatedDate?: Date;
+  tags?: string[];
+  /** Fecha y etiquetas. Tiene sentido en un post; en una página comercial, no. */
+  meta?: boolean;
+  sideBarActiveItemID?: string;
+  ogType?: string;
+  robots?: string;
+  /** Todas las páginas comparten el mismo ancho (`wide`, 56rem): un artículo y
+      una portada tienen que empezar en la misma vertical y terminar en la misma.
+      `measure` queda disponible para una página que pida una columna más
+      estrecha, pero no es lo normal. */
+  width?: "measure" | "wide";
+  /** Envuelve el contenido en `prose`. Apágalo si la página son tarjetas. */
+  prose?: boolean;
+}
+
+const {
+  title,
+  headTitle,
+  description,
+  kicker,
+  lead,
+  image,
+  imagePosition = "center",
+  showImage = true,
+  publishDate,
+  updatedDate,
+  tags = [],
+  meta = false,
+  sideBarActiveItemID,
+  ogType,
+  robots,
+  width = "wide",
+  prose = true,
+} = Astro.props;
+
+const fecha = (d?: Date) => (d ? dayjs(d).format("DD-MM-YYYY") : null);
+const iso = (d?: Date) => (d ? dayjs(d).format("YYYY-MM-DD") : undefined);
+const hayMeta = meta && Boolean(publishDate || updatedDate || tags.length);
+const anchoClase = width === "wide" ? "max-w-wide" : "max-w-measure";
+---
+
+<BaseLayout
+  title={headTitle ?? title}
+  description={description}
+  image={image}
+  ogType={ogType}
+  robots={robots}
+  sideBarActiveItemID={sideBarActiveItemID}
+  mainClass={`w-full px-5 sm:px-6 py-10 lg:py-14 mx-auto ${anchoClase}`}
+>
+  <header class="mb-8">
+    {
+      kicker && (
+        <p class="text-sm font-semibold uppercase tracking-[0.2em] text-gray-500">
+          {kicker}
+        </p>
+      )
+    }
+    <h1 class="mt-2 text-3xl font-semibold leading-tight text-gray-900 sm:text-4xl">
+      {title}
+    </h1>
+    {lead && <p class="mt-4 text-lg leading-relaxed text-gray-700">{lead}</p>}
+    {
+      Astro.slots.has("lead") && (
+        <div class="mt-4 text-lg leading-relaxed text-gray-700">
+          <slot name="lead" />
+        </div>
+      )
+    }
+    {
+      hayMeta && (
+        <div class="mt-4 flex max-w-full flex-wrap items-center gap-x-3 gap-y-2 text-sm text-gray-600">
+          {publishDate && <time datetime={iso(publishDate)}>{fecha(publishDate)}</time>}
+          {updatedDate && (
+            <span>
+              Actualizado <time datetime={iso(updatedDate)}>{fecha(updatedDate)}</time>
+            </span>
+          )}
+          {tags.map((tag) => (
+            <a
+              href={`/tags/${tag}`}
+              class="badge badge-outline badge-sm max-w-full whitespace-normal break-words no-underline"
+            >
+              {tag}
+            </a>
+          ))}
+        </div>
+      )
+    }
+  </header>
+
+  {/*
+      La portada a proporción original dominaba la pantalla: estas imágenes son
+      16:9 (una 4:3), así que a 848 px de ancho medían 477 px de alto —y 636 la
+      de Fintoc—. Antes de leer la primera frase ya te habías comido media
+      ventana.
+
+      Recortada a 3:1 conserva el gesto de portada a sangre y baja a 283 px. El
+      recorte se lleva la parte de arriba y la de abajo, que en las cuatro
+      portadas es fondo. Donde el motivo no va centrado —la foto de sourcing
+      tiene el rótulo "SUPPLIERS" abajo, y el recorte centrado lo partía por la
+      mitad— se corrige con `imagePosition` en el frontmatter de esa entrada, no
+      renunciando al recorte en todas.
+  */}
+  {
+    image && showImage && (
+      <img
+        src={image}
+        alt=""
+        loading="eager"
+        style={`object-position: ${imagePosition}`}
+        class="mb-10 aspect-[3/1] w-full rounded-lg object-cover"
+      />
+    )
+  }
+
+  {
+    prose ? (
+      <div class="prose prose-gray max-w-none prose-img:mx-auto">
+        <slot />
+      </div>
+    ) : (
+      <slot />
+    )
+  }
+
+  <slot name="footer" />
+</BaseLayout>
