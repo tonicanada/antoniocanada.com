@@ -29,6 +29,8 @@
  * memorables en cada moneda (1.500.000 CLP, no lo que salga de convertir).
  */
 
+import { ufActual } from "./uf";
+
 export type ModoCobro = "gratis" | "fijo" | "presupuesto" | "mensual";
 
 export type CodigoPais = "cl" | "es";
@@ -37,19 +39,29 @@ export type Pais = {
   codigo: CodigoPais;
   nombre: string;
   url: string;
-  moneda: "CLP" | "EUR";
+  /** Unidad en la que se DENOMINA el precio. En Chile, UF. */
+  unidad: "UF" | "EUR";
+  /** Moneda en la que se muestra la referencia, si la unidad no es una moneda. */
+  monedaReferencia?: "CLP";
   locale: string;
 };
 
 export const paises: Record<CodigoPais, Pais> = {
-  cl: { codigo: "cl", nombre: "Chile", url: "/chile/", moneda: "CLP", locale: "es-CL" },
-  es: { codigo: "es", nombre: "España", url: "/espana/", moneda: "EUR", locale: "es-ES" },
+  cl: {
+    codigo: "cl",
+    nombre: "Chile",
+    url: "/chile/",
+    unidad: "UF",
+    monedaReferencia: "CLP",
+    locale: "es-CL",
+  },
+  es: { codigo: "es", nombre: "España", url: "/espana/", unidad: "EUR", locale: "es-ES" },
 };
 
 export type Variante = {
   /** Sustituye a `queEs` en la página de ese país. */
   queEs?: string;
-  /** En la moneda del país, sin decimales. */
+  /** En la unidad del país: UF en Chile, euros en España. */
   precio?: number;
   /** El componente no se ofrece en ese país. */
   noAplica?: boolean;
@@ -79,7 +91,7 @@ export const componentes: ComponenteServicio[] = [
     nombre: "Estudio de procesos y blueprint",
     enlace: "/services/diagnostico-procesos/",
     queEs:
-      "Análisis de tus procesos y entregable escrito: módulos, automatizaciones y plan por fases. Es el primer paso de pago, y sirve aunque después no me contrates.",
+      "Análisis de tus procesos y entregable escrito: módulos, automatizaciones y plan por fases. Se descuenta del proyecto si seguimos adelante, y el documento es tuyo aunque no me contrates.",
     modo: "fijo",
     paises: {
       es: { precio: 300 },
@@ -156,12 +168,31 @@ const etiquetas: Record<ModoCobro, string> = {
   mensual: "Mensual",
 };
 
-const formato = (p: Pais) =>
-  new Intl.NumberFormat(p.locale, {
+/**
+ * El importe en la unidad del país. La UF no es una moneda ISO, así que Intl no
+ * la formatea como tal: se formatea el número y se le pone la unidad detrás,
+ * con la referencia en pesos cuando hay un valor de UF configurado.
+ */
+function importe(pais: Pais, precio: number): string {
+  if (pais.unidad === "UF") {
+    const uf = new Intl.NumberFormat(pais.locale, {
+      maximumFractionDigits: 1,
+    }).format(precio);
+    if (!ufActual || !pais.monedaReferencia) return `${uf} UF`;
+    const pesos = new Intl.NumberFormat(pais.locale, {
+      style: "currency",
+      currency: pais.monedaReferencia,
+      maximumFractionDigits: 0,
+    }).format(precio * ufActual.valor);
+    return `${uf} UF (≈ ${pesos})`;
+  }
+
+  return new Intl.NumberFormat(pais.locale, {
     style: "currency",
-    currency: p.moneda,
+    currency: pais.unidad,
     maximumFractionDigits: 0,
-  });
+  }).format(precio);
+}
 
 /**
  * Cómo se cobra un componente. Sin país, sólo el modo — es lo que ve /services.
@@ -173,7 +204,16 @@ export function comoSeCobra(c: ComponenteServicio, pais?: Pais): string {
 
   const precio = c.paises?.[pais.codigo]?.precio;
   if (precio == null) return etiquetas[c.modo];
-  return `${etiquetas[c.modo]} — ${formato(pais).format(precio)}`;
+  return `${etiquetas[c.modo]} — ${importe(pais, precio)}`;
+}
+
+/**
+ * Si algún componente de ese país tiene importe. La cabecera de la tabla lo
+ * usa: una columna titulada "Precio (UF)" con todas las celdas diciendo
+ * "Precio fijo" no se lee como pendiente, se lee como roto.
+ */
+export function hayPrecios(pais: Pais): boolean {
+  return componentes.some((c) => c.paises?.[pais.codigo]?.precio != null);
 }
 
 /** Los componentes de un país, con su descripción local y sin los que no aplican. */

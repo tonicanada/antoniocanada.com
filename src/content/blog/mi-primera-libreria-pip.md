@@ -4,6 +4,7 @@ description: "Experiencia paso a paso creando una librería Python y publicándo
 publishDate: 2023-04-04
 tags: ["python", "pip", "librerías", "automatización", "educación"]
 image: "/assets/images/blog/mi-primera-libreria-pip/portada.webp"
+urlSlug: "como-cree-mi-primera-libreria-en-pip"
 ---
 
 La primera vez que vi a mi jefe ejecutar comandos en una terminal Linux, quedé totalmente inspirado. Acostumbrado a usar Windows toda la vida, me sorprendió que en esa terminal lo que le decías al computador, se cumplía **al pie de la letra**. Es decir, si escribías que querías borrar todos los archivos… ¡los borraba! Incluso si eso implicaba que luego no pudieras volver a encender la máquina.

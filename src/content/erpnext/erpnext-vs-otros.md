@@ -4,6 +4,7 @@ description: "Comparativa ERPNext vs SAP, Odoo, Dynamics y NetSuite. Descubre ve
 publishDate: 2025-08-01
 tags: ["ERPNext", "ERP", "SAP", "Odoo", "Dynamics", "NetSuite", "comparativa"]
 image: "/assets/images/erpnext/erpnext-vs-otros/portada.webp"
+urlSlug: "erpnext-vs-sap-odoo-dynamics-y-netsuite-comparativa-completa-para-empresas"
 ---
 
 ## Comparativa para empresas en crecimiento

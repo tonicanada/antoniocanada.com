@@ -25,7 +25,7 @@ if (precio == null) {
 
 const precioFormateado = new Intl.NumberFormat(paises.es.locale, {
   style: "currency",
-  currency: paises.es.moneda,
+  currency: paises.es.unidad,
   maximumFractionDigits: 0,
 }).format(precio);
 ---
@@ -73,9 +73,15 @@ const precioFormateado = new Intl.NumberFormat(paises.es.locale, {
     desglose del resto de componentes.
   </p>
   <p>
-    Si después contratas la <a href="/services/migracion-erpnext/">migración</a>,
-    este trabajo no se repite: el blueprint es el punto de partida de la puesta
-    en marcha.
+    Y <strong>se descuenta del proyecto</strong>: si después contratas la
+    <a href="/services/migracion-erpnext/">migración</a>, este importe sale del
+    presupuesto. No pagas dos veces por el mismo trabajo — el blueprint es el
+    punto de partida de la puesta en marcha.
+  </p>
+  <p>
+    Dicho de otro modo: si seguimos adelante, el estudio te sale gratis. Y si
+    decides no seguir, o irte con otro proveedor, el documento es tuyo y te lo
+    llevas.
   </p>
 
   <ServiceLeadForm

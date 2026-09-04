@@ -793,3 +793,121 @@ corriendo es la conexión con el SII.
 **No entran en el menú principal**, que ya tiene nueve entradas. Se llega desde
 `/services`, desde la página de hosting y desde la otra landing de país; el
 tráfico que importa va a llegar por buscador.
+
+---
+
+# Lote previo al despliegue
+
+## Chile se denomina en UF, no en pesos
+
+Publicar en CLP facturando desde España deja el riesgo de tipo de cambio del
+lado de quien publica: si el peso se mueve un 8% —que pasa sin ser noticia— o
+pierdes margen o tienes que decirle al cliente que el precio subió, y esa
+conversación al principio de una relación es cara. La UF es la convención
+chilena para exactamente esto y un cliente chileno la entiende sin explicación.
+
+La UF manda contractualmente; el peso es una ayuda de lectura, porque la UF
+cuesta más de leer de un vistazo. `src/data/uf.ts` guarda el valor con su fecha
+y **está en `null` a propósito**: mientras no haya un valor verificado se
+muestra el precio en UF y ninguna referencia en pesos, en vez de una cifra
+inventada.
+
+Si algún día se automatiza, "solo" significa recompilación programada — el sitio
+es estático. Por eso la fecha se muestra: si la consulta falla, un valor viejo
+se ve en vez de pasar desapercibido.
+
+## Cabecera de tabla adaptativa
+
+Una columna titulada "Precio (UF)" con todas las celdas diciendo "Precio fijo"
+no se lee como pendiente, se lee como **roto**. Ahora la cabecera dice "Cómo se
+cobra" mientras ese país no tenga ningún importe, y pasa sola a "Precio (UF)" o
+"Precio (EUR)" en cuanto se ponga el primero. Verificado: Chile muestra "Cómo
+se cobra", España "Precio (EUR)" porque ya tiene los 300 € del blueprint.
+
+## El blueprint se descuenta del proyecto
+
+Cobrar el diagnóstico es un buen patrón, pero **es un filtro, y los filtros
+sirven cuando hay más demanda que capacidad**. Con 4 llamadas al mes el cuello
+de botella es conseguir conversaciones, no filtrarlas, y un peaje de 300 € antes
+del proyecto real quita justo lo que falta. Además obligaba a decir sí dos veces.
+
+Ahora se descuenta del presupuesto si se contrata la migración: mantiene la
+cualificación intacta y elimina la objeción. Y sigue siendo un entregable que el
+cliente se lleva si decide no seguir.
+
+No se añade una demo en vivo como tercera oferta —tres puertas de entrada
+convierten peor que una— pero sí conviene **incrustar la demo grabada en las
+páginas**, como ya hace el pack de España con sus dos vídeos. La página del SII
+no tiene vídeo y debería tenerlo: es la integración más fuerte y hoy se explica
+sólo con texto.
+
+## Voz: singular
+
+Decidido singular por defecto, plural sólo donde la empresa es literalmente
+quien actúa ("nuestros servidores", el soporte, la sociedad que factura).
+
+Razones: es verdad —hoy el trabajo lo hace una persona, y un gerente que lee
+"nosotros" y luego conoce a uno nota el cambio—; el diferencial es la marca
+personal, que trae el 77% del tráfico; y el "nosotros" de un solo profesional se
+detecta.
+
+El miedo que el plural intenta tapar ("¿y si a este le pasa algo?") **se
+resuelve con hechos, no con un pronombre**: software libre, todo documentado,
+los respaldos son del cliente y puede llevárselo. Eso convence más.
+
+Al aplicarlo resultó que **sólo había un "nosotros" corporativo** en todo el
+sitio: el subtítulo de `/services`. El resto de plurales son inclusivos ("lo
+vemos con tus números", "en la llamada vemos si encaja") y significan "tú y yo",
+no la empresa — esos se quedan.
+
+## urlSlug obligatorio
+
+Añadido en los 8 ficheros que faltaban, con la URL que ya tenían. Y **el campo
+pasa a ser obligatorio en el esquema**: un fichero sin `urlSlug` no compila.
+
+El motivo: siendo opcional, un post nuevo sin el campo volvía en silencio a
+derivar la URL del título, y el problema regresaba sin que nadie se enterara.
+Un error de compilación es ruidoso; una URL que se mueve sola no.
+
+Queda fuera `storeSchema`: las páginas de tienda usan `entry.slug` (el nombre
+del archivo) y no pasan por `createSlug`, así que ahí el campo no significa
+nada.
+
+Se decidió **no arreglar ninguna URL antes de congelarlas**. Las dos candidatas
+eran `/blog/the-fascinating-oloid-...` (inglés en un blog en español, pero es la
+página con más impresiones y posiciona para consultas en inglés: cambiarla
+tiraría lo poco que tiene) y la comparativa de ERP de 78 caracteres (larga, pero
+llena de las palabras por las que interesa aparecer).
+
+Descartado poner `GENERATE_SLUG_FROM_TITLE` en `false` —que haría que la URL
+saliera del nombre del archivo, ya estable y conceptualmente más limpio—:
+cambiaría todas las URLs actuales, once redirects nuevos y tirar el
+posicionamiento acumulado a cambio de nada que el visitante note.
+
+Verificado: build de 120 páginas y **ninguna URL cambió** (diff de la lista
+completa de rutas antes y después).
+
+## Seguridad: el precio ya no puede venir del cliente
+
+`src/pages/api/checkout.ts` tenía esto:
+
+```ts
+const precio = catalogItem?.amountEur ?? (precioRaw ? Number(precioRaw) : NaN);
+```
+
+Si el `asunto` no estaba en el catálogo, **el importe se tomaba del formulario**.
+Cualquiera podía enviar un POST con un asunto cualquiera y `precio=1` y generar
+una sesión de pago legítima de 1 €, con el nombre de producto derivado del
+propio asunto. El catálogo tiene una sola entrada, así que bastaba con no usar
+esa clave.
+
+Ahora el precio y la moneda salen siempre del servidor: un `asunto` fuera del
+catálogo devuelve 400, y un componente sin precio publicado devuelve 409 con un
+error en el log en vez de cobrar cualquier cosa. El importe se lee de
+`src/data/servicios.ts`, así que deja de estar escrito en dos sitios — antes,
+cambiar el precio en la web dejaba a Stripe cobrando el viejo.
+
+Pendiente para cuando se cobre en pesos: **el CLP es una moneda sin decimales**.
+El código hace `Math.round(precio * 100)` porque Stripe cobra en la unidad
+mínima, pero para CLP el multiplicador no aplica — copiar esa línea cobraría
+100 veces el importe.

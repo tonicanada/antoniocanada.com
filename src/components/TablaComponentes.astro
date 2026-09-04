@@ -3,6 +3,7 @@ import {
   componentes,
   componentesDe,
   comoSeCobra,
+  hayPrecios,
   type Pais,
   type ComponenteServicio,
 } from "../data/servicios";
@@ -18,6 +19,10 @@ export interface Props {
 }
 
 const { pais, soloEstos, mostrarPorQueVaria = true } = Astro.props;
+
+// Mientras el país no tenga ningún importe, la columna se titula como en
+// /services. En cuanto se ponga el primer precio pasa sola a "Precio (UF)".
+const conPrecios = pais ? hayPrecios(pais) : false;
 
 const todos: ComponenteServicio[] = pais ? componentesDe(pais) : componentes;
 const filas = soloEstos
@@ -37,7 +42,7 @@ const filas = soloEstos
           scope="col"
           class="py-3 font-semibold text-gray-900 whitespace-nowrap"
         >
-          {pais ? `Precio (${pais.moneda})` : "Cómo se cobra"}
+          {conPrecios && pais ? `Precio (${pais.unidad})` : "Cómo se cobra"}
         </th>
       </tr>
     </thead>

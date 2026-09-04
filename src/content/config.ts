@@ -9,7 +9,11 @@ const uniqueTags = z
 
 // 📚 Blog
 const blogSchema = z.object({
-  urlSlug: z.string().optional(), // fija la URL; ver src/lib/createSlug.ts
+  // Obligatorio a propósito: si fuera opcional, un fichero nuevo sin este
+  // campo volvería en silencio a derivar la URL del título, y editar ese
+  // título rompería los enlaces externos sin que nadie se enterara. Ya pasó:
+  // el vídeo con 163 vistas/mes apuntó meses a un 404. Ver src/lib/createSlug.ts
+  urlSlug: z.string(),
   title: z.string(),
   description: z.string(),
   publishDate: z.coerce.date(), // ← unificado
@@ -21,7 +25,6 @@ const blogSchema = z.object({
 
 // 🛒 Store
 const storeSchema = z.object({
-  urlSlug: z.string().optional(), // fija la URL; ver src/lib/createSlug.ts
   title: z.string(),
   description: z.string(),
   custom_link_label: z.string(),
@@ -36,7 +39,11 @@ const storeSchema = z.object({
 
 // 🔌 Integraciones
 const integracionSchema = z.object({
-  urlSlug: z.string().optional(), // fija la URL; ver src/lib/createSlug.ts
+  // Obligatorio a propósito: si fuera opcional, un fichero nuevo sin este
+  // campo volvería en silencio a derivar la URL del título, y editar ese
+  // título rompería los enlaces externos sin que nadie se enterara. Ya pasó:
+  // el vídeo con 163 vistas/mes apuntó meses a un 404. Ver src/lib/createSlug.ts
+  urlSlug: z.string(),
   title: z.string(),
   description: z.string(),
   publishDate: z.coerce.date(),
@@ -53,7 +60,11 @@ const integracionSchema = z.object({
 
 // 🎓 Cursos
 const courseSchema = z.object({
-  urlSlug: z.string().optional(), // fija la URL; ver src/lib/createSlug.ts
+  // Obligatorio a propósito: si fuera opcional, un fichero nuevo sin este
+  // campo volvería en silencio a derivar la URL del título, y editar ese
+  // título rompería los enlaces externos sin que nadie se enterara. Ya pasó:
+  // el vídeo con 163 vistas/mes apuntó meses a un 404. Ver src/lib/createSlug.ts
+  urlSlug: z.string(),
   title: z.string(),
   description: z.string(),
   publishDate: z.coerce.date(),
