@@ -1268,16 +1268,40 @@ modelo compone para el marco de banda en lugar de dejar el motivo centrado con
 aire muerto que hay que quitar después. Salió a 2,29:1, prácticamente la banda
 que ya se había validado en `/erpnext`.
 
-De las tres variantes se descartó una por un motivo que no era estético: **el
-mensaje se leía al revés**. Su lado derecho parecía una ciudad caótica, más
+De la primera tanda se descartó una variante por un motivo que no era estético:
+**el mensaje se leía al revés**. Su lado derecho parecía una ciudad caótica, más
 compleja que el izquierdo, así que sugería que migrar te deja *más* lío. Eso
 importa más que si la imagen es bonita.
 
-**El fondo sale en `rgb(241,241,237)`** y se deja tal cual: son 14 puntos por
-debajo del blanco y apenas cálido, el mismo registro de papel que la portada de
-`/erpnext`, y dentro de un contenedor con borde se lee como intencionado.
+### Se regeneró por el móvil
 
-**1.428 KB de PNG → 32 KB de WebP.** Sin variante de 800 px porque `PageLayout`
+La primera versión elegida tenía **unas 25 formas pequeñas** a la izquierda. En
+escritorio funcionaba; en un iPhone SE la columna mide ~335 px, así que a 3:1 la
+imagen sale de **112 px de alto** y esas formas se convertían en motas grises:
+se leía "ruido gris → mancha gris" y la metáfora —lo único que la imagen tenía
+que comunicar— era lo primero en caerse.
+
+No era un problema de proporción, y por eso no se arreglaba recortando: la
+composición va de izquierda a derecha, así que un recorte más cuadrado se lleva
+uno de los dos extremos, o sea el mensaje. Y dejarla sin recortar daba 150 px,
+igual de insuficiente. **El problema era el número de objetos.**
+
+Regenerada con **seis cubos grandes** en vez de veinticinco motas. Verificado
+simulando el recorte del layout a 335 px de ancho: a 112 px de alto se
+distinguen los cubos sueltos, la línea y el bloque unido. Un solo archivo sirve
+para las dos medidas, que importa porque `PageLayout` usa `src` directo sin
+`srcset` — la dirección de arte por punto de corte habría exigido tocar ese
+layout.
+
+Descartadas las otras dos de la segunda tanda: una tenía los cubos de la
+izquierda en **rejilla regular 3×2**, que no se lee como "disperso" sino como
+"ordenado" y mata la metáfora; la otra traía **texto colado** del prompt en una
+esquina. Se eligió la de relleno gris con sombreado y no la de contorno fino,
+porque a 112 px de alto el relleno se distingue y el contorno se pierde.
+
+**1.428 KB de PNG → 18 KB de WebP**, y de paso menos que los 32 KB de la
+versión anterior: menos trazo, menos peso. Fondo en blanco puro esta vez, así
+que tampoco hizo falta valorar el tono de papel. Sin variante de 800 px porque `PageLayout`
 usa `src` directo sin `srcset`: un archivo que nadie referencia es un archivo
 muerto.
 
