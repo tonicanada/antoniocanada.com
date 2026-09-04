@@ -59,6 +59,9 @@ Sin entrar en detalle técnico, esto es lo que nota la empresa:
   otro lado ni preguntarle a nadie si la factura pasó.
 - **Una sola instalación para todas tus sociedades**, cada una con sus
   credenciales y su numeración, sin mezclarse.
+- **De la certificación ante el SII me encargo yo.** Antes de poder emitir, el
+  SII exige superar un proceso de certificación con sus casos de prueba. Es un
+  trámite técnico que frena a muchas empresas: no tienes que aprenderlo.
 - **El cierre de mes deja de depender de que alguien haya terminado de subir
   cosas**, porque ya están.
 
@@ -95,8 +98,12 @@ ventas que el SII mantiene con lo que otros te facturaron.
   administrados desde el propio sistema.
 - **Lo envía al SII** y **consulta el estado** del envío y del documento, sin
   salir del ERP.
-- **Genera el PDF con timbre**, en formato carta y cedible.
-- **Boletas de honorarios emitidas**, además de las facturas.
+- **Genera el PDF con timbre**, en formato carta y **cedible** — el que se
+  necesita para ceder la factura a un factoring.
+- **Factura de compra (DTE 46)**, para los casos de cambio de sujeto en que el
+  documento lo emite el comprador.
+- **Notas de crédito y de débito**, con su referencia al documento que
+  corrigen.
 
 ### Del lado de la compra
 
@@ -106,8 +113,31 @@ ventas que el SII mantiene con lo que otros te facturaron.
 - **Crea la factura de compra** enlazada a su orden de compra, centro de costo,
   bodega o proyecto — que es la parte que de verdad ahorra trabajo, porque es
   donde se pierde el tiempo cuando se hace a mano.
-- **Acepta o reclama** documentos y registra los eventos del SII.
+- **Acepta o reclama** documentos y registra los eventos del SII, con el
+  detalle de que sólo el segundo paso habilita el crédito de IVA.
+- **Cesiones a factoring.** El SII sabe si una factura fue cedida y a quién, así
+  que ese dato no hay que teclearlo. Importa más de lo que parece: el RUT del
+  factoring **redirige el pago** — si está mal, le pagas al proveedor una
+  factura que ya cobró otro. En una constructora con miles de facturas cedidas,
+  eso deja de ser un riesgo administrativo y pasa a ser un dato que llega solo.
 - **Boletas de honorarios recibidas** y libros.
+
+### El dato que ya tienes y no estás usando
+
+Cada DTE es un XML estructurado: no es una imagen de una factura, es el detalle
+línea a línea con sus códigos, cantidades, precios, descuentos e impuestos. La
+mayoría de las empresas lo tratan como un adjunto — lo miran, lo archivan y
+guardan el total en la contabilidad.
+
+Cuando ese detalle entra completo al ERP, deja de ser un archivo y pasa a ser
+datos consultables: qué le compras a cada proveedor y a qué precio, cómo ha
+evolucionado el precio de un material, en qué obra se consumió, qué proveedor
+subió tarifas sin avisar. Nada de eso hay que digitarlo — llega en el XML.
+
+Y ahí es donde la
+[capa de IA](/integraciones/mcp-ia/) rinde de verdad: preguntas de ese tipo, en
+lenguaje normal, sobre datos que ya estaban en tu correo sin que nadie los
+aprovechara.
 
 ### Multiempresa desde el diseño
 
@@ -119,16 +149,17 @@ proyecto.
 
 ---
 
-## Dónde está funcionando
+## Esto no es una demo
 
-La parte de compras **corre en producción** en cuatro empresas de un grupo
-constructor, sincronizando el RCV y el correo a diario. La emisión de venta está
-**validada contra el ambiente de certificación del SII** y en despliegue.
+Corre en producción en cuatro empresas de un grupo constructor, sincronizando el
+RCV y el correo a diario, sobre un histórico de más de cien mil facturas de
+compra.
 
-Un dato que dice más sobre el estado del código que cualquier adjetivo: el
+Y un dato que dice más sobre el estado del código que cualquier adjetivo: el
 clasificador de correo se valida contra **120 XML reales del SII**, y el módulo
-tiene **132 tests unitarios** donde antes no había ninguno. Eso es lo que
-permite tocar la facturación de una empresa sin cruzar los dedos.
+tiene **132 tests unitarios**. Eso es lo que permite tocar la facturación de una
+empresa sin cruzar los dedos — porque en Chile equivocarse aquí no es un bug, es
+un problema tributario.
 
 ---
 
