@@ -13,8 +13,13 @@ export async function getStaticPaths({ paginate }) {
 const { page } = Astro.props;
 ---
 
-<BaseLayout title="Blog" sideBarActiveItemID="blog">
+<BaseLayout
+  title="Blog"
+  description="Proyectos personales de matemáticas y programación, y notas sueltas sobre lo que voy construyendo."
+  sideBarActiveItemID="blog"
+>
   <PaginatedList
+    titleTag="h1"
     title="Blog"
     urlPrefix="/blog"
     page={page}

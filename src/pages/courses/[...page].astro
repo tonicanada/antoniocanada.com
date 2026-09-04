@@ -12,8 +12,13 @@ export async function getStaticPaths({ paginate }) {
 const { page } = Astro.props;
 ---
 
-<BaseLayout title="Cursos y formación" sideBarActiveItemID="cursos">
+<BaseLayout
+  title="Cursos y formación"
+  description="Cursos y bootcamps sobre ERPNext: contabilidad, operaciones y desarrollo sobre Frappe."
+  sideBarActiveItemID="courses"
+>
   <PaginatedList
+    titleTag="h1"
     title="Cursos y formación"
     urlPrefix="/cursos"
     page={page}

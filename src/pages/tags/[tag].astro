@@ -29,7 +29,11 @@ const sections = [
 ];
 ---
 
-<BaseLayout title={`Tag: ${tag}`} sideBarActiveItemID="tags">
+<BaseLayout
+  title={`Contenido etiquetado como ${tag}`}
+  description={`Artículos, integraciones y guías etiquetados como ${tag}.`}
+  sideBarActiveItemID="blog"
+>
   <div class="my-10">
     <h1 class="text-4xl font-bold mb-6">
       Contenido etiquetado como <span class="text-primary">{tag}</span>
