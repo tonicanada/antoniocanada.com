@@ -1397,11 +1397,16 @@ mismo contenido en dos URLs es justo lo que la Fase 0 vino a arreglar en el
 dominio y la barra final, así que en `/chile` queda un resumen de tres líneas
 con enlace.
 
-## Pendiente
+## Portada — hecha
 
-La página no tiene portada, mientras el resto de páginas de `PageLayout` sí. Se
-puede generar con `genimg` siguiendo el patrón de las otras dos (21:9,
-monocroma, pocas piezas grandes para que se lea en móvil).
+Generada en otra sesión: isométrica de líneas, cinco elementos de obra
+(estructura, grúa, encofrado, nave, silo) con sus conectores entrando en una
+pantalla. Es literalmente el argumento de la página — la obra alimentando el
+sistema.
+
+**A 3:1 exactos**, que es la proporción que pide `aspect-[3/1]` de
+`PageLayout`, así que no sufre ningún recorte. Con eso la Fase 4 queda
+completa.
 
 ---
 
@@ -1594,3 +1599,25 @@ guardarlas marcadas como *Secret*.
 De las dos, **la de Stripe es la urgente**: con una clave secreta de Stripe se
 pueden crear cargos. La de Resend permite enviar correo en nombre del dominio.
 Es un arreglo del panel, no del repositorio.
+
+## Las tres portadas, y la que quedó descuadrada
+
+La otra sesión unificó el conjunto y regeneró también la de migración:
+
+| Portada | Proporción | Color |
+|---|---|---|
+| `construccion` | **3,00:1** | naranjo de acento |
+| `migracion-erpnext` | **3,00:1** | naranjo de acento |
+| `por-que-erpnext` | 2,32:1 | ninguno |
+
+3:1 exactos es la proporción que `PageLayout` recorta con `aspect-[3/1]`, así
+que esas dos no pierden nada — mejor que el 2,32:1 original, que sí se
+recortaba. Y el naranjo es el acento corporativo de Tecton usado como manda su
+guía: detalles finos, nunca relleno.
+
+**Queda descuadrada la de `/erpnext`**: distinta proporción, sin color, y en una
+página que además no usa `PageLayout` (monta la figura a mano, porque es un
+listado paginado). Es cosmético y no bloquea publicar, pero si se regenera, el
+objetivo es 3:1 con el mismo lenguaje: isométrica de líneas, acento naranjo, y
+el concepto de piezas modulares apoyadas en una base común — que es el
+argumento del Linux de los ERP.
