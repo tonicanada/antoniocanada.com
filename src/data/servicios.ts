@@ -258,14 +258,16 @@ export const tramosProceso: TramoProceso[] = [
     nombre: "Simple",
     queIncluye:
       "Sobre documentos que ya existen: campos, validaciones, permisos y un informe.",
-    ejemplos: "Cajas chicas · asignación de sueldos a centro de costo",
+    ejemplos:
+      "Asignación de sueldos a centro de costo · cajas chicas con una rendición y un aprobador",
     precios: { cl: 10, es: 400 },
   },
   {
     nombre: "Medio",
     queIncluye:
       "Documento propio con estados y aprobaciones, más su informe.",
-    ejemplos: "Aprobación de compras por monto · solicitudes desde sucursales",
+    ejemplos:
+      "Aprobación de compras por monto · solicitudes desde sucursales · cajas chicas con varias obras, anticipos y reintegros",
     precios: { cl: 20, es: 800 },
   },
   {

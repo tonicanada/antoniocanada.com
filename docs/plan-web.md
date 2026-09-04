@@ -1762,3 +1762,23 @@ Y el modelado de procesos no tiene un importe único sino tres tramos: en vez de
 dejar un hueco en la columna de precio —que se lee como "sin decidir", justo lo
 que la cabecera adaptativa vino a evitar— muestra los tres mediante el campo
 `precioNota`.
+
+## Los ejemplos de tramo se leían como una lista de precios
+
+Riesgo real que salió al ver la página: si dice *"cajas chicas = Simple =
+400 €"* y luego el presupuesto de un caso concreto dice 1.500, ahí se cae la
+credibilidad. **El mismo proceso cae en tramos distintos según el alcance**, y
+las cajas chicas son el ejemplo perfecto: unas con una rendición y un aprobador
+son Simple; con varias obras, anticipos y reintegros son Medio.
+
+En vez de quitar la columna de ejemplos —que es lo que hace entender los tramos—
+se usan las cajas chicas **a propósito en dos tramos** y se dice en voz alta:
+*"el tramo lo pone el alcance, no el nombre del proceso… los ejemplos ilustran
+la forma, no son una lista de precios"*.
+
+La objeción acabó dando el párrafo más útil de la sección, porque dice algo que
+vende: se cotiza por lo que la cosa es, no por cómo se llama.
+
+Y un arreglo menor de la misma tabla: las columnas se autoajustaban al contenido,
+así que "Qué incluye" quedaba estrecha mientras "Ejemplos" se iba al borde
+derecho. Anchos explícitos.

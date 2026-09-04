@@ -102,17 +102,24 @@ const piezas = [
     mismo trabajo.
   </p>
   <p>
-    Lo que sí sería un error es un precio plano: cajas chicas no es control de
-    subcontratos. Así que tres tramos, definidos por lo que contienen y no por
-    el sector:
+    Lo que sí sería un error es un precio plano: unas cajas chicas no son un
+    control de subcontratos. Así que tres tramos, definidos por lo que contienen
+    y no por el sector:
   </p>
 
   <div class="not-prose overflow-x-auto">
     <table class="w-full min-w-[34rem] border-collapse text-left text-sm">
       <thead>
         <tr class="border-b border-gray-400">
-          <th scope="col" class="py-3 pr-4 font-semibold text-gray-900">Tramo</th>
-          <th scope="col" class="py-3 pr-4 font-semibold text-gray-900">Qué incluye</th>
+          {/* Anchos explícitos: sin ellos las columnas se ajustan al contenido
+              y "Qué incluye" quedaba estrecha mientras "Ejemplos" se iba al
+              borde derecho. */}
+          <th scope="col" class="w-[6rem] py-3 pr-4 font-semibold text-gray-900">
+            Tramo
+          </th>
+          <th scope="col" class="w-[47%] py-3 pr-4 font-semibold text-gray-900">
+            Qué incluye
+          </th>
           <th scope="col" class="py-3 font-semibold text-gray-900">Ejemplos</th>
         </tr>
       </thead>
@@ -132,6 +139,12 @@ const piezas = [
     </table>
   </div>
 
+  <p>
+    <strong>El tramo lo pone el alcance, no el nombre del proceso.</strong> Las
+    mismas cajas chicas pueden ser Simple si son una rendición con un aprobador,
+    o Medio si hay varias obras, anticipos y reintegros. Por eso aparecen arriba
+    en dos tramos: los ejemplos ilustran la forma, no son una lista de precios.
+  </p>
   <p>
     Y la pieza que hace que esto funcione: <strong>el tramo se asigna en el
     <a href="/services/diagnostico-procesos/">blueprint</a></strong>, no a
