@@ -13,7 +13,11 @@ export async function getStaticPaths({ paginate }) {
 const { page } = Astro.props;
 ---
 
-<BaseLayout title="ERPNext" sideBarActiveItemID="erpnext">
+<BaseLayout
+  title="ERPNext"
+  description="Guías sobre ERPNext: cómo funciona la contabilidad y las operaciones, y en qué se diferencia de los ERP cerrados."
+  sideBarActiveItemID="erpnext"
+>
   <!-- Sección personalizada con presentación -->
   <section class="pb-12">
     <h1 class="text-3xl font-bold mb-4">ERPNext</h1>

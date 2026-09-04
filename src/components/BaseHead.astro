@@ -9,6 +9,8 @@ export interface Props {
 	image?: string;
 	ogType?: string;
 	robots?: string;
+	/** Datos estructurados de la página, si tiene algo que declarar. */
+	schema?: Record<string, any>;
 }
 
 const {
@@ -17,8 +19,23 @@ const {
 	image = '/social_img.webp',
 	ogType = 'website',
 	robots = 'index,follow',
+	schema,
 } = Astro.props;
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
+
+// El sitio no declaraba datos estructurados de ningún tipo. En un sitio que es
+// todo servicios, eso deja al buscador adivinando quién los presta: `Person`
+// una vez en todas las páginas es el mínimo que conecta el nombre, la web y los
+// perfiles, y `schema` deja que cada página añada lo suyo (un `Service`, un
+// `Article`) sin tocar esto.
+const personSchema = {
+	"@context": "https://schema.org",
+	"@type": "Person",
+	name: "Antonio Cañada",
+	url: (Astro.site ?? new URL("/", Astro.url)).toString(),
+	jobTitle: "Consultor ERPNext",
+	knowsAbout: ["ERPNext", "Frappe", "ERP", "Facturación electrónica", "Automatización de procesos"],
+};
 ---
 
 <!-- Global Metadata -->
@@ -47,3 +64,6 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(image, Astro.url)} />
 <meta name="robots" content={robots} />
+
+<script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+{schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}

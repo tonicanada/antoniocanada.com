@@ -2,7 +2,12 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
-<BaseLayout title = "404: Not Found" includeSidebar={false}>
+<BaseLayout
+  title="404: página no encontrada"
+  description="La página que buscas no existe o ha cambiado de dirección."
+  robots="noindex,follow"
+  includeSidebar={false}
+>
   <div class="text-center">
     <h1 class="text-9xl font-bold mb-4">🏝</h1>
     <h1 class="text-9xl font-bold mb-2">404</h1>
