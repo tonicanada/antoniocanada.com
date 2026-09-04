@@ -1227,3 +1227,32 @@ conviene no confundirlas: la de `public/og/erpnext.png` es la tarjeta social
 —invisible en la página, sólo se ve al compartir el enlace— y lleva el titular
 escrito porque en una tarjeta compartida el texto es el gancho. Esta otra es la
 portada visible del cuerpo y no lleva texto.
+
+## Los vídeos de /erpnext se van a la página de su capacidad
+
+Estaban los dos ahí y eran los **únicos vídeos del sitio que no estaban en la
+página de su capacidad**. Mientras tanto `/integraciones/mcp-ia` —la capacidad
+más visual que hay, la IA operando el ERP— no tenía ninguno, teniendo su propia
+demo a mano, y `/services/desarrollo-integraciones` tampoco, siendo adonde
+aterriza el enlace con UTM del vídeo de ecommerce.
+
+**El motivo de fondo:** `/erpnext` responde "¿por qué este ERP y no SAP u
+Odoo?", y un vídeo de un checkout con Stripe no responde eso — responde "¿esto
+funciona?", que es otra objeción y se resuelve en la página de la capacidad. Es
+el mismo criterio con el que se quitó el vídeo introductorio: no era malo,
+contestaba una pregunta que en esa página nadie hace.
+
+**Y el motivo inmediato:** no había forma de maquetarlos bien juntos. Un 16:9 y
+un short 9:16 lado a lado no se arreglan igualando alturas — a 13rem de ancho el
+reproductor del short **recortaba el contenido del teléfono**, con el texto de
+la interfaz cortado a media palabra. Más el cromo de YouTube encima del
+horizontal (título, avatar, "Mirar en YouTube"). La rejilla 2×2 de `8a67186`
+resolvió las alturas, que era el síntoma, pero no el recorte.
+
+Se llevó también el script de autoarranque del short: en su propia página
+temática el visitante ya viene interesado, así que un clic está bien y se evita
+el JS.
+
+En `/erpnext` queda una línea de texto enlazando las dos demos. La página pasa
+de cuatro bloques visuales (portada, mapa de procesos, dos vídeos) a dos, que
+para una página cuyo trabajo es argumentar una elección ya es bastante.

@@ -235,91 +235,29 @@ const razones = [
         {/* Estas dos demuestran; el vídeo de presentación que había aquí
             describía. La prueba gana a la descripción, así que ocupan el sitio
             que tenía él. */}
-        <section class="py-10" aria-labelledby="demos">
-          <h2 id="demos" class="text-2xl font-semibold text-gray-900">
-            Funcionando, no en diapositivas
-          </h2>
-
-          {/* Los dos vídeos son de proporción opuesta: 16/9 y un short 9/16.
-              Con las dos columnas apiladas cada una a su aire, la del short
-              medía 18rem y 512 px de alto contra los ~300 del horizontal, y la
-              sección se leía como una columna cargada al lado de un hueco.
-
-              La rejilla es explícita de 2×2 —los dos textos en la primera fila,
-              los dos vídeos en la segunda— y no dos columnas independientes.
-              Es lo único que garantiza que los vídeos empiecen a la misma
-              altura aunque los textos de encima no midan lo mismo, que es lo
-              que pasa aquí: el del short tiene una línea más porque su columna
-              es más estrecha. El orden del HTML es el de lectura en móvil
-              (texto, vídeo, texto, vídeo) y la colocación en rejilla sólo
-              entra en `lg`.
-
-              Y la columna del short mide 13rem: a 9/16 da 370 px de alto,
-              prácticamente el mismo que el 16/9 de al lado a 608 px de ancho.
-              Los dos vídeos acaban midiendo lo mismo sin recortar ninguno. */}
-          <div
-            class="mt-6 grid grid-cols-1 gap-x-8 lg:grid-cols-[minmax(0,1fr)_13rem] lg:grid-rows-[auto_auto]"
+        {/* Los dos vídeos vivían aquí y se fueron a la página de su
+            capacidad. No eran malos: contestaban "¿esto funciona?" en una
+            página cuyo trabajo es contestar "¿por qué este ERP y no otro?".
+            Y no había forma de maquetarlos bien juntos — 16:9 y 9:16 lado a
+            lado recortaban el short por mucho que se igualaran las alturas. */}
+        <p class="py-10 text-base text-gray-600">
+          Si prefieres verlo funcionando antes de seguir leyendo: hay una{" "}
+          <a
+            href="/services/desarrollo-integraciones/"
+            class="font-semibold text-gray-900 underline underline-offset-2"
           >
-            <div class="lg:col-start-1 lg:row-start-1">
-              <h3 class="font-semibold text-gray-900">
-                Una venta online completa
-              </h3>
-              <p class="mt-1 text-base text-gray-600">
-                Pedido, pago con Stripe, factura emitida, y su impacto directo
-                en inventario y contabilidad. Sin que nadie digite nada entre
-                paso y paso.
-              </p>
-            </div>
-
-            <div class="mt-4 lg:col-start-1 lg:row-start-2">
-              <div
-                class="aspect-video w-full overflow-hidden rounded-lg border border-gray-300 bg-black"
-              >
-                <iframe
-                  class="h-full w-full border-0"
-                  src="https://www.youtube-nocookie.com/embed/PL19FGIEi_g?rel=0"
-                  title="Ecommerce conectado con ERPNext"
-                  loading="lazy"
-                  referrerpolicy="strict-origin-when-cross-origin"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowfullscreen></iframe>
-              </div>
-            </div>
-
-            <div class="mt-8 lg:col-start-2 lg:row-start-1 lg:mt-0">
-              <h3 class="font-semibold text-gray-900">La IA operando el ERP</h3>
-              <p class="mt-1 text-base text-gray-600">
-                Emitir una factura y enviarla por correo, pedido en lenguaje
-                natural.{" "}
-                <a
-                  href="/integraciones/mcp-ia/"
-                  class="underline underline-offset-2 hover:text-gray-900"
-                >
-                  Cómo funciona</a
-                >.
-              </p>
-            </div>
-
-            <div class="mt-4 lg:col-start-2 lg:row-start-2">
-              {/* En móvil el short no ocupa todo el ancho de la columna: a
-                  9/16 saldría un vídeo de más de una pantalla de alto. */}
-              <div
-                class="relative mx-auto aspect-[9/16] w-40 overflow-hidden rounded-lg border border-gray-300 bg-black sm:w-52 lg:w-full"
-                data-short-hover-player
-              >
-                <iframe
-                  data-short-iframe
-                  class="absolute inset-0 h-full w-full border-0"
-                  src="https://www.youtube-nocookie.com/embed/vG_Yv2dNY38?rel=0&mute=1&playsinline=1"
-                  title="ERPNext + IA en acción"
-                  loading="lazy"
-                  referrerpolicy="strict-origin-when-cross-origin"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowfullscreen></iframe>
-              </div>
-            </div>
-          </div>
-        </section>
+            venta online completa de punta a punta
+          </a>{" "}
+          —pedido, pago, factura e inventario, sin digitar nada entre paso y
+          paso— y{" "}
+          <a
+            href="/integraciones/mcp-ia/"
+            class="font-semibold text-gray-900 underline underline-offset-2"
+          >
+            la IA operando el ERP
+          </a>{" "}
+          en lenguaje natural.
+        </p>
       </>
     )
   }
@@ -410,29 +348,4 @@ const razones = [
     )
   }
 
-  <script>
-    // El short arranca solo, en silencio, cuando entra en pantalla: es vertical
-    // y corto, así que verlo es más barato que decidir si pulsarlo.
-    const player = document.querySelector("[data-short-hover-player]");
-    const iframe = player?.querySelector("[data-short-iframe]");
-
-    if (player instanceof HTMLElement && iframe instanceof HTMLIFrameElement) {
-      const baseSrc =
-        "https://www.youtube-nocookie.com/embed/vG_Yv2dNY38?rel=0&mute=1&playsinline=1";
-      const autoplaySrc = `${baseSrc}&autoplay=1`;
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry?.isIntersecting) {
-            if (iframe.src !== autoplaySrc) iframe.src = autoplaySrc;
-            return;
-          }
-
-          if (iframe.src !== baseSrc) iframe.src = baseSrc;
-        },
-        { threshold: 0.6 }
-      );
-
-      observer.observe(player);
-    }
-  </script>
 </BaseLayout>
