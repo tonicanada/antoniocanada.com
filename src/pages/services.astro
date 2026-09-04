@@ -69,6 +69,47 @@ import { paises } from "../data/servicios";
     <!-- Lo que antes decía "A medida" en casi todas las tarjetas. Publicar la
          composición permite al visitante sumar su caso y saber si está en su
          orden de magnitud, sin anclar el proyecto a una cifra. -->
+    {/* La página de sector estaba a tres clics de la home —vía migración o vía
+        /chile— y para la landing de un sector entero eso es demasiado
+        profundo. Aquí queda a uno. No va en el menú (ya tiene nueve entradas)
+        ni en la home, que es deliberadamente neutra de sector: se limpió el
+        vocabulario de construcción de ella a propósito. */}
+    <Panel as="section" class="mt-12" aria-labelledby="por-sector">
+      <p class="text-sm font-semibold uppercase tracking-[0.2em] text-gray-500">
+        Por sector
+      </p>
+      <h2 id="por-sector" class="mt-2 text-xl font-semibold text-gray-900">
+        ¿Y esto sirve para lo mío?
+      </h2>
+      <p class="mt-3 max-w-2xl text-base text-gray-600">
+        La parte genérica de un ERP se configura; lo que hace que sirva para tu
+        negocio son los procesos propios de tu sector, y eso hay que modelarlo.
+        El sector que tengo documentado a fondo es la
+        <strong class="font-semibold text-gray-800">construcción</strong> —
+        resultado por obra, subcontratos, bodega por obra, provisiones—, porque
+        llevo años dentro de una constructora chilena.
+      </p>
+      <p class="mt-3 max-w-2xl text-base text-gray-600">
+        También he trabajado con empresas de maquinaria, inmobiliarias y
+        oficinas de arquitectura. Si tu sector no está en la lista, la
+        conversación empieza igual.
+      </p>
+      <div class="mt-5">
+        <Button
+          href="/construccion/"
+          variant="secondary"
+          data-ev="service_cta_click"
+          data-ev-params={JSON.stringify({
+            service_name: "sector-construccion",
+            cta_text: "ERPNext para constructoras",
+            cta_location: "services_por_sector",
+          })}
+        >
+          ERPNext para constructoras
+        </Button>
+      </div>
+    </Panel>
+
     <section class="mt-16" aria-labelledby="composicion">
       <h2 id="composicion" class="text-2xl font-semibold text-gray-900">
         De qué está compuesto un proyecto

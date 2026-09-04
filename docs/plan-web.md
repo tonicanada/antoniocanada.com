@@ -1325,8 +1325,27 @@ Página nueva en **`/construccion`**. Plano y no `/sectores/construccion`: con u
 solo sector, la jerarquía sobra, y así la URL sirve de landing para intención de
 búsqueda ("erp para constructoras", "software gestión de obras").
 
-**No entra en el menú**, que ya tiene nueve entradas. Se llega desde `/chile` y
-desde la página de migración; el tráfico que importa llegará por buscador.
+**No entra en el menú**, que ya tiene nueve entradas — un sector en la
+navegación principal sólo tiene sentido cuando hay varios. Tampoco en la home,
+que es deliberadamente neutra de sector: el vocabulario de construcción se
+limpió de ella a propósito.
+
+Pero el primer intento la dejó **a tres clics de la home** (vía migración o vía
+`/chile`, y la home no enlaza a `/chile`), que para la landing de un sector
+entero es demasiado profundo. El razonamiento de "el tráfico llegará por
+buscador" es cierto a largo plazo e inútil para una página nueva sin autoridad:
+no llega nadie en meses.
+
+Arreglado con un bloque **"Por sector"** en `/services`, entre la rejilla de
+ofertas y la tabla de composición — quien acaba de ver las cuatro ofertas es
+justo quien se pregunta "¿y esto sirve para lo mío?". Ahora está **a dos
+clics**: home → /services → /construccion.
+
+Queda pendiente una idea que no se pudo hacer porque `references.ts` estaba en
+uso por otra sesión: **enlazar el sector desde las tarjetas de casos reales**.
+La de Tecton ya muestra "Chile · Construcción" como texto plano; convertir ese
+sector en enlace cuando exista su página convierte la prueba social en
+navegación.
 
 ## La tesis
 
