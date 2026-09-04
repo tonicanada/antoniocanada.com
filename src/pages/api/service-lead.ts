@@ -93,6 +93,39 @@ export const POST: APIRoute = async ({ request }) => {
       (getEnv("BOOKING_CLICK_NOTIFY") || "true").toLowerCase() !== "false";
     const apiKey = getEnv("RESEND_API_KEY");
 
+    // El lead va al log antes de intentar el correo. No hay base de datos: si
+    // el envío falla por cualquier motivo, esto es lo único que queda, y desde
+    // los logs de Vercel el lead sigue siendo recuperable en vez de
+    // desaparecer sin rastro.
+    console.log(
+      "[lead]",
+      JSON.stringify({
+        servicio: servicioRaw,
+        email: String(emailRaw ?? ""),
+        objetivo: String(objetivo ?? "").slice(0, 500),
+        cuando: new Date().toISOString(),
+      })
+    );
+
+    // Una clave ausente NO puede parecer un envío correcto. Antes, sin
+    // RESEND_API_KEY el bloque se saltaba y la respuesta era `ok: true`: el
+    // visitante veía "gracias" y el aviso no llegaba a nadie. Un fallo de
+    // envío sí se veía (lo capturaba el catch), así que la mala configuración
+    // era el único caso silencioso — justo el que dura semanas sin detectarse.
+    if (notifyEnabled && !apiKey) {
+      console.error(
+        "[lead] RESEND_API_KEY no está definida: el aviso no se ha enviado. " +
+          "Revisa las variables de entorno del proyecto en Vercel."
+      );
+      return new Response(
+        JSON.stringify({
+          error:
+            "No hemos podido registrar tu solicitud. Escríbeme directamente a contacto@bizmotion.io y lo resolvemos.",
+        }),
+        { status: 500, headers: { "Content-Type": "application/json" } }
+      );
+    }
+
     if (notifyEnabled && apiKey) {
       const resend = new Resend(apiKey);
       const to = getEnv("LEAD_NOTIFY_TO") || getEnv("BOOKING_CLICK_NOTIFY_TO") || NOTIFY_TO_DEFAULT;
@@ -146,10 +179,15 @@ export const POST: APIRoute = async ({ request }) => {
       headers: { "Content-Type": "application/json" },
     });
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Error interno";
-    return new Response(JSON.stringify({ error: message }), {
-      status: 400,
-      headers: { "Content-Type": "application/json" },
-    });
+    // El detalle va al log, no a la respuesta: `err.message` podía devolver al
+    // navegador el texto de error de Resend o rutas internas.
+    console.error("[lead] error procesando el formulario:", err);
+    return new Response(
+      JSON.stringify({
+        error:
+          "No hemos podido procesar tu solicitud. Inténtalo de nuevo o escríbeme a contacto@bizmotion.io.",
+      }),
+      { status: 400, headers: { "Content-Type": "application/json" } }
+    );
   }
 };

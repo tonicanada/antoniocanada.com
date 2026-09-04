@@ -4,6 +4,7 @@ description: "Experiencia paso a paso creando una librería Python y publicándo
 publishDate: 2023-04-04
 tags: ["python", "pip", "librerías", "automatización", "educación"]
 image: "/assets/images/blog/mi-primera-libreria-pip/portada.webp"
+urlSlug: "como-cree-mi-primera-libreria-en-pip"
 ---
 
 La primera vez que vi a mi jefe ejecutar comandos en una terminal Linux, quedé totalmente inspirado. Acostumbrado a usar Windows toda la vida, me sorprendió que en esa terminal lo que le decías al computador, se cumplía **al pie de la letra**. Es decir, si escribías que querías borrar todos los archivos… ¡los borraba! Incluso si eso implicaba que luego no pudieras volver a encender la máquina.
@@ -173,4 +174,4 @@ with open(path) as f:
 - [Repositorio en GitHub](https://github.com/tonicanada/conversor_nominas_bancos_chile)
 - [PyPI del proyecto](https://pypi.org/project/conversor-nominas-bancos-chile/)
 
-Si te gustó este artículo, ¡dale a 👏 y compártelo! Puedes seguirme en mi [LinkedIn](https://www.linkedin.com/in/canadamomblant/), [Twitter](https://twitter.com/toni_canada), [Facebook](https://www.facebook.com/toni.canada) o [Medium](https://tonicanada.medium.com/).
+Si te gustó este artículo, ¡compártelo! Puedes seguirme en [LinkedIn](https://www.linkedin.com/in/antoniocanada/), [Twitter](https://twitter.com/toni_canada), [Facebook](https://www.facebook.com/toni.canada) o [Medium](https://tonicanada.medium.com/).

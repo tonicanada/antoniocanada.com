@@ -25,6 +25,7 @@ export const references: Reference[] = [
   },
   {
     company: "Vegostart",
+    url: "https://www.vegostart.com.bo",
     country: "Bolivia",
     sector: "Tecnología",
     scope: "Capacitación ERPNext",

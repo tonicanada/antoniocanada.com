@@ -1,27 +1,64 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageLayout from "../../layouts/PageLayout.astro";
 import ServiceLeadForm from "../../components/ServiceLeadForm.astro";
+
+// Era una de las tres páginas que se quedaron con el patrón viejo: h1 sin
+// kicker, viñetas de una palabra ("Gratis") y ninguna razón para que el
+// visitante crea que la llamada le sirve de algo. Es la puerta de entrada de
+// todo el embudo —la tabla de componentes la marca como el primer paso— así que
+// tiene que decir qué pasa dentro de esos veinte minutos.
 ---
 
-<BaseLayout title="Consulta inicial" enableRelativityBackground={false}>
-  <div class="max-w-3xl mx-auto py-10 px-4">
-    <h1 class="text-3xl font-bold mb-4">Consulta inicial</h1>
+<PageLayout
+  title="Consulta inicial"
+  headTitle="Consulta inicial gratuita sobre ERPNext"
+  description="Llamada de 15–20 minutos sin coste: qué sistemas usas hoy, qué se puede unificar y qué no, y una ruta con orden de magnitud. Si tu caso no encaja, te lo digo ahí mismo."
+  kicker="Servicio · Gratis"
+  lead="Una llamada de 15–20 minutos para entender tu caso y decirte cuál es el siguiente paso sensato — que a veces no es contratarme."
+  sideBarActiveItemID="services"
+>
+  <h2>Para quién es</h2>
+  <ul>
+    <li>
+      <strong>Estás evaluando cambiar de sistema</strong> y quieres saber si
+      ERPNext cubre lo tuyo antes de meterte en un proceso largo.
+    </li>
+    <li>
+      <strong>Ya tienes ERPNext</strong> y hay algo que no termina de funcionar:
+      una integración, un módulo, un informe que nadie usa.
+    </li>
+    <li>
+      <strong>No sabes por dónde empezar.</strong> Tienes claro el problema
+      —cerrar el mes cuesta tres semanas— y no la solución.
+    </li>
+  </ul>
 
-    <p class="mb-6 text-lg text-gray-700">
-      Primera reunión para entender tu caso, resolver dudas y proponerte el mejor siguiente paso según tu situación:
-      ERPNext, automatización, integraciones, formación o migración desde otro sistema.
-    </p>
+  <h2>Qué sale de la llamada</h2>
+  <ul>
+    <li>Qué sistemas usas hoy y cuáles de ellos se pueden unificar de verdad.</li>
+    <li>
+      Qué <a href="/services">componentes</a> necesita tu caso y en qué orden
+      hacerlos, que casi nunca es todo a la vez.
+    </li>
+    <li>Un orden de magnitud del proyecto, no un presupuesto cerrado.</li>
+    <li>
+      Si no encaja, te lo digo ahí mismo. Es más barato para los dos que
+      descubrirlo en el mes tres.
+    </li>
+  </ul>
 
-    <ul class="list-disc pl-6 mb-6 text-gray-600">
-      <li>Revisión rápida de tu contexto y objetivos</li>
-      <li>Recomendación del mejor camino y prioridades</li>
-      <li>Gratis</li>
-    </ul>
+  <h2>Qué cuesta</h2>
+  <p>
+    Nada. No es una llamada comercial disfrazada de diagnóstico: si de aquí sale
+    un trabajo, el primer paso de pago es el
+    <a href="/services/diagnostico-procesos/">estudio de procesos</a>, y ese ya
+    es un entregable que te llevas.
+  </p>
 
-    <ServiceLeadForm
-      servicio="consulta-inicial"
-      heading="Agenda tu consulta inicial"
-      subheading="Déjame tus datos y tu objetivo principal; luego podrás elegir un horario en mi agenda."
-    />
-  </div>
-</BaseLayout>
+  <ServiceLeadForm
+    slot="footer"
+    servicio="consulta-inicial"
+    heading="Agenda tu consulta inicial"
+    subheading="Déjame tus datos y tu objetivo principal; luego podrás elegir un horario en mi agenda."
+  />
+</PageLayout>

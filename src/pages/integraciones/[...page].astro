@@ -1,0 +1,104 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PaginatedList from "../../components/PaginatedList.astro";
+import Panel from "../../components/Panel.astro";
+import Button from "../../components/Button.astro";
+import { getCollection } from "astro:content";
+import createSlug from "../../lib/createSlug";
+
+export async function getStaticPaths({ paginate }) {
+  const entradas = await getCollection("integraciones");
+  entradas.sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
+  return paginate(entradas, { pageSize: 10 });
+}
+
+const { page } = Astro.props;
+const esPrimeraPagina = !page.url.prev;
+---
+
+<BaseLayout
+  title="Integraciones de ERPNext"
+  description="Con qué se conecta ERPNext: facturación electrónica, banco, compras y licitaciones, e IA por MCP. Capa genérica más el proveedor de cada país."
+  sideBarActiveItemID="integraciones"
+>
+  {
+    esPrimeraPagina && (
+      <section class="mb-10">
+        <p class="text-sm font-semibold uppercase tracking-[0.2em] text-gray-500">
+          Integraciones
+        </p>
+        <h1 class="mt-2 text-3xl sm:text-4xl font-semibold text-gray-900">
+          Con qué se conecta el ERP
+        </h1>
+        <p class="mt-4 text-base text-gray-600">
+          Un ERP solo es la fuente de verdad si los datos entran desde su origen
+          y no a mano. Estas son las conexiones que lo consiguen: la facturación
+          electrónica con el organismo que corresponda, el banco, las compras y
+          licitaciones, y la capa de IA por encima.
+        </p>
+
+        {/* El patrón importa más que la lista: es lo que permite vender lo
+            mismo en México o Perú sin reescribir el sistema. */}
+        <Panel class="mt-6">
+          <p class="text-sm font-semibold text-gray-900">
+            Cada integración está partida en dos capas
+          </p>
+          <p class="mt-2 text-sm text-gray-600">
+            Una <strong class="font-semibold text-gray-800">capa genérica</strong>
+            {" "}con lo que es igual en cualquier país — emitir, conciliar,
+            licitar — y una
+            <strong class="font-semibold text-gray-800"> capa de localización</strong>
+            {" "}que sabe del organismo y del proveedor concretos: el SII y
+            Fintoc en Chile, la AEAT y Veri*Factu en España. Cambiar de país
+            significa cambiar la segunda, no reescribir el sistema.
+          </p>
+        </Panel>
+
+      </section>
+    )
+  }
+
+  <PaginatedList
+    title={esPrimeraPagina ? "Integraciones documentadas" : "Integraciones"}
+    urlPrefix="/integraciones"
+    page={page}
+    cardProps={(entry) => ({
+      title: entry.data.title,
+      desc: entry.data.description,
+      img: entry.data.image,
+      url: "/integraciones/" + createSlug(entry.data.title, entry.slug, entry.data.urlSlug),
+      tags: entry.data.tags,
+    })}
+  />
+
+  {
+    esPrimeraPagina && (
+      <Panel as="section" class="mt-12">
+        <h2 class="text-xl font-semibold text-gray-900">
+          ¿No está la que necesitas?
+        </h2>
+        <p class="mt-2 text-base text-gray-600">
+          Esta lista es lo que está documentado, no el límite. El criterio real
+          es simple: <strong class="font-semibold text-gray-800">si tu
+          herramienta tiene API, se conecta</strong> — y casi siempre en menos
+          tiempo del que parece, porque el patrón de dos capas ya está resuelto.
+          Si no tiene API, hay que mirarlo, y a veces la respuesta honesta es
+          que no se puede: en ese caso te lo digo antes de cobrarte nada.
+        </p>
+        <div class="mt-5">
+          <Button
+            href="/agendar/"
+            data-ev="service_cta_click"
+            data-ev-params={JSON.stringify({
+              service_name: "agendar",
+              cta_text: "Cuéntame qué necesitas",
+              cta_location: "integraciones_cierre",
+            })}
+          >
+            Cuéntame qué necesitas
+          </Button>
+        </div>
+      </Panel>
+    )
+  }
+</BaseLayout>

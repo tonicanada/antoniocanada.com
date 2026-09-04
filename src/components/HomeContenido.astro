@@ -1,0 +1,78 @@
+---
+import Button from "./Button.astro";
+import Panel from "./Panel.astro";
+
+const agendarUrl =
+  import.meta.env.PUBLIC_AGENDAR_URL ||
+  import.meta.env.PUBLIC_GOOGLE_CALENDAR_BOOKING_URL ||
+  "/agendar";
+
+// Aquí vivía un bloque "Antes de decidir" con las guías de /erpnext. Fuera por
+// dos razones: la colección tiene dos entradas y el `.slice(0, 3)` prometía una
+// tercera que no existe, y /erpnext está en el menú. Ocupaba media pantalla
+// para repetir un enlace que ya está a un clic.
+//
+// La prueba social se queda, pero en una línea. La sección de casos reales que
+// había antes montaba el mismo componente que /casos-reales: el mismo contenido
+// en dos URLs, que es justo lo que la Fase 0 vino a arreglar en el dominio y la
+// barra final. Una línea nombrando el trabajo concreto da credibilidad de paso
+// —que es lo que hace la prueba social en una landing— sin gastar una pantalla
+// ni duplicar la página.
+//
+// Las tres frases salen de `src/data/references.ts` y no las inventa nadie:
+// Tecton (finanzas, procesos y digitalización), Hostname (migración desde Odoo)
+// y Vegostart (capacitación en ERPNext).
+---
+
+<p class="max-w-2xl text-base text-gray-600">
+  Tecton ordenó finanzas y procesos, Hostname salió de Odoo, Vegostart formó a
+  su equipo.
+  <a
+    href="/casos-reales"
+    class="font-semibold text-gray-900 underline underline-offset-2 hover:text-gray-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
+  >
+    Ver los tres casos
+  </a>
+</p>
+
+<!-- Una sola acción, y sin tener que volver arriba a buscarla -->
+<Panel class="mt-8 sm:p-8">
+  <h2 class="text-xl sm:text-2xl font-semibold text-gray-900">
+    ¿Hablamos de tu caso?
+  </h2>
+  <p class="mt-2 text-base text-gray-600 max-w-2xl">
+    Una llamada de 15–20 minutos, sin coste: qué sistemas usas hoy, qué se puede
+    unificar y qué no, y una ruta concreta con orden y plazos. Si no encaja, te
+    lo digo en la misma llamada.
+  </p>
+  <div class="mt-5 flex flex-col sm:flex-row gap-3">
+    <Button
+      href={agendarUrl}
+      data-ev="service_cta_click"
+      data-ev-params={JSON.stringify({"service_name": "agendar", "cta_text": "Agendar llamada", "cta_location": "home_banda_cta"})}
+    >
+      Agendar llamada
+    </Button>
+    <Button
+      href="/services"
+      variant="secondary"
+      data-ev="service_cta_click"
+      data-ev-params={JSON.stringify({"service_name": "services", "cta_text": "Ver servicios", "cta_location": "home_banda_cta"})}
+    >
+      Ver servicios
+    </Button>
+  </div>
+</Panel>
+
+<p class="mt-8 text-sm text-gray-600">
+  También escribo sobre <a
+    href="/erpnext"
+    class="underline underline-offset-2 hover:text-gray-900">ERPNext</a
+  >, doy <a
+    href="/courses"
+    class="underline underline-offset-2 hover:text-gray-900">cursos y bootcamps</a
+  >, y en el <a
+    href="/blog"
+    class="underline underline-offset-2 hover:text-gray-900">blog</a
+  > hay proyectos personales de matemáticas y programación.
+</p>

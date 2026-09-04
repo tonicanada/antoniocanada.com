@@ -1,32 +1,63 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageLayout from "../../layouts/PageLayout.astro";
 import ServiceLeadForm from "../../components/ServiceLeadForm.astro";
+
+// Era la página más rezagada del sitio: sin `title` ni `description` propios
+// —salía al buscador con el título global, compitiendo con la home—, con emoji
+// en mitad del texto, "Ofrecemos" donde el resto del sitio dice "yo", y sin
+// decir cómo se cobra pese a que la tabla de componentes la lista como precio
+// fijo por bloques de horas.
 ---
 
-<BaseLayout sideBarActiveItemID="services" enableRelativityBackground={false}>
-  <div class="pb-12 mt-5">
-    <h1 class="text-4xl font-bold mb-6">Capacitación técnica en ERPNext y desarrollo</h1>
+<PageLayout
+  title="Capacitación técnica"
+  headTitle="Capacitación técnica en Frappe y ERPNext"
+  description="Formación práctica en Frappe y ERPNext para desarrolladores y equipos técnicos que van a mantener y extender el sistema. Sesiones remotas, 1:1 o en grupo, por bloques de horas."
+  kicker="Servicio"
+  lead="Formación en Frappe y ERPNext para quien va a mantener y extender el sistema: desarrolladores, equipos de TI y el técnico interno que hereda la implantación."
+  sideBarActiveItemID="services"
+>
+  <h2>Para quién es</h2>
+  <ul>
+    <li>
+      <strong>Equipos técnicos que heredan un ERPNext.</strong> El sistema ya
+      está y hay que saber tocarlo sin romperlo.
+    </li>
+    <li>
+      <strong>Desarrolladores que llegan a Frappe desde otro stack.</strong> El
+      framework es coherente pero poco convencional, y la curva se acorta mucho
+      con alguien enfrente.
+    </li>
+    <li>
+      <strong>Empresas que quieren depender menos del proveedor.</strong> Es una
+      petición legítima y la respondo formando a tu gente, no evitándolo.
+    </li>
+  </ul>
 
-    <p class="text-lg mb-8">
-      ¿Estás aprendiendo a programar en ERPNext o trabajando con Frappe y necesitas apoyo?
-    </p>
+  <h2>Qué se ve</h2>
+  <ul>
+    <li>Estructura del framework <strong>Frappe</strong>: doctypes, hooks, permisos, el ORM.</li>
+    <li>Desarrollo de <strong>módulos y apps personalizadas</strong> sobre ERPNext.</li>
+    <li>Automatización: hooks, server scripts, trabajos en segundo plano.</li>
+    <li>Administración de entornos: instalación, actualizaciones, Docker, despliegue.</li>
+    <li>APIs, integración con sistemas externos y buenas prácticas de versionado.</li>
+  </ul>
+  <p>
+    Las sesiones son remotas y se arman sobre el proyecto que tengas en curso:
+    se avanza en tu código, no en un ejemplo de manual.
+  </p>
 
-    <p class="mb-4">
-      Ofrecemos sesiones prácticas, remotas y personalizadas para desarrolladores, técnicos o equipos de TI que quieran profundizar en:
-    </p>
+  <h2>Qué cuesta</h2>
+  <p>
+    Se contrata por <strong>bloques de horas</strong>, a precio fijo. El importe
+    está en la página de tu país, junto al resto de
+    <a href="/services">componentes del proyecto</a>.
+  </p>
 
-    <ul class="list-disc list-inside mb-6">
-      <li>Estructura del framework <strong>Frappe</strong>.</li>
-      <li>Desarrollo de <strong>módulos personalizados en ERPNext</strong>.</li>
-      <li>Automatización de procesos (hooks, scripts, background jobs).</li>
-      <li>Administración de entornos (instalación, actualizaciones, Docker, etc.).</li>
-      <li>APIs, integración con sistemas externos y buenas prácticas.</li>
-    </ul>
-
-    <p class="mb-6">
-      💬 Las sesiones se adaptan al nivel del equipo y al proyecto en curso. Si estás formando un equipo técnico o quieres especializarte en ERPNext, esta opción es ideal.
-    </p>
-
-    <ServiceLeadForm servicio="capacitacion-tecnica-erpnext" />
-  </div>
-</BaseLayout>
+  <ServiceLeadForm
+    slot="footer"
+    servicio="capacitacion-tecnica-erpnext"
+    heading="Cuéntame qué necesita tu equipo"
+    subheading="Déjame tus datos, cuántas personas son y en qué nivel están; te propongo un plan de sesiones."
+  />
+</PageLayout>

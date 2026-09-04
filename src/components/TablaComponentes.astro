@@ -1,0 +1,101 @@
+---
+import {
+  componentes,
+  componentesDe,
+  comoSeCobra,
+  hayPrecios,
+  type Pais,
+  type ComponenteServicio,
+} from "../data/servicios";
+import { ufActual } from "../data/uf";
+
+export interface Props {
+  /** Sin país se muestra sólo cómo se cobra, sin importes: es el caso de
+      /services, donde también llega quien está en un país sin tabla propia. */
+  pais?: Pais;
+  /** Para mostrar sólo algunos componentes, por nombre y en ese orden. */
+  soloEstos?: string[];
+  /** La nota de por qué la migración va por presupuesto. */
+  mostrarPorQueVaria?: boolean;
+}
+
+const { pais, soloEstos, mostrarPorQueVaria = true } = Astro.props;
+
+// Mientras el país no tenga ningún importe, la columna se titula como en
+// /services. En cuanto se ponga el primer precio pasa sola a "Precio (UF)".
+const conPrecios = pais ? hayPrecios(pais) : false;
+
+// La referencia en pesos se calcula con un valor de UF que se queda viejo. Se
+// muestra con su fecha para que eso se vea en vez de pasar desapercibido.
+const notaUF =
+  conPrecios && pais?.unidad === "UF" && ufActual
+    ? `Referencia en pesos calculada con la UF del ${new Intl.DateTimeFormat(
+        pais.locale,
+        { day: "numeric", month: "long", year: "numeric" },
+      ).format(new Date(`${ufActual.fecha}T12:00:00`))} (${new Intl.NumberFormat(
+        pais.locale,
+        { style: "currency", currency: "CLP", maximumFractionDigits: 0 },
+      ).format(ufActual.valor)}). El precio se pacta en UF.`
+    : null;
+
+const todos: ComponenteServicio[] = pais ? componentesDe(pais) : componentes;
+const filas = soloEstos
+  ? soloEstos
+      .map((n) => todos.find((c) => c.nombre === n))
+      .filter((c): c is ComponenteServicio => Boolean(c))
+  : todos;
+---
+
+<div class="overflow-x-auto">
+  <table class="w-full min-w-[38rem] border-collapse text-left text-sm">
+    <thead>
+      <tr class="border-b border-gray-400">
+        <th scope="col" class="py-3 pr-4 font-semibold text-gray-900">Componente</th>
+        <th scope="col" class="py-3 pr-4 font-semibold text-gray-900">Qué incluye</th>
+        <th
+          scope="col"
+          class="py-3 font-semibold text-gray-900 whitespace-nowrap"
+        >
+          {conPrecios && pais ? `Precio (${pais.unidad})` : "Cómo se cobra"}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        filas.map((c) => (
+          <tr class="border-b border-gray-200 align-top">
+            <th scope="row" class="py-3 pr-4 font-semibold text-gray-900">
+              {c.enlace ? (
+                <a href={c.enlace} class="underline underline-offset-2">
+                  {c.nombre}
+                </a>
+              ) : (
+                c.nombre
+              )}
+            </th>
+            <td class="py-3 pr-4 text-gray-600">{c.queEs}</td>
+            <td class="py-3 text-gray-700 whitespace-nowrap">
+              {comoSeCobra(c, pais)}
+            </td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>
+
+{notaUF && <p class="mt-3 text-xs text-gray-500">{notaUF}</p>}
+
+{
+  mostrarPorQueVaria &&
+    filas
+      .filter((c) => c.porQueVaria)
+      .map((c) => (
+        <p class="mt-6 text-sm text-gray-600">
+          <strong class="font-semibold text-gray-800">
+            Por qué {c.nombre.toLowerCase()} va por presupuesto:
+          </strong>{" "}
+          {c.porQueVaria}
+        </p>
+      ))
+}

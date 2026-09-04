@@ -1,10 +1,44 @@
 ---
+// El pie medía ~120 px: `py-8` arriba y abajo, la fila de enlaces, `mt-4` y el
+// copyright en una segunda fila. Para cuatro enlaces legales y un año es mucha
+// página — y en las vistas cortas empujaba el contenido hacia arriba.
+//
+// Todo en una sola línea y `py-4`: baja a ~52 px. El año deja de ser un párrafo
+// aparte y pasa a ser un elemento más de la fila, separado por un punto.
+//
+// El color se queda en `gray-600` (7,6:1 sobre blanco). Iba en `gray-400`, unos
+// 2,6:1, por debajo del 4,5:1 que pide WCAG AA para texto pequeño — y aquí
+// viven los enlaces que alguien busca con prisa.
 const today = new Date();
+
+const enlaces = [
+  { href: "/contact", texto: "Contacto" },
+  { href: "/services", texto: "Servicios" },
+  // El blog vive aquí y no en el menú: es contenido personal (matemáticas y
+  // programación), y en la navegación primaria competía con las páginas
+  // comerciales. Aquí sigue a un clic para quien lo busque.
+  { href: "/blog", texto: "Blog" },
+  { href: "/politica-reembolsos", texto: "Reembolsos" },
+  { href: "/privacy", texto: "Privacidad" },
+];
 ---
 
-<footer class="pt-8 text-center text-xs text-gray-400 pb-8">
-  &copy; {today.getFullYear()} Antonio Cañada · 
-  <a href="/contact" class="hover:underline">Contacto</a> · 
-  <a href="/politica-reembolsos" class="hover:underline">Reembolsos</a> · 
-  <a href="/privacy" class="hover:underline">Privacidad</a>
+<footer class="border-t border-gray-200 px-5 py-4 text-center text-sm text-gray-600">
+  <nav
+    class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1"
+    aria-label="Pie de página"
+  >
+    {
+      enlaces.map((e) => (
+        <a
+          href={e.href}
+          class="underline underline-offset-4 decoration-gray-300 hover:decoration-gray-900"
+        >
+          {e.texto}
+        </a>
+      ))
+    }
+    <span class="text-gray-300" aria-hidden="true">·</span>
+    <span class="text-gray-500">&copy; {today.getFullYear()} Antonio Cañada</span>
+  </nav>
 </footer>

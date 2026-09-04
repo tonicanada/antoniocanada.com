@@ -1,0 +1,54 @@
+---
+// Había seis variantes escritas a mano del mismo botón negro repartidas por el
+// sitio: `rounded-md` en unas, `rounded-lg` y `rounded` en otras, `py-2` frente
+// a `py-3`, y —lo que sí importaba— sin anillo de foco en `contact.astro` ni en
+// `ServiceLeadForm`, o sea que los dos formularios del sitio se navegaban con
+// Tab a ciegas. Y por debajo convivían con los `btn` de daisyUI.
+//
+// Renderiza <a> si recibe `href` y <button> si no: son cosas distintas para el
+// teclado y para el lector de pantalla, y el estilo no debería obligar a elegir.
+export interface Props {
+  href?: string;
+  type?: "button" | "submit";
+  variant?: "primary" | "secondary";
+  size?: "sm" | "md";
+  class?: string;
+  [key: string]: any;
+}
+
+const {
+  href,
+  type = "button",
+  variant = "primary",
+  size = "md",
+  class: extra = "",
+  ...rest
+} = Astro.props;
+
+const base =
+  "inline-flex items-center justify-center rounded-md text-center font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 focus-visible:ring-offset-white";
+
+const variantes = {
+  primary: "bg-black text-white hover:bg-gray-900",
+  secondary: "border border-black bg-transparent text-black hover:bg-gray-100",
+};
+
+const tamanos = {
+  sm: "px-4 py-2 text-sm",
+  md: "px-5 py-3 text-sm sm:text-base",
+};
+
+const clase = `${base} ${variantes[variant]} ${tamanos[size]} ${extra}`;
+---
+
+{
+  href ? (
+    <a href={href} class={clase} {...rest}>
+      <slot />
+    </a>
+  ) : (
+    <button type={type} class={clase} {...rest}>
+      <slot />
+    </button>
+  )
+}

@@ -3,7 +3,7 @@ import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import SideBar from "../components/SideBar.astro";
-import RelativityBackground from "../components/RelativityBackground";
+import GridBackground from "../components/GridBackground.astro";
 import { ViewTransitions } from "astro:transitions";
 import GtmScripts from "../components/analytics/GtmScripts.astro";
 import GtmNoscript from "../components/analytics/GtmNoscript.astro";
@@ -20,26 +20,36 @@ const {
   sideBarActiveItemID,
   ogType,
   robots,
-  backgroundUrl,
-  enableRelativityBackground = true,
-  backgroundClasses = "brightness-[0.4]",
-  mainClass = "w-full px-4 py-10 max-w-[900px] mx-auto [&_ul>li]:leading-tight",
+  // Datos estructurados propios de la página. Ver `BaseHead`.
+  schema,
+  // La retícula va SIEMPRE, y por eso ya no hay `enableGridBackground`. Estaba
+  // apagada en las siete páginas de servicio, en `PostLayout` y en
+  // `StoreItemLayout` — es decir, en todas las páginas de detalle, que son
+  // justo donde se pasa el tiempo. La textura de marca sólo se veía en las
+  // portadas. No era una decisión: es lo que quedó de cuando el fondo era
+  // three.js y pesaba 456 KB. A 2,5 % de opacidad y 0 KB de JS no hay nada de
+  // lo que proteger a una página.
+  mainClass = "w-full px-5 sm:px-6 py-10 mx-auto max-w-wide",
   contentClass = "bg-transparent",
   shellClass = "bg-transparent",
+  // El <html> es el contenedor de scroll, así que las utilidades que actúan
+  // sobre él —scroll-snap, scroll-padding— tienen que aterrizar aquí y no en un
+  // envoltorio interior. Sólo la home lo usa por ahora.
+  htmlClass = "",
 } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="es" data-theme="lofi">
+<html lang="es" data-theme="lofi" class={htmlClass || undefined}>
   <head>
     <GtmScripts />
     <BaseHead
       title={title}
       description={description}
       image={image}
-      ,
       ogType={ogType}
       robots={robots}
+      schema={schema}
     />
     {TRANSITION_API && <ViewTransitions />}
     <TrackingInit />
@@ -47,37 +57,9 @@ const {
   </head>
   <body class="min-h-screen bg-white text-gray-900">
     <GtmNoscript />
-    {enableRelativityBackground && <RelativityBackground client:load />}
-
-    <!-- 🔽 BACKGROUND (video o imagen) -->
-    <slot name="background" />
+    <GridBackground />
 
     <div class={`${shellClass} relative drawer min-h-screen lg:drawer-open`}>
-      {
-        backgroundUrl && (
-          <div class="fixed top-0 right-0 bottom-0 left-0 lg:left-64 z-0 pointer-events-none">
-            {backgroundUrl.endsWith(".mp4") ? (
-              <video
-                autoplay
-                muted
-                loop
-                playsinline
-                class={`w-full h-full object-cover object-center ${backgroundClasses}`}
-              >
-                <source src={backgroundUrl} type="video/mp4" />
-              </video>
-            ) : (
-              <img
-                src={backgroundUrl}
-                alt=""
-                class={`w-full h-full object-cover object-center ${backgroundClasses}`}
-              />
-            )}
-            <div class="absolute inset-0 bg-white/80 backdrop-blur-sm" />
-          </div>
-        )
-      }
-
       <input id="my-drawer" type="checkbox" class="drawer-toggle" />
       <div class={`drawer-content relative z-10 min-h-screen flex flex-col ${contentClass}`}>
         <Header title={SITE_TITLE} />

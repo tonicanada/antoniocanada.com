@@ -2,6 +2,7 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PaginatedList from "../../components/PaginatedList.astro";
 import { getCollection } from "astro:content";
+import createSlug from "../../lib/createSlug";
 
 export async function getStaticPaths({ paginate }) {
   const courses = await getCollection("courses");
@@ -12,16 +13,21 @@ export async function getStaticPaths({ paginate }) {
 const { page } = Astro.props;
 ---
 
-<BaseLayout title="Cursos y formación" sideBarActiveItemID="cursos">
+<BaseLayout
+  title="Cursos y formación"
+  description="Cursos y bootcamps sobre ERPNext: contabilidad, operaciones y desarrollo sobre Frappe."
+  sideBarActiveItemID="courses"
+>
   <PaginatedList
+    titleTag="h1"
     title="Cursos y formación"
-    urlPrefix="/cursos"
+    urlPrefix="/courses"
     page={page}
     cardProps={(entry) => ({
       title: entry.data.title,
       desc: entry.data.description,
       img: entry.data.image,
-      url: "/cursos/" + entry.slug,
+      url: "/courses/" + createSlug(entry.data.title, entry.slug, entry.data.urlSlug),
       tags: entry.data.tags,
     })}
   />

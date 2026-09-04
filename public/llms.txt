@@ -1,0 +1,81 @@
+# Antonio Cañada — implantación de ERPNext en Chile y España
+
+> Consultor independiente de ERPNext. Implanto, localizo fiscalmente, integro y
+> mantengo ERPNext para empresas en Chile, España y Bolivia. El foco es que la
+> facturación electrónica, la contabilidad y la operación vivan en un solo
+> sistema, sin portales aparte ni Excel de cuadre.
+
+Contacto: antonio@bizmotion.io — https://antoniocanada.com/agendar/
+Perfiles: https://www.linkedin.com/in/antoniocanada/ · https://github.com/tonicanada · https://www.youtube.com/@contabilidad_erpnext
+
+## Qué está resuelto, por país
+
+- **Chile.** Conexión al SII en los dos sentidos: emisión de DTE con folios CAF
+  administrados desde el sistema, envío, consulta de estado y PDF con timbre; y
+  del lado de la compra, RCV, lectura de la casilla de correo, clasificación de
+  XML, aceptación o reclamo y boletas de honorarios. Plan de cuentas chileno,
+  UF, multiempresa y centros de costo. La parte de compras corre en producción
+  en cuatro empresas de un grupo constructor; la emisión de venta está validada
+  contra el ambiente de certificación del SII y en despliegue.
+- **España.** Emisión Veri*Factu validada ante Hacienda, PDF con QR, facturas
+  rectificativas, plan contable español, IVA y retenciones. Hay dos
+  demostraciones completas grabadas de punta a punta y un programa de primeras
+  implantaciones; todavía no hay empresas españolas en producción.
+
+## Sector con más profundidad: construcción
+
+Años trabajando dentro de una constructora chilena. La unidad de análisis es la
+obra, no la empresa: resultado por obra al día, subcontratos con estados de pago
+y retenciones, bodega e inventario por obra, cajas chicas, provisiones,
+remuneraciones imputadas a su centro de costo y activos fijos con ubicación.
+También maquinaria (leasings), inmobiliarias y oficinas de arquitectura (horas
+por proyecto).
+
+## Páginas
+
+- [ERPNext en Chile](https://antoniocanada.com/chile/): SII, DTE, contabilidad chilena, precios en UF.
+- [ERPNext en España](https://antoniocanada.com/espana/): Veri*Factu, plan contable español, precios en euros.
+- [Construcción](https://antoniocanada.com/construccion/): los ocho procesos del sector, en detalle.
+- [Servicios y cómo se cobra cada parte](https://antoniocanada.com/services/).
+- [Casos reales](https://antoniocanada.com/casos-reales/).
+- [Sobre mí](https://antoniocanada.com/about-me/): más de 10 años dirigiendo administración y finanzas antes de implementar ERPNext.
+
+## Servicios
+
+- [Migración a ERPNext](https://antoniocanada.com/services/migracion-erpnext/)
+- [Pack España Veri*Factu](https://antoniocanada.com/services/pack-espana-verifactu/)
+- [Hosting y soporte](https://antoniocanada.com/services/hosting-soporte/)
+- [Desarrollo e integraciones](https://antoniocanada.com/services/desarrollo-integraciones/)
+- [Diagnóstico de procesos](https://antoniocanada.com/services/diagnostico-procesos/)
+- [Capacitación técnica](https://antoniocanada.com/services/capacitacion-tecnica-erpnext/)
+- [Consulta inicial](https://antoniocanada.com/services/consulta-inicial/)
+
+## Integraciones documentadas
+
+- [SII Chile](https://antoniocanada.com/integraciones/sii-chile/)
+- [Banco y conciliación](https://antoniocanada.com/integraciones/banco/)
+- [Sourcing y licitaciones](https://antoniocanada.com/integraciones/sourcing/)
+- [MCP: operar el ERP desde un asistente de IA](https://antoniocanada.com/integraciones/mcp-ia/)
+
+## Código publicado (open source)
+
+- [sii_chile_xml_to_pdf](https://github.com/tonicanada/sii_chile_xml_to_pdf):
+  convierte XML de DTE del SII a PDF con timbre PDF417, en CLI o como
+  microservicio Docker; exporta también un resumen a Excel. Python.
+- [erpnext_chile_factura](https://github.com/tonicanada/erpnext_chile_factura):
+  app de ERPNext que recibe facturas de compra desde el SII (vía SimpleAPI/RCV),
+  respalda los XML y genera la Purchase Invoice con reglas configurables.
+- [dte_email_xml_processor_chile](https://github.com/tonicanada/dte_email_xml_processor_chile):
+  clasifica la casilla de intercambio DTE completa —EnvioDTE, EnvioBOLETA,
+  RespuestaDTE, EnvioRecibos, RESULTADO_ENVIO y cesiones del RPETC—, etiqueta por
+  empresa y tipo, y respalda los XML.
+- [chatbot-whatsapp-erpnext](https://github.com/tonicanada/chatbot-whatsapp-erpnext):
+  microservicios en Docker para operar ERPNext desde WhatsApp Business API.
+
+## Notas
+
+- ERPNext es open source: no hay licencia por usuario. Lo que se cobra es el
+  trabajo de implantación, localización, integración, hosting y soporte.
+- Los precios de cada componente están publicados por país, en UF (Chile) y
+  euros (España).
+- Índice completo: https://antoniocanada.com/sitemap-index.xml

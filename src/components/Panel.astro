@@ -1,0 +1,25 @@
+---
+// El recuadro con borde de las secciones destacadas. Existían dos lenguajes de
+// tarjeta en el sitio: el «cristal» heredado de la plantilla
+// (`bg-white/80 backdrop-blur-md border-white/30 shadow-md`) y este panel sobrio
+// que fueron adoptando las secciones nuevas. Gana el segundo — sobre la retícula
+// del fondo, un borde gris define y una sombra difusa sólo ensucia.
+//
+// El fondo va translúcido a propósito: `GridBackground` pinta la retícula
+// detrás y un blanco opaco la borraría justo dentro del panel, que es lo que
+// haría que se leyera como un parche pegado encima.
+export interface Props {
+  as?: string;
+  class?: string;
+  [key: string]: any;
+}
+
+const { as: Tag = "div", class: extra = "", ...rest } = Astro.props;
+---
+
+<Tag
+  class={`rounded-lg border border-gray-300 bg-white/70 p-6 backdrop-blur-sm ${extra}`}
+  {...rest}
+>
+  <slot />
+</Tag>

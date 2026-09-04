@@ -1,0 +1,278 @@
+---
+// El mapa completo, arriba del artículo. Existe porque había un hueco de
+// verdad: el texto le pide al lector que dibuje su esquema sin haberle mostrado
+// nunca uno entero, y "dibuja tu mapa" no significa nada para quien no ha visto
+// un mapa. Este es la forma de la respuesta; el resto del artículo es el método
+// para llegar a ella.
+//
+// Es el esquema por capas de la publicación de LinkedIn —IA, MCP, ERPNext,
+// sistemas externos— con tres cambios, que son los que lo hacen servir aquí:
+//
+// 1. Va rotulado como UN ejemplo. El de LinkedIn se lee como "la arquitectura",
+//    y eso contradice la tesis del artículo: si el mapa fuera universal no
+//    habría nada que decidir.
+//
+// 2. La bifurcación está dibujada, no insinuada: tronco, barra y una caída a
+//    cada rama.
+//
+// 3. Hay montón de descartes. Un ejercicio de mapa real produce sistemas que se
+//    quedan fuera, y sin esa fila el esquema sería un inventario donde todo
+//    cabe.
+//
+// FIGURA-FONDO. Las cajas eran `bg-white/70` sobre una página casi blanca y con
+// retícula: lo único que las separaba del fondo era un filete gris claro, y el
+// esquema se leía como texto flotando. Ahora hay dos niveles explícitos: el
+// esquema entero se apoya en un fondo gris propio, y encima las cajas son
+// BLANCAS MACIZAS. Así una caja es una caja porque su relleno contrasta con el
+// suyo, no porque tenga un borde. De paso, el fondo tapa la retícula de la
+// página, que competía con los filetes del dibujo.
+//
+// SIMETRÍA DE LA HORQUILLA. Las ramas tenían anchos distintos (`flex-1` y
+// `flex-[1.6]`) porque la del ERP llevaba sus sistemas en una rejilla de dos
+// columnas y necesitaba sitio. Con anchos distintos, los ejes de las ramas caen
+// en el 19 % y el 69 %, y un tronco que baje del centro de la caja de IA —el
+// 50 %— llega a la barra descentrado: la horquilla se ve torcida por mucho que
+// la geometría sea correcta.
+//
+// Así que las dos ramas van al MISMO ancho y los sistemas del ERP pasan a una
+// sola columna. Los ejes quedan en el 25 % y el 75 %, el tronco al 50 % cae en
+// el punto medio exacto y la horquilla es simétrica. Y no se pierde nada del
+// argumento: la asimetría que este esquema necesita es de PROFUNDIDAD —una
+// parada por la izquierda, dos por la derecha—, y la profundidad se mide en
+// vertical. Antes estaba peleada con el ancho; ahora el ancho es neutro y la
+// diferencia de altura entre las dos ramas dice lo que tiene que decir.
+//
+// DENSIDAD. Una versión anterior apilaba ocho capas —persona, salto, IA, salto,
+// skills, salto, horquilla, descartes— y se leía como un organigrama. Tres
+// recortes, ninguno pierde una idea: fuera la caja de la persona (este es un
+// mapa de SISTEMAS, y quien pregunta no es un sistema del mapa: baja a
+// subtítulo de la caja de IA); las skills dejan de ser capa con salto propio y
+// pasan a ser una franja DENTRO de la caja de IA, que además es lo correcto
+// —acompañan todo el recorrido en vez de ser un paso de él—; y fuera los
+// detalles de la rama de contexto, porque "Google Drive", "Correo" y "Slack" no
+// necesitan que nadie explique lo que son. Los de la rama del ERP se quedan:
+// ahí "Facturación electrónica" sin el organismo debajo no dice de qué país es
+// esto.
+
+// Rama de contexto: una sola parada. Lo que la IA lee sin que quede rastro.
+const contexto = ["Google Drive", "Correo", "Slack"];
+
+// Rama de hechos económicos: pasa por el ERP antes de llegar aquí. Etiquetadas
+// por función y no por organismo, con los organismos como detalle: a un lector
+// español "SII" a secas le dice que esto es de otro país.
+const hechos = [
+  { nombre: "Facturación electrónica", detalle: "SII · AEAT · SUNAT" },
+  { nombre: "Banco", detalle: "Cartolas, pagos, conciliación" },
+  { nombre: "Compras", detalle: "Licitaciones y órdenes" },
+  { nombre: "Remuneraciones", detalle: "Sueldos y centros de costo" },
+];
+
+// Lo que sale del mapa. Sin nombres de producto: el criterio es la ausencia de
+// puerta, no la marca, y así cada lector reconoce aquí su propio caso.
+const descartes = [
+  "Software instalado en el PC de alguien",
+  "El Excel que sostiene un proceso entero",
+  "Lo que solo se exporta a mano",
+];
+
+const cajaClass = "rounded-md border border-gray-300 bg-white";
+const etiquetaClass =
+  "text-[11px] font-semibold uppercase tracking-[0.15em] text-gray-500";
+const filaClass = "border-t border-gray-200 px-3 py-2 first:border-t-0";
+const filaNombreClass = "block text-xs font-bold leading-snug text-gray-900";
+const filaDetalleClass = "mt-0.5 block text-[11px] leading-snug text-gray-600";
+const pieRamaClass = "mt-1.5 text-[11px] leading-snug text-gray-500";
+
+// LOS CONECTORES, dibujados con filetes de 1 px y un triángulo de bordes, no
+// con SVG. Un SVG estirado al ancho del contenedor deforma las puntas
+// —`preserveAspectRatio` no escala igual los dos ejes— y uno con viewBox fijo
+// obliga a saber de antemano el ancho real de la columna, que aquí lo decide el
+// flex. Con filetes en porcentaje la geometría la resuelve el navegador y sigue
+// siendo correcta a cualquier ancho.
+//
+// El truco para que la barra de la horquilla sea CONTINUA por encima del hueco
+// entre ramas: cada mitad se dibuja dentro de su propia rama, desde su eje
+// hasta el borde interior, más 6 px de margen negativo —la mitad del `gap-3`—
+// para que las dos mitades se encuentren en medio del hueco.
+const lineaVClass =
+  "absolute left-1/2 top-0 h-[19px] w-px -translate-x-1/2 bg-gray-400";
+const puntaClass =
+  "absolute left-1/2 top-[19px] h-0 w-0 -translate-x-1/2 border-l-[4px] border-r-[4px] border-t-[5px] border-l-transparent border-r-transparent border-t-gray-400";
+const saltoTextoClass = "mt-1 block text-[11px] leading-snug text-gray-600";
+---
+
+<figure class="not-prose my-8">
+  <figcaption class="sr-only">
+    Ejemplo del mapa de una empresa. Alguien del equipo pregunta o pide algo en
+    lenguaje normal a una IA —Claude, ChatGPT o cualquier asistente
+    compatible—, que trabaja siguiendo las skills corporativas: cómo se
+    contabiliza una operación, cómo se procesa una compra, quién aprueba un
+    pago. Mediante MCP, que define a qué puede acceder, el camino se bifurca en
+    dos ramas. Por la rama de contexto la IA llega directa a Google Drive, al
+    correo y a Slack: una sola parada, y no queda ningún registro. Por la rama
+    de hechos económicos pasa primero por ERPNext, que aplica validaciones,
+    permisos y reglas, y solo desde ahí se habla con la facturación
+    electrónica, el banco, las compras y las remuneraciones: dos paradas, y
+    todo queda registrado y conciliable. Fuera del mapa quedan los sistemas sin
+    API: software instalado en el PC de alguien, el Excel que sostiene un
+    proceso entero y lo que solo se exporta a mano.
+  </figcaption>
+
+  <div class="rounded-lg border border-gray-300 bg-gray-50 p-3 sm:p-4">
+    <!-- La cabecera hace un trabajo que no es decorativo: sin ella este dibujo
+         se lee como "la arquitectura" y el lector concluye que solo tiene que
+         copiarla, que es exactamente lo que el artículo le pide que no haga. -->
+    <div
+      class="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 border-b border-gray-300 pb-2"
+    >
+      <p class={etiquetaClass}>Un ejemplo</p>
+      <p class="text-[11px] leading-snug text-gray-600">
+        El mapa de una empresa. El de la tuya será otro — de eso trata el resto.
+      </p>
+    </div>
+
+    <div class="mt-4">
+      <div class={cajaClass}>
+        <div class="px-3 py-2.5 text-center">
+          <span class={filaNombreClass}>
+            IA — Claude, ChatGPT o cualquier asistente compatible
+          </span>
+          <span class={filaDetalleClass}>
+            Alguien del equipo pregunta o pide algo en lenguaje normal
+          </span>
+        </div>
+
+        <!-- Franja dentro de la misma caja y no una capa aparte: las skills
+             acompañan a todo el recorrido en vez de ser un paso de él. -->
+        <div class="border-t border-gray-200 px-3 py-2 text-center">
+          <span class={etiquetaClass}>+ Skills — cómo se hace aquí</span>
+          <span class={filaDetalleClass}>
+            Cómo se contabiliza una operación · cómo se compra · quién aprueba un pago
+          </span>
+        </div>
+      </div>
+
+      <!-- En móvil las dos ramas se apilan, así que no hay horquilla que
+           dibujar: un solo conector recto con su etiqueta debajo. Una barra
+           horizontal para dos cajas que van una sobre otra sería un adorno que
+           miente sobre la forma. -->
+      <div class="sm:hidden">
+        <div class="relative mx-auto h-7">
+          <span class={lineaVClass}></span>
+          <span class={puntaClass}></span>
+        </div>
+        <span class={`${saltoTextoClass} text-center`}>
+          <span class="font-bold text-gray-900">MCP</span> — define a qué puede acceder
+        </span>
+      </div>
+
+      <!-- Tronco común. La etiqueta va posicionada al lado y NO empuja la
+           línea: si el conjunto línea+texto se centrara como un bloque, la
+           línea acabaría a la izquierda del eje del esquema. -->
+      <div class="relative hidden h-5 sm:block">
+        <span
+          class="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-gray-400"
+        ></span>
+        <span
+          class="absolute left-1/2 top-1/2 ml-3 -translate-y-1/2 whitespace-nowrap text-[11px] leading-none text-gray-600"
+        >
+          <span class="font-bold text-gray-900">MCP</span> — define a qué puede acceder
+        </span>
+      </div>
+
+      <!-- La horquilla. Mismas proporciones y mismo hueco que las dos ramas de
+           abajo, así que cada caída aterriza en el eje exacto de su rama sin
+           calcular un solo píxel a mano. Con las ramas al mismo ancho, los ejes
+           caen en el 25 % y el 75 % y el tronco del 50 % da en el punto medio:
+           la horquilla sale simétrica por construcción, no por ajuste. -->
+      <div class="hidden gap-3 sm:flex" aria-hidden="true">
+        <div class="relative h-7 flex-1">
+          <span class="absolute left-1/2 right-0 top-0 -mr-1.5 h-px bg-gray-400"></span>
+          <span class={lineaVClass}></span>
+          <span class={puntaClass}></span>
+        </div>
+        <div class="relative h-7 flex-1">
+          <span class="absolute left-0 right-1/2 top-0 -ml-1.5 h-px bg-gray-400"></span>
+          <span class={lineaVClass}></span>
+          <span class={puntaClass}></span>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-3 sm:flex-row">
+        <div class="sm:flex-1">
+          <p class={`${etiquetaClass} block pt-1`}>Contexto — la IA va directa</p>
+          <div class={`mt-1.5 ${cajaClass}`}>
+            <ul>
+              {
+                contexto.map((nombre) => (
+                  <li class={filaClass}>
+                    <span class={filaNombreClass}>{nombre}</span>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+          <p class={pieRamaClass}>Una parada. No queda registro, y está bien.</p>
+        </div>
+
+        <div class="sm:flex-1">
+          <p class={`${etiquetaClass} block pt-1`}>Hechos económicos — habla el ERP</p>
+
+          <!-- ERPNext va DENTRO de la rama y por encima de los sistemas, no al
+               lado: la posición de la caja es lo que dice que la conversación
+               pasa por dentro del ERP en vez de esquivarlo. Se distingue por
+               tamaño de letra y por sombra, no por color de relleno: sobre el
+               fondo gris del esquema, un relleno gris no destacaría, y todas
+               las cajas son blancas por la misma razón. -->
+          <div
+            class="mt-1.5 rounded-md border border-gray-400 bg-white px-3 py-2.5 text-center shadow-sm"
+          >
+            <span class="block text-base font-extrabold leading-tight text-gray-900">
+              ERPNext
+            </span>
+            <span class={filaDetalleClass}>
+              Validaciones, permisos, reglas, contabilidad
+            </span>
+          </div>
+
+          <div class="py-1.5 text-center">
+            <div class="relative mx-auto h-7">
+              <span class={lineaVClass}></span>
+              <span class={puntaClass}></span>
+            </div>
+            <span class={saltoTextoClass}>Integraciones modeladas</span>
+          </div>
+
+          <div class={cajaClass}>
+            <ul>
+              {
+                hechos.map(({ nombre, detalle }) => (
+                  <li class={filaClass}>
+                    <span class={filaNombreClass}>{nombre}</span>
+                    <span class={filaDetalleClass}>{detalle}</span>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+          <p class={pieRamaClass}>Dos paradas. Queda registrado y conciliable.</p>
+        </div>
+      </div>
+
+      <!-- Los descartes cierran el esquema por abajo y a todo el ancho: no son
+           una rama del mapa, son lo que el mapa deja fuera. -->
+      <div class="mt-4 rounded-md border border-dashed border-gray-400 bg-gray-100 px-3 py-2.5">
+        <p class={etiquetaClass}>Fuera del mapa — sin API</p>
+        <ul class="mt-1.5 flex flex-wrap gap-1.5">
+          {
+            descartes.map((item) => (
+              <li class="rounded border border-dashed border-gray-400 bg-white px-2 py-0.5 text-[11px] leading-snug text-gray-500">
+                {item}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</figure>

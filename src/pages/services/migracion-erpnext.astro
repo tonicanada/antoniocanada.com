@@ -1,0 +1,234 @@
+---
+import PageLayout from "../../layouts/PageLayout.astro";
+import ServiceLeadForm from "../../components/ServiceLeadForm.astro";
+import TablaComponentes from "../../components/TablaComponentes.astro";
+import { tramosProceso, paises } from "../../data/servicios";
+
+// Sustituye a implementacion-erpnext, que era una página de 24 líneas con cuatro
+// viñetas genéricas ("flujos a medida", "capacitación a usuarios"). Esta es la
+// oferta núcleo del negocio y necesita decir a quién sirve, en qué orden se hace
+// y qué se cobra.
+const piezas = [
+  "Estudio de procesos y blueprint",
+  "Puesta en marcha de ERPNext",
+  "Modelado de tus procesos",
+  "Localización fiscal",
+  "Migración de datos",
+];
+---
+
+<PageLayout
+  title="Migración a ERPNext"
+  headTitle="Migración a ERPNext"
+  description="De varios sistemas, o de uno de escritorio, a un solo ERP: contabilidad, inventario, proyectos y personas en el mismo sitio, con la localización fiscal de tu país y tus datos históricos dentro."
+  kicker="Servicio"
+  image="/assets/images/services/migracion-erpnext/portada.webp"
+  lead="Llevar la operación de tu empresa a un solo sistema: la contabilidad, el inventario, las compras, los proyectos y la gente. Con la facturación electrónica de tu país conectada y tus datos históricos dentro, no en un archivo aparte."
+  sideBarActiveItemID="services"
+>
+  <h2>Para quién es</h2>
+  <ul>
+    <li>
+      <strong>Tienes un sistema para cada cosa.</strong> Uno de contabilidad,
+      otro de remuneraciones, otro de facturación, un CRM, y Excel pegándolo
+      todo. Cada uno funciona; el problema es que ninguno sabe lo que sabe el
+      otro.
+    </li>
+    <li>
+      <strong>Arrastras un programa de escritorio.</strong> Sin API, sin salida
+      y sin posibilidad de conectarle nada — y por tanto sin ninguna posibilidad
+      de sacarle partido a la IA.
+    </li>
+    <li>
+      <strong>Tienes varias sociedades</strong> y hoy cada una lleva su
+      contabilidad por separado, así que la consolidación es un Excel que hace
+      una persona.
+    </li>
+  </ul>
+
+  <h2>Cómo se hace, en orden</h2>
+  <ol>
+    <li>
+      <strong>Llamada inicial.</strong> Sin coste. Qué usas hoy, qué se puede
+      unificar y qué no.
+    </li>
+    <li>
+      <strong><a href="/services/diagnostico-procesos/">Estudio de procesos y
+      blueprint</a>.</strong> Un documento con los módulos, las automatizaciones
+      y el plan por fases. Es tuyo y te sirve aunque después no me contrates: si
+      decides irte con otro proveedor, se lo llevas.
+    </li>
+    <li>
+      <strong>Puesta en marcha.</strong> Instalación, empresas, plan de cuentas,
+      impuestos, usuarios y permisos por perfil — bodeguero, contador, jefe de
+      proyecto, administrador de contrato. Los permisos son la parte que casi
+      siempre se hace mal y la que decide si la gente usa el sistema.
+    </li>
+    <li>
+      <strong><a href="#procesos">Modelado de tus procesos</a>.</strong> Aquí es
+      donde se va la mayor parte del valor. Tu empresa ya tiene procesos, y no
+      se trata de que cambies cómo trabajas para encajar en el ERP: se trata de
+      entenderlos, depurarlos —en el camino casi siempre aparecen pasos que
+      existen sólo porque el sistema viejo los obligaba— y dejarlos modelados
+      dentro del sistema, con sus estados, sus aprobaciones y sus responsables.
+      Es lo que hace que el ERP sea de verdad la fuente de verdad y no otro
+      sitio donde apuntar cosas.
+    </li>
+    <li>
+      <strong>Localización fiscal.</strong> La facturación electrónica de tu
+      país, conectada de verdad:
+      <a href="/integraciones/sii-chile/">SII en Chile</a>,
+      <a href="/services/pack-espana-verifactu/">Veri*Factu en España</a>.
+    </li>
+    <li>
+      <strong>Migración de datos.</strong> Maestros e histórico desde tu sistema
+      actual, con la profundidad que decidas.
+    </li>
+    <li>
+      <strong>Capacitación y arranque en paralelo.</strong> Nadie apaga el
+      sistema viejo el primer día.
+    </li>
+  </ol>
+
+  {/* El plazo es el argumento más fuerte frente a los consultores grandes, y
+      no estaba dicho en ninguna parte. Va con rangos y con el "según alcance"
+      delante, porque prometer "un mes" a secas y llegar al tercero es la forma
+      más rápida de perder la confianza que gana esta sección. */}
+  <h2>Cuánto tarda</h2>
+  <p>
+    Depende del alcance —cuántas sociedades, cuántos procesos, cuánto histórico—,
+    pero el orden de magnitud es este:
+  </p>
+  <ul>
+    <li>
+      <strong>Unas dos semanas</strong> hasta tener el sistema montado y
+      funcionando con tus datos: no una presentación, un ERPNext en el que
+      puedes entrar y probar tu propia operación.
+    </li>
+    <li>
+      <strong>Dos o tres semanas más</strong> depurando lo que aparece al usarlo,
+      que es cuando salen las diferencias reales entre cómo creías que funciona
+      tu proceso y cómo funciona.
+    </li>
+    <li>
+      <strong>Entre uno y dos meses</strong> para estar en marcha, con el
+      sistema viejo aún encendido en paralelo hasta que el nuevo se sostenga.
+    </li>
+  </ul>
+  <p>
+    Ese ritmo no es una promesa comercial, es una consecuencia de cómo está
+    montado: <strong>hablas directamente con quien implementa</strong>. No hay
+    un gestor de proyecto que traslade tu pregunta a un equipo y te traiga la
+    respuesta la semana siguiente. Una implantación de las grandes se mide en
+    trimestres y en comités; aquí una decisión se toma en la llamada y al día
+    siguiente está en el sistema.
+  </p>
+  <p>
+    La contrapartida, y la digo yo antes de que la pienses tú: si necesitas un
+    proveedor con cien personas y un contrato de soporte 24/7 en tres idiomas,
+    no soy yo. Lo que hay es un sistema libre, sin ataduras, y alguien que lo
+    conoce a fondo — <a href="/services/hosting-soporte/#irse">y respaldos
+    completos el día que quieras llevártelo</a>.
+  </p>
+
+  <h2 id="procesos">Cómo se cobra el modelado de procesos</h2>
+  <p>
+    La pregunta razonable es: si cada empresa tiene sus procesos, ¿cómo puede
+    haber precio fijo? Porque el <strong>contenido</strong> varía mucho y la
+    <strong>forma</strong> mucho menos. Modelado en ERPNext, un proceso casi
+    siempre se descompone en las mismas piezas: un documento —o campos sobre uno
+    que ya existe—, estados y transiciones, permisos por rol, validaciones que
+    impiden el error, y un informe. "Aprobación de compras por monto" y
+    "aprobación de vacaciones por jefatura" son negocios distintos y casi el
+    mismo trabajo.
+  </p>
+  <p>
+    Lo que sí sería un error es un precio plano: unas cajas chicas no son un
+    control de subcontratos. Así que tres tramos, definidos por lo que contienen
+    y no por el sector:
+  </p>
+
+  <div class="not-prose overflow-x-auto">
+    <table class="w-full min-w-[34rem] border-collapse text-left text-sm">
+      <thead>
+        <tr class="border-b border-gray-400">
+          {/* Anchos explícitos: sin ellos las columnas se ajustan al contenido
+              y "Qué incluye" quedaba estrecha mientras "Ejemplos" se iba al
+              borde derecho. */}
+          <th scope="col" class="w-[6rem] py-3 pr-4 font-semibold text-gray-900">
+            Tramo
+          </th>
+          <th scope="col" class="w-[47%] py-3 pr-4 font-semibold text-gray-900">
+            Qué incluye
+          </th>
+          <th scope="col" class="py-3 font-semibold text-gray-900">Ejemplos</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          tramosProceso.map((t) => (
+            <tr class="border-b border-gray-200 align-top">
+              <th scope="row" class="py-3 pr-4 font-semibold text-gray-900">
+                {t.nombre}
+              </th>
+              <td class="py-3 pr-4 text-gray-600">{t.queIncluye}</td>
+              <td class="py-3 text-gray-600">{t.ejemplos}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    <strong>El tramo lo pone el alcance, no el nombre del proceso.</strong> Las
+    mismas cajas chicas pueden ser Simple si son una rendición con un aprobador,
+    o Medio si hay varias obras, anticipos y reintegros. Por eso aparecen arriba
+    en dos tramos: los ejemplos ilustran la forma, no son una lista de precios.
+  </p>
+  <p>
+    Y la pieza que hace que esto funcione: <strong>el tramo se asigna en el
+    <a href="/services/diagnostico-procesos/">blueprint</a></strong>, no a
+    ciegas. Sales de ahí con tu lista de procesos, cada uno en su tramo y el
+    total sumado — antes de comprometerte a la implantación. Si algún proceso no
+    cabe en ningún tramo, ese va por presupuesto; pero es la excepción.
+  </p>
+  <p>
+    Un ejemplo con los procesos de un sector concreto, uno a uno y con su
+    alcance: <a href="/construccion/">ERPNext para constructoras</a>.
+  </p>
+
+  <h2>Qué se cobra en esta parte</h2>
+  <div class="not-prose my-6">
+    <TablaComponentes soloEstos={piezas} mostrarPorQueVaria={false} />
+  </div>
+  {/* Esta era la única página de servicio que no llevaba a los importes: las
+      otras tres enlazan a /chile y /espana, y ésta obligaba a pasar por
+      /services primero. Es justo la principal, o sea la página donde el
+      cliente se está preguntando cuánto cuesta. */}
+  <p>
+    Los importes van por país, porque en Chile se denominan en UF y en España
+    en euros:
+    <a href={paises.cl.url}>precios para Chile</a> ·
+    <a href={paises.es.url}>precios para España</a>. Ahí está el desglose
+    completo, con las integraciones y la cuota mensual.
+  </p>
+
+  <h2>Después de migrar</h2>
+  <p>
+    Una implantación que nadie mantiene se degrada: se queda sin
+    actualizaciones, sin respaldos comprobados y sin nadie que arregle lo que se
+    rompe. Por eso el sistema queda alojado con
+    <a href="/services/hosting-soporte/">soporte y actualizaciones</a>, y por
+    eso todo queda documentado y preparado para
+    <a href="/services/desarrollo-integraciones/">extenderlo</a> cuando tu
+    operación lo pida.
+  </p>
+
+  <ServiceLeadForm
+    slot="footer"
+    servicio="migracion-erpnext"
+    heading="Hablemos de tu caso"
+    subheading="Déjame tus datos y qué sistemas usas hoy; luego podrás elegir un horario en mi agenda."
+  />
+</PageLayout>

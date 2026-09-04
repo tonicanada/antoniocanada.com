@@ -1,0 +1,76 @@
+---
+import { CollectionEntry, getCollection } from "astro:content";
+import PageLayout from "../../layouts/PageLayout.astro";
+import Panel from "../../components/Panel.astro";
+import Button from "../../components/Button.astro";
+import { IntegracionSchema } from "../../content/config";
+import createSlug from "../../lib/createSlug";
+
+export async function getStaticPaths() {
+  const entradas = await getCollection("integraciones");
+  return entradas.map((entry) => ({
+    params: { slug: createSlug(entry.data.title, entry.slug, entry.data.urlSlug) },
+    props: { entry },
+  }));
+}
+
+interface Props {
+  entry: CollectionEntry<"integraciones">;
+}
+
+const { entry } = Astro.props;
+const integracion: IntegracionSchema = entry.data;
+const { Content } = await entry.render();
+---
+
+{/*
+  Estas páginas usaban `PostLayout`, y por eso se leían como entradas de blog:
+  abrían con la portada a sangre, y bajo el título salían una fecha y seis
+  etiquetas. Pero /integraciones/mcp-ia no es un post — es la página a la que
+  llega quien viene de /services decidido, y donde antes no había ni un sitio
+  donde pulsar al terminar de leer.
+
+  Lo que cambia: el kicker "Integración" para hermanarla con las de servicio, la
+  fecha y las etiquetas fuera, y un cierre con la llamada.
+*/}
+<PageLayout
+  title={integracion.title}
+  description={integracion.description}
+  kicker="Integración"
+  lead={integracion.description}
+  image={integracion.image}
+  imagePosition={integracion.imagePosition}
+  ogType="article"
+  sideBarActiveItemID="integraciones"
+>
+  <Content />
+
+  <Fragment slot="footer">
+    <Panel class="mt-12">
+      <h2 class="text-xl font-semibold text-gray-900">
+        ¿La necesitas en tu operación?
+      </h2>
+      <p class="mt-2 text-body text-gray-600">
+        Está construida y documentada, así que en tu caso es conectarla y
+        adaptarla, no empezar de cero. En la llamada vemos si encaja y qué haría
+        falta — si no encaja, te lo digo ahí mismo.
+      </p>
+      <div class="mt-5 flex flex-wrap gap-3">
+        <Button
+          href="/services/consulta-inicial/"
+          data-ev="service_cta_click"
+          data-ev-params={JSON.stringify({
+            service_name: "consulta-inicial",
+            cta_text: "Agendar la consulta inicial",
+            cta_location: "integracion_detalle_cierre",
+          })}
+        >
+          Agendar la consulta inicial
+        </Button>
+        <Button href="/integraciones/" variant="secondary">
+          Ver las demás integraciones
+        </Button>
+      </div>
+    </Panel>
+  </Fragment>
+</PageLayout>

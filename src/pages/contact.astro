@@ -1,149 +1,126 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import Button from "../components/Button.astro";
+
+// Esta página se quedó fuera de la reorganización de servicios, y el selector
+// de asunto lo delataba: ofrecía "Asesoría inicial (1h)", un servicio que se
+// eliminó en la Fase 3 con 301 —o sea que alguien podía pedir por formulario
+// algo que ya no se vende—, tres opciones llevaban el nombre antiguo, y faltaba
+// el hosting, que es el único ingreso recurrente del negocio.
+//
+// Los `value` se mantienen en el formato de antes (minúsculas con guion bajo)
+// porque son los que llegan al correo y así los avisos viejos y los nuevos se
+// leen igual. Lo que cambia es la etiqueta visible y el conjunto.
+//
+// Se quitaron ~40 líneas de script que precargaban el asunto desde `?asunto=`
+// en la URL: nadie enlaza así (comprobado en todo el sitio), y dentro había un
+// bloque que escribía "Precio: X €" en duro, que con Chile en UF además
+// estaría mal.
+const asuntos = [
+  { value: "consulta_inicial", texto: "Consulta inicial (gratis)" },
+  { value: "migracion_erpnext", texto: "Migración a ERPNext" },
+  { value: "hosting_soporte", texto: "Hosting, soporte y actualizaciones" },
+  { value: "desarrollo_integraciones", texto: "Desarrollo e integraciones" },
+  { value: "diagnostico_procesos", texto: "Estudio de procesos y blueprint" },
+  { value: "modelado_procesos", texto: "Modelado de procesos de mi sector" },
+  { value: "capacitacion_tecnica_erpnext", texto: "Capacitación técnica" },
+  { value: "pack_espana_verifactu", texto: "España: ERPNext + Veri*Factu" },
+  { value: "otro", texto: "Otra cosa" },
+];
+
+const campoClase =
+  "box-border w-full max-w-full rounded-md border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-1";
+const etiquetaClase = "mb-1 block text-sm font-semibold text-gray-800";
 ---
 
-<BaseLayout sideBarActiveItemID="contact">
-  <section class="py-16 sm:py-20">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6">
-      <h1 class="text-4xl font-bold mb-10 text-center">Contáctame</h1>
+<BaseLayout
+  title="Contacto"
+  description="Escríbeme para hablar de ERPNext, integraciones o una migración: formulario, WhatsApp o una llamada de 15–20 minutos sin coste."
+  sideBarActiveItemID="contact"
+>
+  {/* `min-h` con el alto de la ventana menos el navbar, y el contenido
+      centrado: el formulario cabe de sobra en una pantalla y antes quedaba
+      pegado arriba con un hueco largo debajo. `max-w-wide` y no `measure`,
+      que es el ancho que el resto del sitio comparte. */}
+  <section
+    class="flex min-h-[calc(100dvh-8rem)] items-center py-12 lg:min-h-[calc(100vh-8rem)]"
+  >
+    <div class="mx-auto w-full max-w-wide px-4 sm:px-6">
+      <header class="text-center">
+        <h1 class="text-3xl font-semibold text-gray-900 sm:text-4xl">
+          Contáctame
+        </h1>
+        <p class="mx-auto mt-3 max-w-2xl text-base text-gray-600">
+          Cuéntame qué sistemas usas hoy y qué te gustaría resolver. Si
+          prefieres hablar antes de escribir,
+          <a href="/agendar/" class="underline underline-offset-2 hover:text-gray-900"
+            >agenda una llamada de 15–20 minutos</a
+          > — sin coste.
+        </p>
+      </header>
 
       <form
         action="https://formspree.io/f/xwpbjdky"
         method="POST"
-        class="w-full max-w-[calc(100vw-4rem)] sm:max-w-full mx-auto overflow-hidden bg-white/90 p-5 sm:p-8 rounded-lg shadow-sm border border-gray-200 space-y-6"
+        class="mx-auto mt-10 w-full space-y-6 rounded-lg border border-gray-300 bg-white/80 p-5 backdrop-blur-sm sm:p-8"
         id="form-contacto"
       >
-        <!-- Mensaje dinámico -->
-        <div id="mensaje-dinamico"></div>
-
-        <!-- Fila con Nombre y Email -->
-        <div class="flex flex-col md:flex-row gap-6">
+        <div class="flex flex-col gap-6 md:flex-row">
           <div class="w-full md:w-1/2">
-            <label for="name" class="block text-sm font-semibold text-gray-800 mb-1">Tu nombre</label>
-            <input
-              type="text"
-              name="name"
-              id="name"
-              required
-              class="box-border w-full max-w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-neutral-500"
-            />
+            <label for="name" class={etiquetaClase}>Tu nombre</label>
+            <input type="text" name="name" id="name" required class={campoClase} />
           </div>
 
           <div class="w-full md:w-1/2">
-            <label for="email" class="block text-sm font-semibold text-gray-800 mb-1">Tu correo</label>
-            <input
-              type="email"
-              name="email"
-              id="email"
-              required
-              class="box-border w-full max-w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-neutral-500"
-            />
+            <label for="email" class={etiquetaClase}>Tu correo</label>
+            <input type="email" name="email" id="email" required class={campoClase} />
           </div>
         </div>
 
-        <!-- Selector de asunto -->
-        <div class="mt-6">
-          <label for="asunto" class="block text-sm font-semibold text-gray-800 mb-1">Asunto</label>
-          <select
-            name="asunto"
-            id="asunto"
-            required
-            class="box-border w-full max-w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-neutral-500"
-          >
+        <div>
+          <label for="asunto" class={etiquetaClase}>Asunto</label>
+          <select name="asunto" id="asunto" required class={campoClase}>
             <option value="">Selecciona una opción</option>
-            <option value="consulta_inicial">Consulta inicial (Gratis)</option>
-            <option value="pack_espana_verifactu">Pack España: ERPNext + Contabilidad + Veri*Factu</option>
-            <option value="asesoria">Asesoría inicial (1h)</option>
-            <option value="diagnostico_procesos">Diagnóstico de procesos</option>
-            <option value="implementacion_erpnext">Implementación ERPNext</option>
-            <option value="desarrollo_apps">Automatización y personalización</option>
-            <option value="capacitacion_tecnica_erpnext">Capacitación Técnica ERPNext</option>
-            <option value="otro">Otro</option>
+            {asuntos.map((a) => <option value={a.value}>{a.texto}</option>)}
           </select>
         </div>
 
-        <!-- Campo de mensaje -->
-        <div class="mt-6">
-          <label for="message" class="block text-sm font-semibold text-gray-800 mb-1">Mensaje</label>
+        <div>
+          <label for="message" class={etiquetaClase}>Mensaje</label>
           <textarea
             name="message"
             id="message"
             required
-            class="box-border w-full max-w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-neutral-500 min-h-[250px]"
-          ></textarea>
+            placeholder="Qué sistemas usas hoy, cuántas personas y sociedades, y qué te gustaría resolver."
+            class={`${campoClase} min-h-[180px]`}></textarea>
         </div>
 
-        <input type="hidden" name="_redirect" value="https://antoniocanada.com/mensaje-enviado" />
+        <input
+          type="hidden"
+          name="_redirect"
+          value="https://antoniocanada.com/mensaje-enviado"
+        />
 
-        <button
-          type="submit"
-          class="w-full bg-black text-white font-semibold py-2 px-4 rounded hover:bg-neutral-800 transition"
-        >
-          Enviar mensaje
-        </button>
+        <Button type="submit" class="w-full">Enviar mensaje</Button>
       </form>
 
+      {/* El botón iba en `bg-green-600` escrito a mano: el único color saturado
+          del sitio, y sin anillo de foco. Ahora usa `Button` como el resto. */}
       <div class="mt-10 text-center">
-        <p class="text-gray-500 mb-3">O si prefieres, háblame por WhatsApp:</p>
-        <a
+        <p class="mb-3 text-sm text-gray-600">
+          O si lo prefieres, escríbeme por WhatsApp:
+        </p>
+        <Button
           href="https://wa.me/34626764393"
+          variant="secondary"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center gap-2 text-white bg-green-600 px-5 py-2 rounded hover:bg-green-700 transition"
           data-ev="whatsapp_click"
           data-ev-params='{"link_location":"contact_page"}'
         >
-          📱 Contactar por WhatsApp
-        </a>
+          WhatsApp
+        </Button>
       </div>
     </div>
   </section>
-
-  <script type="module">
-    function asuntoLegible(slug) {
-      return slug
-        ? slug
-            .split("_")
-            .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-            .join(" ")
-        : "";
-    }
-
-    function precargarAsuntoDesdeURL() {
-      const params = new URLSearchParams(window.location.search);
-      const asunto = params.get("asunto");
-      const precio = params.get("precio");
-
-      const select = document.getElementById("asunto");
-      const mensaje = document.getElementById("mensaje-dinamico");
-
-      if (asunto && select) {
-        const option = Array.from(select.options).find((opt) => opt.value === asunto);
-        if (option) {
-          select.value = asunto;
-        }
-      }
-
-      if (asunto && precio && mensaje) {
-        mensaje.innerHTML = `
-          <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded mb-6">
-            <p class="text-sm">
-              Estás solicitando el servicio <strong>${asuntoLegible(asunto)}</strong>.<br />
-              Precio: <strong>${precio} €</strong>.<br />
-              Por favor, déjame tus datos y me pondré en contacto contigo para coordinar fecha y forma de pago.
-            </p>
-          </div>
-        `;
-      }
-    }
-
-    // Para navegación directa
-    document.addEventListener("DOMContentLoaded", precargarAsuntoDesdeURL);
-
-    // Para navegación parcial con view transitions u otros motores de Astro
-    document.addEventListener("astro:after-swap", precargarAsuntoDesdeURL);
-
-    // Fallback por seguridad (por si no se dispara ninguno)
-    setTimeout(precargarAsuntoDesdeURL, 100);
-  </script>
 </BaseLayout>

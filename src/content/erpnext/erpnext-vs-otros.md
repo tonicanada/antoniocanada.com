@@ -4,6 +4,7 @@ description: "Comparativa ERPNext vs SAP, Odoo, Dynamics y NetSuite. Descubre ve
 publishDate: 2025-08-01
 tags: ["ERPNext", "ERP", "SAP", "Odoo", "Dynamics", "NetSuite", "comparativa"]
 image: "/assets/images/erpnext/erpnext-vs-otros/portada.webp"
+urlSlug: "erpnext-vs-sap-odoo-dynamics-y-netsuite-comparativa-completa-para-empresas"
 ---
 
 ## Comparativa para empresas en crecimiento
@@ -152,6 +153,6 @@ Su modelo de código abierto y su amplia funcionalidad lo convierten en una opci
 
 ## 📥 ¿Quieres evaluar si ERPNext puede ayudarte?
 
-Ofrezco una **Asesoría Inicial de 1 hora** para analizar tu situación y determinar si ERPNext puede reducir tus costes o mejorar tu flexibilidad operativa.  
+En una llamada de 15–20 minutos revisamos qué sistemas usas hoy, qué se puede unificar y qué no, y te propongo una ruta concreta con orden y plazos. Sin coste, y si tu caso no encaja te lo digo en la misma llamada.
 
-👉 [Reserva tu Asesoría Inicial (50 €)](/services/asesoria-inicial)
+👉 [Agenda la consulta inicial](/services/consulta-inicial/)

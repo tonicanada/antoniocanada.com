@@ -1,0 +1,192 @@
+---
+title: "ERPNext + SII de Chile: facturación electrónica de punta a punta"
+description: "Emite y recibe facturas electrónicas sin salir de tu ERP: el SII, tus proveedores y tu contabilidad en un solo sistema, sin portales aparte ni digitar dos veces."
+image: "/assets/images/integraciones/erpnext-chile-sii-integration/portada.webp"
+tags:
+  [
+    "ERPNext",
+    "SII",
+    "facturación electrónica",
+    "DTE",
+    "Chile",
+    "contabilidad",
+  ]
+publishDate: "2026-09-03"
+github: "https://github.com/tonicanada/erpnext_chile_factura"
+demo: ""
+urlSlug: "sii-chile"
+---
+
+import Mermaid from "../../components/Mermaid.jsx";
+
+En Chile la factura no existe hasta que el SII la acepta. Eso convierte la
+facturación electrónica en la pieza que no se puede tratar como un módulo más:
+si falla, no falla un informe, falla el cumplimiento tributario de la empresa.
+
+Esta integración pone ese ciclo completo **dentro de ERPNext**. No un portal
+aparte donde alguien vuelve a escribir lo que ya está en el ERP, ni un Excel de
+control entre los dos: el documento nace en ERPNext, se envía al SII, y lo que
+el SII responde vuelve al mismo documento.
+
+---
+
+## El problema que resuelve
+
+La mayoría de las empresas chilenas viven una de estas dos situaciones, y las
+dos cuestan lo mismo:
+
+- **Un portal de facturación separado del ERP.** Se emite en un sitio y se
+  contabiliza en otro, así que alguien digita dos veces y alguien más cuadra las
+  diferencias a fin de mes.
+- **Las compras entran a mano.** Las facturas de los proveedores llegan al
+  correo o se bajan del SII, y hay una persona clasificándolas, subiéndolas y
+  enlazándolas a su orden de compra, su centro de costo y su bodega.
+
+En los dos casos el ERP deja de ser la fuente de verdad: la verdad está
+repartida entre el portal, el correo y la carpeta compartida.
+
+---
+
+## Qué cambia para ti
+
+Sin entrar en detalle técnico, esto es lo que nota la empresa:
+
+- **Emites desde el mismo sitio donde contabilizas.** Se acabó el portal aparte
+  y la doble digitación.
+- **Las facturas de tus proveedores entran solas**, ya enlazadas a su orden de
+  compra y su centro de costo. Nadie las va clasificando a mano.
+- **El estado en el SII se ve en el documento.** No hay que ir a consultarlo a
+  otro lado ni preguntarle a nadie si la factura pasó.
+- **Una sola instalación para todas tus sociedades**, cada una con sus
+  credenciales y su numeración, sin mezclarse.
+- **De la certificación ante el SII me encargo yo.** Antes de poder emitir, el
+  SII exige superar un proceso de certificación con sus casos de prueba. Es un
+  trámite técnico que frena a muchas empresas: no tienes que aprenderlo.
+- **El cierre de mes deja de depender de que alguien haya terminado de subir
+  cosas**, porque ya están.
+
+Si con eso te sirve, [agenda una llamada](/agendar/) y lo vemos con tus
+números. Lo que viene a continuación es el detalle para quien necesita
+comprobar que está bien resuelto.
+
+---
+
+## El detalle técnico
+
+Tres siglas que aparecen a partir de aquí, por si no las manejas: **DTE** es la
+factura electrónica que el SII reconoce; los **folios CAF** son los números de
+documento que el SII te autoriza a usar; el **RCV** es el registro de compras y
+ventas que el SII mantiene con lo que otros te facturaron.
+
+<Mermaid
+  client:only="react"
+  code={`flowchart TD
+  A["Venta en ERPNext"] --> B["Genera el DTE<br/>y lo timbra con folio CAF"]
+  B --> C["SII"]
+  C --> D["Estado del envío<br/>y del documento"]
+  D --> A
+  C --> E["RCV"]
+  F["Correo del proveedor"] --> G["Clasifica el XML recibido"]
+  E --> G
+  G --> H["Factura de compra en ERPNext<br/>con OC, centro de costo y bodega"]
+`}
+/>
+
+### Del lado de la venta
+
+- **Emite el DTE** desde el documento de ERPNext, con los folios CAF
+  administrados desde el propio sistema.
+- **Lo envía al SII** y **consulta el estado** del envío y del documento, sin
+  salir del ERP.
+- **Genera el PDF con timbre**, en formato carta y **cedible** — el que se
+  necesita para ceder la factura a un factoring.
+- **Factura de compra (DTE 46)**, para los casos de cambio de sujeto en que el
+  documento lo emite el comprador.
+- **Notas de crédito y de débito**, con su referencia al documento que
+  corrigen.
+
+### Del lado de la compra
+
+- **Consulta el RCV** y trae lo que el SII ya sabe que te facturaron.
+- **Lee la casilla de correo** y clasifica los XML que llegan del proveedor,
+  distinguiendo tipos de documento sin intervención humana.
+- **Crea la factura de compra** enlazada a su orden de compra, centro de costo,
+  bodega o proyecto — que es la parte que de verdad ahorra trabajo, porque es
+  donde se pierde el tiempo cuando se hace a mano.
+- **Acepta o reclama** documentos y registra los eventos del SII, con el
+  detalle de que sólo el segundo paso habilita el crédito de IVA.
+- **Cesiones a factoring.** El SII sabe si una factura fue cedida y a quién, así
+  que ese dato no hay que teclearlo. Importa más de lo que parece: el RUT del
+  factoring **redirige el pago** — si está mal, le pagas al proveedor una
+  factura que ya cobró otro. En una constructora con miles de facturas cedidas,
+  eso deja de ser un riesgo administrativo y pasa a ser un dato que llega solo.
+- **Boletas de honorarios recibidas** y libros.
+
+### El dato que ya tienes y no estás usando
+
+Cada DTE es un XML estructurado: no es una imagen de una factura, es el detalle
+línea a línea con sus códigos, cantidades, precios, descuentos e impuestos. La
+mayoría de las empresas lo tratan como un adjunto — lo miran, lo archivan y
+guardan el total en la contabilidad.
+
+Cuando ese detalle entra completo al ERP, deja de ser un archivo y pasa a ser
+datos consultables: qué le compras a cada proveedor y a qué precio, cómo ha
+evolucionado el precio de un material, en qué proyecto u obra se consumió, qué
+proveedor
+subió tarifas sin avisar. Nada de eso hay que digitarlo — llega en el XML.
+
+Y ahí es donde la
+[capa de IA](/integraciones/mcp-ia/) rinde de verdad: preguntas de ese tipo, en
+lenguaje normal, sobre datos que ya estaban en tu correo sin que nadie los
+aprovechara.
+
+### Multiempresa desde el diseño
+
+Cada empresa del grupo tiene sus propias credenciales, sus folios y su
+configuración, y las sincronizaciones acotan su alcance a las empresas
+habilitadas. No es un sistema por empresa: es un sistema con varias empresas
+dentro, que es lo que se necesita cuando hay holding, filiales o sociedades por
+proyecto.
+
+---
+
+## Esto no es una demo
+
+Corre en producción en cuatro empresas de un grupo constructor, sincronizando el
+RCV y el correo a diario, sobre un histórico de más de cien mil facturas de
+compra.
+
+Y un dato que dice más sobre el estado del código que cualquier adjetivo: el
+clasificador de correo se valida contra **120 XML reales del SII**, y el módulo
+tiene **132 tests unitarios**. Eso es lo que permite tocar la facturación de una
+empresa sin cruzar los dedos — porque en Chile equivocarse aquí no es un bug, es
+un problema tributario.
+
+---
+
+## Por qué no es solo para Chile
+
+La integración está partida en dos capas a propósito:
+
+- **Una capa de facturación electrónica**, que es la misma en cualquier país:
+  emitir, timbrar, enviar al organismo, consultar estado, recibir del proveedor,
+  conciliar contra el registro oficial.
+- **Una capa de localización**, que es la que sabe de SII, de DTE, de folios
+  CAF, de RCV y de los ambientes de certificación y producción.
+
+Cambiar de país significa cambiar la segunda capa, no reescribir el sistema. Es
+el mismo patrón con el que está montada la
+[integración bancaria](/integraciones/banco/) y la de
+[compras y licitaciones](/integraciones/sourcing/). Para España existe ya el
+[pack con Veri\*Factu](/services/pack-espana-verifactu/).
+
+---
+
+## ¿Tienes que resolver esto?
+
+Si hoy emites en un portal y contabilizas en otro sitio, o tienes a alguien
+metiendo facturas a mano, esto se puede medir: cuántos documentos al mes, cuánto
+tarda el cierre, cuántas diferencias aparecen.
+
+**[Agenda una llamada de 15–20 minutos](/agendar/)** y lo revisamos con tus
+números. Si tu caso no encaja, te lo digo en la misma llamada.

@@ -7,7 +7,7 @@ import createSlug from "../../lib/createSlug";
 export async function getStaticPaths() {
   const postEntries = await getCollection("erpnext");
   return postEntries.map((entry) => ({
-    params: { slug: createSlug(entry.data.title, entry.slug) },
+    params: { slug: createSlug(entry.data.title, entry.slug, entry.data.urlSlug) },
     props: { entry },
   }));
 }
@@ -26,9 +26,11 @@ const { Content } = await entry.render();
   description={post.description}
   publishDate={post.publishDate}
   image={post.image}
+  imageAspect={post.imageAspect}
   updatedDate={post.updatedDate}
   badge={post.badge}
   tags={post.tags}
+  sideBarActiveItemID="erpnext"
 >
   <Content />
 </PostLayout>

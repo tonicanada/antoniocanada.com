@@ -1,40 +1,104 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageLayout from "../../layouts/PageLayout.astro";
 import ServiceLeadForm from "../../components/ServiceLeadForm.astro";
+import { componentes, paises } from "../../data/servicios";
 
 const asunto = "estudio_procesos_blueprint_erp";
-const precio = 300;
+
+// El precio ya no está escrito aquí. Estaba —"300 €" en duro— mientras el resto
+// del sitio derivaba los importes a las páginas de país, que es la decisión que
+// se tomó al separar Chile de España. Dos fuentes de verdad para la misma cifra
+// terminan siempre igual: una de las dos se queda vieja, y la que cobra es esta.
+//
+// Ahora sale de `componentes`, que es donde vive el resto de la tabla de
+// precios, y de ahí va también al checkout de Stripe.
+const estudio = componentes.find(
+  (c) => c.nombre === "Estudio de procesos y blueprint"
+);
+const precio = estudio?.paises?.es?.precio;
+
+if (precio == null) {
+  throw new Error(
+    "Falta el precio de España para 'Estudio de procesos y blueprint' en src/data/servicios.ts"
+  );
+}
+
+const precioFormateado = new Intl.NumberFormat(paises.es.locale, {
+  style: "currency",
+  currency: paises.es.unidad,
+  maximumFractionDigits: 0,
+}).format(precio);
 ---
 
-<BaseLayout title="Estudio de procesos + Blueprint ERP (por sector)" enableRelativityBackground={false}>
-  <div class="max-w-3xl mx-auto py-10 px-4">
-    <h1 class="text-3xl font-bold mb-4">
-      Estudio de procesos + Blueprint ERP (por sector)
-    </h1>
+<PageLayout
+  title="Estudio de procesos y blueprint"
+  headTitle="Estudio de procesos + Blueprint ERP"
+  description="Análisis de tus procesos y entregable escrito: módulos, automatizaciones y plan por fases. Es el primer paso de pago, y te sirve aunque después no me contrates."
+  kicker="Servicio"
+  lead="El primer paso de pago, y el que decide todo lo demás: qué módulos necesitas, qué se automatiza, en qué fases y en qué orden. Sale un documento, no una propuesta comercial."
+  sideBarActiveItemID="services"
+>
+  <h2>Qué incluye</h2>
+  <ul>
+    <li>
+      <strong>Levantamiento de procesos.</strong> Entrevistas con quien hace el
+      trabajo, no solo con quien lo dirige — que es donde aparecen los Excel
+      paralelos que ningún organigrama recoge.
+    </li>
+    <li>
+      <strong>Blueprint por fases</strong>, con alcance y prioridades: qué entra
+      en la primera puesta en marcha y qué puede esperar sin bloquear nada.
+    </li>
+    <li>
+      <strong>Módulos y automatizaciones recomendados</strong>, con las
+      integraciones que tu operación pide y las que no valen la pena.
+    </li>
+    <li>
+      <strong>El documento.</strong> Es tuyo. Si decides irte con otro
+      proveedor, se lo llevas y le ahorras el mismo mes de levantamiento.
+    </li>
+  </ul>
 
-    <p class="mb-6 text-lg text-gray-700">
-      Estudio personalizado de procesos y necesidades de tu empresa. Incluye
-      entregable: blueprint/roadmap con módulos, automatizaciones y plan por
-      fases. Recomendado tras la consulta inicial.
-    </p>
+  <h2>Antes de esto</h2>
+  <p>
+    Va después de la <a href="/services/consulta-inicial/">consulta inicial</a>,
+    que es gratuita: en esa llamada se ve si el estudio tiene sentido en tu caso
+    o si tu situación se resuelve con algo más pequeño.
+  </p>
 
-    <ul class="list-disc pl-6 mb-6 text-gray-600">
-      <li>Entrevista 1:1 y levantamiento de necesidades</li>
-      <li>Blueprint/roadmap por fases (prioridades y alcance)</li>
-      <li>Módulos sugeridos y automatizaciones recomendadas</li>
-      <li>Entregable para alinear el plan de implementación</li>
-    </ul>
+  <h2>Qué cuesta</h2>
+  <p>
+    <strong>{precioFormateado}</strong> en España. En Chile el importe está en
+    <a href={paises.cl.url}>la página de precios de Chile</a>, junto con el
+    desglose del resto de componentes.
+  </p>
+  <p>
+    Y <strong>se descuenta del proyecto</strong>: si después contratas la
+    <a href="/services/migracion-erpnext/">migración</a>, este importe sale del
+    presupuesto. No pagas dos veces por el mismo trabajo — el blueprint es el
+    punto de partida de la puesta en marcha.
+  </p>
+  <p>
+    Dicho de otro modo: si seguimos adelante, el estudio te sale gratis. Y si
+    decides no seguir, o irte con otro proveedor, el documento es tuyo y te lo
+    llevas.
+  </p>
 
-    <p class="text-2xl font-semibold mb-4">Precio: {precio} €</p>
+  <p>
+    <strong>El pago con tarjeta se cobra en euros</strong>, porque hoy facturo
+    desde España. Si estás en Chile y prefieres factura y transferencia en
+    pesos, <a href="/contact">escríbeme</a> y lo hacemos así — el importe es el
+    de <a href={paises.cl.url}>la página de Chile</a>.
+  </p>
 
-    <ServiceLeadForm
-      servicio="diagnostico-procesos"
-      heading="Antes de pagar"
-      subheading="Déjame tus datos y el objetivo del estudio; luego pasarás a pago seguro con Stripe."
-      ctaLabel="Pagar con Stripe"
-      submitMode="stripe"
-      stripeAsunto={asunto}
-      stripePrecio={precio}
-    />
-  </div>
-</BaseLayout>
+  <ServiceLeadForm
+    slot="footer"
+    servicio="diagnostico-procesos"
+    heading="Antes de pagar"
+    subheading="Déjame tus datos y el objetivo del estudio; luego pasarás a pago seguro con Stripe."
+    ctaLabel="Pagar con Stripe"
+    submitMode="stripe"
+    stripeAsunto={asunto}
+    stripePrecio={precio}
+  />
+</PageLayout>

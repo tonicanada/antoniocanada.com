@@ -1,83 +1,93 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageLayout from "../../layouts/PageLayout.astro";
 import ServiceLeadForm from "../../components/ServiceLeadForm.astro";
+import Panel from "../../components/Panel.astro";
+import { paises } from "../../data/servicios";
+
+// Los dos vídeos son el activo de esta página: es la única prueba end-to-end
+// que hay en el sitio de que la emisión con Veri*Factu funciona de verdad. Antes
+// estaban partidos en dos bloques idénticos copiados; ahora salen de una lista.
+const videos = [
+  {
+    id: "e5Qj8wivNCQ",
+    titulo: "Emisión y validación end-to-end",
+    iframeTitle: "ERPNext + Veri*Factu: emitir factura y validar con Hacienda",
+    pie: "Emitir una factura en ERPNext, generar el PDF con QR y validarlo ante Hacienda.",
+  },
+  {
+    id: "7l5N9ZlhlqI",
+    titulo: "Facturas rectificativas",
+    iframeTitle: "ERPNext + Veri*Factu: facturas rectificativas",
+    pie: "Cómo emitir facturas rectificativas y validarlas con Hacienda.",
+  },
+];
 ---
 
-<BaseLayout title="Pack España: ERPNext + Contabilidad + Veri*Factu" enableRelativityBackground={false}>
-  <div class="max-w-3xl mx-auto py-10 px-4">
-    <h1 class="text-3xl font-bold mb-4">
-      Pack España: ERPNext + Contabilidad + Veri*Factu
-    </h1>
+<PageLayout
+  title="Pack España: ERPNext + contabilidad + Veri*Factu"
+  headTitle="Pack España: ERPNext + Contabilidad + Veri*Factu"
+  description="ERPNext listo para España: plan contable e impuestos, emisión con Veri*Factu y PDF con QR validable ante Hacienda. Con la implantación y el acompañamiento incluidos."
+  kicker="Servicio · España"
+  lead="ERPNext funcionando con el plan contable español, el IVA y las retenciones configurados, y la emisión con Veri*Factu conectada: PDF con QR que Hacienda valida, rectificativas incluidas."
+  sideBarActiveItemID="services"
+>
+  <h2>Qué incluye</h2>
+  <ul>
+    <li>Plan contable español, IVA y retenciones configurados sobre tu estructura real.</li>
+    <li>Emisión con <strong>Veri*Factu</strong>, incluidas las facturas rectificativas.</li>
+    <li>PDF con QR validable ante Hacienda.</li>
+    <li>Implantación guiada y acompañamiento durante el arranque.</li>
+  </ul>
 
-    <p class="mb-6 text-lg text-gray-700">
-      ERPNext listo para España: plan contable e impuestos + emisión con Veri*Factu y PDF con QR validable.
-      Implementación y acompañamiento.
+  <h2>Cómo se ve funcionando</h2>
+  <p>
+    No es una demo de diapositivas: en los dos vídeos se emite contra Hacienda y
+    se valida el resultado.
+  </p>
+  {
+    videos.map((v) => (
+      <figure class="not-prose my-8">
+        <h3 class="mb-3 text-lg font-semibold text-gray-900">{v.titulo}</h3>
+        <div class="relative w-full overflow-hidden rounded-md border border-gray-200 bg-black pt-[56.25%]">
+          <iframe
+            class="absolute inset-0 h-full w-full"
+            src={`https://www.youtube-nocookie.com/embed/${v.id}?rel=0`}
+            title={v.iframeTitle}
+            loading="lazy"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          />
+        </div>
+        <figcaption class="mt-2 text-sm text-gray-600">{v.pie}</figcaption>
+      </figure>
+    ))
+  }
+
+  <h2>Qué cuesta</h2>
+  {/* Aquí ponía "A medida" y nada más, que es justo lo que estrechaba el
+      embudo: el visitante no sabía si estaba en su orden de magnitud y no
+      llamaba. La salida acordada es publicar la composición, no un "desde X". */}
+  <p>
+    Se cobra por componentes: puesta en marcha, localización fiscal, migración
+    de datos y la cuota mensual de hosting y soporte. El desglose con los
+    importes está en <a href={paises.es.url}>la página de precios de España</a>.
+  </p>
+
+  <Panel class="not-prose my-8 border-amber-300 bg-amber-50/80">
+    <p class="font-semibold text-gray-900">
+      Programa de primeras implantaciones (cupos limitados)
     </p>
+    <p class="mt-2 text-sm text-gray-700">
+      Las primeras empresas entran con condiciones preferentes a cambio de
+      feedback durante el arranque.
+    </p>
+  </Panel>
 
-    <ul class="list-disc pl-6 mb-6 text-gray-600">
-      <li>Contabilidad e impuestos adaptados a España</li>
-      <li>Emisión con Veri*Factu</li>
-      <li>PDF con QR validable</li>
-      <li>Implementación guiada y acompañamiento</li>
-    </ul>
-
-    <div class="mb-8">
-      <h2 class="text-2xl font-semibold mb-3">
-        Vídeo: emisión y validación end-to-end
-      </h2>
-
-      <div class="relative w-full overflow-hidden rounded-md border border-gray-200 bg-black pt-[56.25%]">
-        <iframe
-          class="absolute inset-0 h-full w-full"
-          src="https://www.youtube-nocookie.com/embed/e5Qj8wivNCQ?rel=0"
-          title="ERPNext + Veri*Factu: emitir factura y validar con Hacienda"
-          frameborder="0"
-          loading="lazy"
-          referrerpolicy="strict-origin-when-cross-origin"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowfullscreen
-        ></iframe>
-      </div>
-
-      <p class="mt-2 text-sm text-gray-600">
-        Demostración completa: emitir una factura en ERPNext, generar el PDF con QR y validar con Hacienda (Veri*Factu).
-      </p>
-    </div>
-
-    <div class="mb-8">
-      <h2 class="text-2xl font-semibold mb-3">
-        Vídeo: facturas rectificativas en Veri*Factu
-      </h2>
-
-      <div class="relative w-full overflow-hidden rounded-md border border-gray-200 bg-black pt-[56.25%]">
-        <iframe
-          class="absolute inset-0 h-full w-full"
-          src="https://www.youtube-nocookie.com/embed/7l5N9ZlhlqI?rel=0"
-          title="ERPNext + Veri*Factu: facturas rectificativas"
-          frameborder="0"
-          loading="lazy"
-          referrerpolicy="strict-origin-when-cross-origin"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowfullscreen
-        ></iframe>
-      </div>
-
-      <p class="mt-2 text-sm text-gray-600">
-        Cómo emitir facturas rectificativas en ERPNext y validarlas con Hacienda (Veri*Factu).
-      </p>
-    </div>
-
-    <p class="text-xl font-semibold mb-6">A medida</p>
-
-    <div class="mb-6 rounded-md border border-amber-200 bg-amber-50 p-4 text-amber-900">
-      <p class="font-semibold">
-        Programa de primeras implantaciones (cupos limitados).
-      </p>
-      <p class="mt-1 text-sm">
-        Las primeras empresas entran con condiciones preferentes a cambio de feedback durante el arranque.
-      </p>
-    </div>
-
-    <ServiceLeadForm servicio="pack-espana-verifactu" />
-  </div>
-</BaseLayout>
+  <ServiceLeadForm
+    slot="footer"
+    servicio="pack-espana-verifactu"
+    heading="¿Lo montamos en tu empresa?"
+    subheading="Déjame tus datos y cómo facturas hoy; te digo qué haría falta en tu caso."
+  />
+</PageLayout>

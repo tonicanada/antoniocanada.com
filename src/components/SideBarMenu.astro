@@ -4,24 +4,38 @@ const activeClass = "bg-base-300";
 const linkClass = "py-3 text-base";
 const itemClass = (id) =>
   `${linkClass} ${sideBarActiveItemID === id ? activeClass : ""}`;
+
+// El orden sigue el recorrido del visitante: la oferta, por qué este ERP, con
+// qué se conecta, y la prueba. Antes iba ERPNext → Casos reales →
+// Integraciones → Servicios, con la página del dinero en quinto lugar y los
+// testimonios en tercero: la prueba social sirve para cerrar una duda, no para
+// abrirla, y nadie llega a una web y empieza por ahí.
+//
+// El blog no está: su contenido es matemáticas y programación personal (el
+// oloide, three.js, el TSP), cero comercial, y en la navegación primaria
+// competía con Servicios e Integraciones. Sigue accesible desde el pie y desde
+// la línea de cierre de la home — no se pierde ninguna URL ni posicionamiento.
+// De paso el menú baja de nueve entradas a ocho.
+const items = [
+  { id: "home", href: "/", texto: "Inicio" },
+  { id: "services", href: "/services", texto: "Servicios" },
+  { id: "erpnext", href: "/erpnext", texto: "ERPNext" },
+  { id: "integraciones", href: "/integraciones", texto: "Integraciones" },
+  { id: "casos-reales", href: "/casos-reales", texto: "Casos reales" },
+  { id: "courses", href: "/courses", texto: "Cursos" },
+  { id: "about-me", href: "/about-me", texto: "Sobre mí" },
+  { id: "contact", href: "/contact", texto: "Contacto" },
+];
 ---
 
 <ul class="menu grow shrink menu-md overflow-y-auto">
-  <li><a class={itemClass("home")} id="home" href="/">Inicio</a></li>
-  <li><a class={itemClass("erpnext")} id="erpnext" href="/erpnext">ERPNext</a></li>
-  <li>
-    <a class={itemClass("casos-reales")} id="casos-reales" href="/casos-reales"
-      >Casos reales</a
-    >
-  </li>
-  <li><a class={itemClass("projects")} id="projects" href="/projects">Proyectos</a></li>
-  <li>
-    <a class={itemClass("services")} id="services" href="/services">Servicios</a>
-  </li>
-  <li>
-    <a class={itemClass("courses")} id="courses" href="/courses">Cursos</a>
-  </li>
-  <li><a class={itemClass("blog")} id="blog" href="/blog">Blog</a></li>
-  <li><a class={itemClass("about-me")} id="about-me" href="/about-me">Sobre mí</a></li>
-  <li><a class={itemClass("contact")} id="contact" href="/contact">Contacto</a></li>
+  {
+    items.map((i) => (
+      <li>
+        <a class={itemClass(i.id)} id={i.id} href={i.href}>
+          {i.texto}
+        </a>
+      </li>
+    ))
+  }
 </ul>

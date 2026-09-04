@@ -1,21 +1,33 @@
 ---
+// Tres cosas cambian aquí:
+//
+// 1. El título era un <h1>. Con diez tarjetas en /blog o /integraciones, la
+//    página salía con once <h1> — el de la cabecera y uno por tarjeta. Para un
+//    lector de pantalla eso no es una lista de artículos, es un documento sin
+//    jerarquía. Ahora es <h2>, que es su nivel real dentro de la página.
+// 2. `text-1xl` no existe en Tailwind (no hay escala "1xl"), así que la
+//    descripción llevaba años heredando el tamaño del padre sin que se notara.
+//    Se cambia por el tamaño que de verdad se quiere.
+// 3. El «cristal» —`bg-white/80 backdrop-blur-md border-white/30 shadow-md`—
+//    se alinea con el panel sobrio del resto del sitio: sobre la retícula del
+//    fondo, un borde gris define y la sombra difusa sólo ensucia.
 const { title, img, desc, url, badge, tags } = Astro.props;
 import { Image } from "astro:assets";
 const tag_url = "/tags";
 ---
 
 <div
-  class="relative overflow-hidden rounded-lg bg-white/80 backdrop-blur-md border border-white/30 shadow-md transition-shadow duration-300 hover:shadow-xl"
+  class="relative overflow-hidden rounded-lg border border-gray-300 bg-white/70 backdrop-blur-sm transition hover:border-gray-400 hover:bg-white/90"
 >
   {/* Link "stretched" sin anidar <a> dentro de <a> (los tags siguen siendo enlaces). */}
   <a
     href={url}
-    class="absolute inset-0 z-0 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+    class="absolute inset-0 z-0 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-black"
     aria-label={`Ir a ${title}`}
   />
   {/* Hacemos que el contenido no “capture” el click; así el link stretched funciona en toda la card.
       Los links de tags vuelven a habilitar eventos con pointer-events-auto. */}
-  <div class="hero-content relative z-10 flex-col md:flex-row pointer-events-none">
+  <div class="pointer-events-none relative z-10 flex flex-col gap-4 p-5 md:flex-row md:items-start">
     {
       img && (
         <Image
@@ -23,29 +35,31 @@ const tag_url = "/tags";
           width={750}
           height={422}
           format="webp"
-          alt={title}
-          class="max-w-full md:max-w-[13rem] h-[120px] object-cover rounded-lg"
+          alt=""
+          class="h-[120px] w-full rounded-lg object-cover md:w-[13rem] md:shrink-0"
         />
       )
     }
-    <div class="grow w-full min-w-0">
-      <h1 class="text-xl font-bold">
+    <div class="w-full min-w-0 grow">
+      <h2 class="text-lg font-semibold leading-snug text-gray-900">
         {title}
-        {badge && <div class="badge badge-secondary mx-2">{badge}</div>}
-      </h1>
-      <p class="py-1 text-1xl">{desc}</p>
-      <div class="card-actions justify-end flex-wrap gap-2">
-        {
-          tags?.map((tag) => (
-            <a
-              href={`${tag_url}/${tag}`}
-              class="badge badge-outline relative pointer-events-auto z-20"
-            >
-              {tag}
-            </a>
-          ))
-        }
-      </div>
+        {badge && <span class="badge badge-secondary ml-2 align-middle">{badge}</span>}
+      </h2>
+      <p class="mt-1 text-sm leading-relaxed text-gray-600">{desc}</p>
+      {
+        tags?.length > 0 && (
+          <div class="mt-3 flex flex-wrap gap-2">
+            {tags.map((tag) => (
+              <a
+                href={`${tag_url}/${tag}`}
+                class="badge badge-outline pointer-events-auto relative z-20"
+              >
+                {tag}
+              </a>
+            ))}
+          </div>
+        )
+      }
     </div>
   </div>
 </div>

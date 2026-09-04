@@ -1,5 +1,6 @@
 ---
 import CountrySelect from "./CountrySelect.astro";
+import Button from "./Button.astro";
 
 const {
   servicio,
@@ -142,13 +143,9 @@ const formAction = submitMode === "stripe" ? stripeCheckoutAction : actionRedire
     </div>
 
     <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
-      <button
-        type="submit"
-        class="bg-black text-white font-semibold py-2 px-5 rounded hover:bg-gray-900 transition"
-        data-submit
-      >
+      <Button type="submit" data-submit>
         {ctaLabel}
-      </button>
+      </Button>
     </div>
 
     <div id={statusId} class="text-sm" aria-live="polite"></div>

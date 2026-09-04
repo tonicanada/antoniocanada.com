@@ -1,68 +1,337 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import ProductCard from "../components/ProductCard.astro";
+import TablaComponentes from "../components/TablaComponentes.astro";
+import Panel from "../components/Panel.astro";
+import Button from "../components/Button.astro";
+import { paises } from "../data/servicios";
+
+// El titular tiene que comunicar ALCANCE: aquí llega quien ya sabe lo que
+// busca y viene a ver de dónde a dónde llegas. "Cerrar el mes no debería llevar
+// tres semanas" estaba reservado para esta página en el plan, y era un error —
+// encasilla el negocio en contabilidad y deja fuera inventario, obras,
+// sourcing, ecommerce y MCP, que no pasan por el cierre mensual. La frase se
+// conserva en el subtítulo, donde acompaña sin gobernar.
+// Las respuestas llevan HTML porque varias necesitan un enlace o una negrita, y
+// partirlas en trozos para pintarlas con JSX haría el texto ilegible aquí, que
+// es donde hay que releerlo cuando cambie un precio o un servicio.
+const preguntas = [
+  {
+    p: "¿Y si te pasa algo a ti, o decides dedicarte a otra cosa?",
+    r: `<p>Es la pregunta correcta y la contesto sin rodeos. <strong>ERPNext es
+      software libre con licencia GPL</strong>: no es mi producto, no hay
+      licencia que dependa de mí y hay una comunidad y empresas en todo el mundo
+      que trabajan con él. El código de lo que se desarrolle para ti queda en tu
+      sistema, documentado, y los respaldos son tuyos.</p>
+      <p>Eso significa que otro proveedor puede continuar el trabajo leyendo lo
+      que hay. Con un ERP propietario o con un desarrollo cerrado, esa salida no
+      existe: es la razón principal por la que trabajo con software libre y no
+      un detalle ideológico. Lo cuento con más detalle en
+      <a href="/services/hosting-soporte/#irse">qué pasa si te quieres ir</a>.</p>`,
+  },
+  {
+    p: "¿Trabajas solo?",
+    r: `<p>La relación la llevo yo: hablas con quien implementa, y eso es
+      deliberado — es lo que hace que una decisión se tome en la llamada y no en
+      un comité. Para partes concretas del trabajo colaboro con otros
+      desarrolladores de la comunidad ERPNext, con los que ya he sacado
+      proyectos adelante.</p>
+      <p>No te voy a vender un departamento que no tengo. Lo que sí digo es que
+      el tamaño del proveedor importa menos que dos cosas: que el sistema sea
+      libre y que quede documentado. Las dos están cubiertas.</p>`,
+  },
+  {
+    p: "¿ERPNext es gratis?",
+    r: `<p>El software sí: ERPNext es open source y <strong>no hay licencia por
+      usuario</strong>, así que sumar diez personas más no cambia lo que pagas.
+      Ahí está la diferencia grande frente a un ERP propietario, donde la
+      licencia es una cuota que crece con la empresa y no se acaba nunca.</p>
+      <p>Lo que se paga es el trabajo: la implantación, la localización fiscal
+      de tu país, las integraciones que necesites y el hosting con
+      mantenimiento. Un ERP no se instala y funciona — se modela sobre cómo
+      trabaja tu empresa, y eso es lo que cuesta.</p>`,
+  },
+  {
+    p: "¿Cuánto cuesta lo mínimo?",
+    r: `<p>Un proyecto pequeño —una sociedad, la facturación electrónica de tu
+      país y un proceso modelado— sale alrededor de
+      <strong>3.000 € en España</strong> u <strong>80 UF en Chile</strong>,
+      sumando los componentes de la tabla de arriba. De ahí sube según cuántas
+      sociedades, cuántos procesos y cuánto histórico traigas.</p>
+      <p>No hay un "desde" escondido: el desglose está publicado componente por
+      componente en <a href="/chile/">la página de Chile</a> y
+      <a href="/espana/">la de España</a>, y el
+      <a href="/services/diagnostico-procesos/">estudio previo</a> es lo que
+      convierte ese rango en una cifra.</p>`,
+  },
+  {
+    p: "Ya tenemos un sistema que funciona. ¿Merece la pena moverlo?",
+    r: `<p>Si tu sistema te da hoy las respuestas que necesitas, no. Los motivos
+      por los que sí suele merecer la pena son concretos: tienes varios sistemas
+      que no se hablan y una persona pegándolos en Excel; tienes varias
+      sociedades y consolidar es un trabajo manual; o arrastras un programa de
+      escritorio sin API, lo que además te deja fuera de cualquier uso serio de
+      IA sobre tus datos.</p>
+      <p>Ese último punto es el que más ha cambiado: sin API no hay forma de que
+      un modelo consulte tu operación. Con ERPNext sí — es lo que hace el
+      <a href="/integraciones/mcp-ia/">gateway de IA</a>.</p>`,
+  },
+  {
+    p: "¿Tenemos que cambiar cómo trabajamos para encajar en el ERP?",
+    r: `<p>No es el enfoque. Tus procesos se
+      <a href="/services/migracion-erpnext/#procesos">modelan</a> dentro del
+      sistema con sus estados, aprobaciones y responsables, en vez de doblar la
+      operación al molde del software.</p>
+      <p>Dicho eso, en el camino casi siempre aparecen pasos que existen sólo
+      porque el sistema viejo los obligaba. Esos los vas a querer quitar, y te
+      los señalaré — pero es tu decisión, no una condición.</p>`,
+  },
+  {
+    p: "¿Se puede quedar en nuestros propios servidores?",
+    r: `<p>Sí. Lo recomendable es alojarlo conmigo, porque tu sistema no es sólo
+      ERPNext —lleva la conexión con el organismo fiscal, la del banco, el
+      gateway de IA— y todo eso hay que desplegar y actualizar de forma
+      coordinada. Si lo alojas tú, cada incidencia pasa a ser una conversación a
+      tres bandas.</p>
+      <p>Si aun así lo prefieres, se puede y no hay atadura de ningún tipo: el
+      mantenimiento se cotiza aparte y te diré antes de firmar qué garantías
+      dejan de estar en mi mano. Los dos niveles de cuota están en
+      <a href="/services/hosting-soporte/">hosting y mantenimiento</a>.</p>`,
+  },
+  {
+    p: "¿Y nuestros datos históricos?",
+    r: `<p>Se traen: maestros —clientes, proveedores, artículos— y el histórico
+      de movimientos y saldos, con la profundidad que decidas. Es la única línea
+      del presupuesto que no lleva precio fijo, porque depende de cuántos años
+      quieras conservar y de si el sistema de origen tiene API o hay que sacar
+      los datos de informes.</p>
+      <p>En un caso real fueron más de cien mil facturas de compra migradas, así
+      que el volumen rara vez es el problema; el formato de origen sí.</p>`,
+  },
+];
+// Mismo patrón que /chile y /espana. Las respuestas de arriba llevan HTML para
+// poder enlazar, y el schema pide texto plano, así que se limpia aquí en vez de
+// mantener dos versiones del mismo texto a mano y que se desincronicen.
+const soloTexto = (html: string) =>
+  html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: preguntas.map((q) => ({
+    "@type": "Question",
+    name: q.p,
+    acceptedAnswer: { "@type": "Answer", text: soloTexto(q.r) },
+  })),
+};
 ---
 
-<BaseLayout sideBarActiveItemID="services">
+<BaseLayout
+  schema={faqSchema}
+  title="Servicios: implantar ERPNext y mantenerlo"
+  description="Migración a ERPNext, hosting con soporte y actualizaciones, desarrollo e integraciones a medida, y capacitación técnica. Con el detalle de cómo se cobra cada parte."
+  sideBarActiveItemID="services"
+>
   <div class="pb-12 mt-5">
-    <h1 class="text-4xl font-bold mb-6">Servicios profesionales</h1>
-
-    <p class="text-lg mb-8">
-      Explora los servicios disponibles. Si estás empezando o tienes dudas,
-      agenda una
-      <strong>consulta inicial gratuita</strong>: revisamos tu caso y te
-      propongo una ruta concreta (implementación, automatización, integraciones
-      o formación) según tus objetivos.
+    <p class="text-sm font-semibold uppercase tracking-[0.2em] text-gray-500">
+      Servicios
+    </p>
+    <h1 class="mt-2 text-3xl sm:text-4xl font-semibold text-gray-900">
+      ERPNext, desde la implementación hasta la IA
+    </h1>
+    <p class="mt-4 text-lg text-gray-600">
+      Deja de cerrar el mes cruzando sistemas y Excel. Centralizo tu operación,
+      conecto las herramientas que ya usas y hago que tu información también
+      pueda trabajar con IA.
     </p>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
       <ProductCard
-        title="Consulta inicial"
-        description="Primera reunión para entender tu caso, resolver dudas y proponerte el mejor siguiente paso según tu situación (ERPNext, automatización, integraciones, formación o migración desde otro sistema)."
-        price="Gratis"
-        img="/assets/images/services/servicio1.webp"
-        slug="services/consulta-inicial"
-      />
-
-      <ProductCard
-        title="Estudio de procesos + Blueprint ERP (por sector)"
-        description="Estudio personalizado de procesos y necesidades de tu empresa. Incluye entregable: blueprint/roadmap con módulos, automatizaciones y plan por fases. Recomendado tras la consulta inicial."
-        price="300 €"
-        img="/assets/images/services/servicio2.webp"
-        slug="services/diagnostico-procesos"
-      />
-
-      <ProductCard
-        title="Pack España: ERPNext + Contabilidad + Veri*Factu"
-        description="ERPNext listo para España: plan contable e impuestos + emisión con Veri*Factu y PDF con QR validable. Implementación y acompañamiento."
-        price="A medida"
-        img="/assets/images/services/servicio6.webp"
-        slug="services/pack-espana-verifactu"
-      />
-
-      <ProductCard
-        title="Implementación ERPNext"
-        description="Instalación, configuración inicial y capacitación adaptada a tu empresa. Desde cero y con acompañamiento."
-        price="A medida"
+        title="Migración a ERPNext"
+        description="De varios sistemas —o de uno de escritorio— a un solo ERP con tu contabilidad, tu inventario, tus proyectos y tu gente dentro. Incluye el estudio de procesos, la puesta en marcha, la localización fiscal de tu país y la migración de datos."
+        price="Por componentes"
         img="/assets/images/services/servicio3.webp"
-        slug="services/implementacion-erpnext"
+        slug="services/migracion-erpnext"
       />
 
       <ProductCard
-        title="Automatización y personalización ERPNext"
-        description="Creamos módulos a medida, automatizamos tareas repetitivas y conectamos ERPNext con tus otras herramientas. Ideal si ya usas ERPNext y quieres ir más allá."
-        price="A medida"
+        title="Hosting, soporte y actualizaciones"
+        description="El sistema alojado en nuestros servidores, con respaldos, monitoreo, actualizaciones de versión y alguien a quien llamar cuando algo se rompe. Es la parte que hace que la implantación siga sirviendo en tres años."
+        price="Cuota mensual"
+        img="/assets/images/services/servicio1_.webp"
+        slug="services/hosting-soporte"
+      />
+
+      <ProductCard
+        title="Desarrollo e integraciones a medida"
+        description="Conectar ERPNext con lo que uses, automatizar lo repetitivo y construir los módulos que tu operación necesita y que ningún ERP estándar trae. Para quien ya tiene ERPNext o acaba de migrar."
+        price="Precio fijo por integración"
         img="/assets/images/services/servicio4.webp"
-        slug="services/automatizacion-erpnext"
+        slug="services/desarrollo-integraciones"
       />
 
       <ProductCard
-        title="Capacitación técnica en ERPNext y desarrollo"
-        description="Formación 1:1 o grupal en Frappe, personalización de ERPNext, programación de módulos, y otras herramientas técnicas relacionadas. Ideal para desarrolladores o equipos técnicos que quieran especializarse."
-        price="A medida"
+        title="Capacitación técnica"
+        description="Formación en Frappe y ERPNext para desarrolladores y equipos técnicos que van a mantener y extender el sistema. 1:1 o en grupo."
+        price="Por bloques de horas"
         img="/assets/images/services/servicio5.webp"
         slug="services/capacitacion-tecnica-erpnext"
       />
     </div>
+
+    <!-- Lo que antes decía "A medida" en casi todas las tarjetas. Publicar la
+         composición permite al visitante sumar su caso y saber si está en su
+         orden de magnitud, sin anclar el proyecto a una cifra. -->
+    {/* La página de sector estaba a tres clics de la home —vía migración o vía
+        /chile— y para la landing de un sector entero eso es demasiado
+        profundo. Aquí queda a uno. No va en el menú (ya tiene nueve entradas)
+        ni en la home, que es deliberadamente neutra de sector: se limpió el
+        vocabulario de construcción de ella a propósito. */}
+    <Panel as="section" class="mt-12" aria-labelledby="por-sector">
+      <p class="text-sm font-semibold uppercase tracking-[0.2em] text-gray-500">
+        Por sector
+      </p>
+      <h2 id="por-sector" class="mt-2 text-xl font-semibold text-gray-900">
+        ¿Y esto sirve para lo mío?
+      </h2>
+      <p class="mt-3 max-w-2xl text-base text-gray-600">
+        La parte genérica de un ERP se configura; lo que hace que sirva para tu
+        negocio son los procesos propios de tu sector, y eso hay que modelarlo.
+        El sector que tengo documentado a fondo es la
+        <strong class="font-semibold text-gray-800">construcción</strong> —
+        resultado por obra, subcontratos, bodega por obra, provisiones—, porque
+        llevo años dentro de una constructora chilena.
+      </p>
+      <p class="mt-3 max-w-2xl text-base text-gray-600">
+        También he trabajado con empresas de maquinaria, inmobiliarias y
+        oficinas de arquitectura. Si tu sector no está en la lista, la
+        conversación empieza igual.
+      </p>
+      <div class="mt-5">
+        <Button
+          href="/construccion/"
+          variant="secondary"
+          data-ev="service_cta_click"
+          data-ev-params={JSON.stringify({
+            service_name: "sector-construccion",
+            cta_text: "ERPNext para constructoras",
+            cta_location: "services_por_sector",
+          })}
+        >
+          ERPNext para constructoras
+        </Button>
+      </div>
+    </Panel>
+
+    <section class="mt-16" aria-labelledby="composicion">
+      <h2 id="composicion" class="text-2xl font-semibold text-gray-900">
+        De qué está compuesto un proyecto
+      </h2>
+      <p class="mt-3 text-base text-gray-600">
+        Un proyecto no es un precio único: son estas piezas, y no todas hacen
+        falta en todos los casos. Lo predecible va a precio fijo. Sólo una línea
+        va por presupuesto, y abajo está explicado por qué.
+      </p>
+
+      <div class="mt-6">
+        <TablaComponentes />
+      </div>
+
+      <!-- Los importes viven por país: no sólo por la moneda, también porque el
+           contenido del componente cambia (el SII no es Veri*Factu). Y ver las
+           dos tablas juntas obligaría a explicar por qué el mismo componente
+           cuesta distinto. -->
+      <Panel class="mt-8">
+        <p class="text-sm font-semibold text-gray-900">Los importes, por país</p>
+        <p class="mt-2 text-sm text-gray-600">
+          El precio y el contenido de cada componente cambian según el país — la
+          localización fiscal de Chile no es la de España, son trabajos
+          distintos. Elige el tuyo:
+        </p>
+        <div class="mt-4 flex flex-wrap gap-3">
+          {
+            Object.values(paises).map((p) => (
+              <Button
+                href={p.url}
+                variant="secondary"
+                size="sm"
+                data-ev="service_cta_click"
+                data-ev-params={JSON.stringify({
+                  service_name: `pais-${p.codigo}`,
+                  cta_text: p.nombre,
+                  cta_location: "services_precios_pais",
+                })}
+              >
+                {p.nombre} · {p.unidad}
+              </Button>
+            ))
+          }
+        </div>
+        <p class="mt-4 text-sm text-gray-600">
+          ¿En otro país? También trabajo en México, Perú y Bolivia — el precio
+          se cotiza igual, componente por componente.
+        </p>
+      </Panel>
+    </section>
+
+    {/* Las preguntas que de verdad frenan la decisión, y que hasta ahora sólo
+        se respondían si el cliente se atrevía a preguntarlas en la llamada. La
+        del bus factor es la primera a propósito: es la objeción real de
+        contratar a alguien pequeño, y la respuesta juega a favor. Van en
+        <details> nativo, sin JavaScript: buscable por Ctrl+F, indexable, y
+        funciona con el teclado sin que yo escriba nada. */}
+    <section class="mt-14" aria-labelledby="preguntas">
+      <h2 id="preguntas" class="text-2xl font-semibold text-gray-900">
+        Preguntas que conviene hacer antes de firmar
+      </h2>
+      <p class="mt-2 max-w-2xl text-body text-gray-600">
+        Estas me las hacen en casi todas las llamadas. Prefiero que las leas
+        antes y no que te queden dentro.
+      </p>
+
+      <div class="mt-6 divide-y divide-gray-200 border-y border-gray-200">
+        {
+          preguntas.map((q) => (
+            <details class="group py-4">
+              <summary class="flex cursor-pointer items-start justify-between gap-4 font-semibold text-gray-900 marker:content-none [&::-webkit-details-marker]:hidden">
+                <span>{q.p}</span>
+                <span
+                  aria-hidden="true"
+                  class="mt-1 shrink-0 text-gray-400 transition-transform group-open:rotate-45"
+                >
+                  +
+                </span>
+              </summary>
+              <div class="mt-3 space-y-3 text-body text-gray-600" set:html={q.r} />
+            </details>
+          ))
+        }
+      </div>
+    </section>
+
+    <Panel as="section" class="mt-14">
+      <h2 class="text-xl font-semibold text-gray-900">
+        Empieza por la llamada
+      </h2>
+      <p class="mt-2 text-base text-gray-600">
+        15–20 minutos, sin coste: qué sistemas usas hoy, qué se puede unificar y
+        qué no, y qué componentes de los de arriba necesita tu caso. Sales de la
+        llamada con una ruta y un orden de magnitud. Si no encaja, te lo digo
+        ahí mismo.
+      </p>
+      <div class="mt-5">
+        <Button
+          href="/services/consulta-inicial/"
+          data-ev="service_cta_click"
+          data-ev-params={JSON.stringify({
+            service_name: "consulta-inicial",
+            cta_text: "Agendar la consulta inicial",
+            cta_location: "services_cierre",
+          })}
+        >
+          Agendar la consulta inicial
+        </Button>
+      </div>
+    </Panel>
   </div>
 </BaseLayout>

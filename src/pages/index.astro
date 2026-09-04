@@ -1,124 +1,123 @@
 ---
+// Esta página reimplementaba a mano el <html>, el <head>, el navbar móvil y el
+// drawer completos, en paralelo a BaseLayout. El coste no era teórico: la home
+// —la URL que más se comparte del sitio— se quedó sin una sola etiqueta
+// Open Graph, porque esas viven en BaseHead y aquí nunca se importó. Al pasar
+// por BaseLayout las hereda, y además entra en ViewTransitions como el resto.
+//
+// El título y la descripción no cambian: BaseLayout ya usa SITE_TITLE y
+// SITE_DESCRIPTION como valores por defecto, que es exactamente lo que este
+// head declaraba a mano.
+import BaseLayout from "../layouts/BaseLayout.astro";
 import HeroSection from "../components/HeroSection.astro";
-import ReferencesSection from "../components/ReferencesSection.astro";
-import UltimosPosts from "../components/UltimosPosts.astro";
-import Sidebar from "../components/SideBar.astro";
-import RelativityBackground from "../components/RelativityBackground";
-import Footer from "../components/Footer.astro";
-import { SITE_DESCRIPTION, SITE_TITLE } from "../config";
-import GtmScripts from "../components/analytics/GtmScripts.astro";
-import GtmNoscript from "../components/analytics/GtmNoscript.astro";
-import TrackingInit from "../components/analytics/TrackingInit.astro";
-import CookieConsentBanner from "../components/CookieConsentBanner.astro";
+import EsquemaFlujo from "../components/EsquemaFlujo.astro";
+import HomeContenido from "../components/HomeContenido.astro";
+
+// Las secciones ponen su propio ancho y su propio padding, así que el <main>
+// sólo tiene que dejarlas correr de borde a borde.
+const mainClass = "w-full";
+
+// Sin scroll-snap, en ninguna de sus variantes. Se probaron las tres y el
+// patrón fue siempre el mismo: cada vez que se le pide al layout que garantice
+// pantallas completas, aparece una ventana donde no puede.
+//
+// El número que lo cierra: el contenido del esquema mide 651 px, pero el alto
+// útil de un portátil de 768 px de pantalla ronda los 640. En esa ventana no
+// cabe ni quitándole todo el padding, así que "una sección, una pantalla" no es
+// una promesa que se pueda cumplir. Y con la home en 2,7 pantallas y dos puntos
+// de anclaje, alguna vista salía parcial por aritmética.
+//
+// Alinear a medias es lo que se leía como error: te dejaba la última caja del
+// esquema cortada por 30 px. Sin promesa de alineación no hay nada que
+// incumplir, y la página se lee como lo que es.
+//
+// El hero sí conserva la pantalla completa: eso es decisión de landing, no de
+// mecánica de scroll, y no depende de que nada encaje después.
+//
+// `scroll-pt-16` se queda: descuenta el navbar sticky de 4rem de móvil, que si
+// no tapa la cabecera de la sección a la que salta la flecha ↓ o un enlace con
+// ancla. En `lg` no hay barra y el descuento se anula.
+const htmlClass = "scroll-pt-16 lg:scroll-pt-0";
 ---
 
-<html lang="es" data-theme="lofi">
-  <head>
-    <GtmScripts />
-    <meta charset="UTF-8" />
-    <title>{SITE_TITLE}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content={SITE_DESCRIPTION} />
-    <meta name="robots" content="index,follow" />
-    <link rel="canonical" href="https://antoniocanada.com/" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <TrackingInit />
-    <CookieConsentBanner />
-  </head>
-
-  <body class="relative min-h-screen bg-white text-gray-900">
-    <GtmNoscript />
-    <RelativityBackground client:load />
-
-    <div class="drawer lg:drawer-open">
-      <input id="my-drawer" type="checkbox" class="drawer-toggle" />
-
-      <!-- Contenido principal -->
-      <div class="drawer-content flex flex-col h-screen">
-
-        <!-- Navbar superior móvil (sin banner) -->
-        <div
-          class="sticky lg:hidden top-0 z-30 flex h-16 w-full justify-center bg-opacity-90 backdrop-blur transition-all duration-100 bg-base-100 text-base-content shadow-sm"
-        >
-          <div class="navbar">
-            <div class="navbar-start">
-              <label
-                for="my-drawer"
-                class="btn btn-square btn-ghost drawer-button"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  class="inline-block w-5 h-5 stroke-current"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M4 6h16M4 12h16M4 18h16"
-                  ></path>
-                </svg>
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <!-- Contenido principal -->
-        <main class="flex-1 overflow-y-auto scroll-smooth lg:snap-y lg:snap-mandatory">
-          <!-- Primera sección -->
-          <section
-            id="hero"
-            class="relative min-h-[calc(100dvh-4rem)] lg:h-screen flex items-center justify-center px-6 py-8 lg:py-0 lg:snap-start"
-          >
-            <HeroSection />
-            <div
-              id="scroll-indicator"
-              class="absolute inset-x-0 bottom-6 flex justify-center text-gray-500 animate-bounce text-2xl transition-opacity duration-500"
-            >
-              <a href="#contenido" aria-label="Desliza hacia abajo">↓</a>
-            </div>
-          </section>
-
-          <!-- Segunda sección -->
-          <section
-            id="contenido"
-            class="px-6 py-12 lg:h-screen lg:overflow-y-auto lg:snap-start"
-          >
-            <div class="max-w-4xl mx-auto space-y-12">
-              <ReferencesSection showCta={false} />
-              <UltimosPosts />
-            </div>
-            <Footer />
-          </section>
-        </main>
-      </div>
-
-      <!-- Sidebar dentro de drawer-side -->
-      <div class="drawer-side absolute top-0 bottom-0 h-screen z-40">
-        <label for="my-drawer" class="drawer-overlay"></label>
-        <Sidebar sideBarActiveItemID="home" />
-      </div>
+<BaseLayout sideBarActiveItemID="home" mainClass={mainClass} htmlClass={htmlClass}>
+  <!-- El hero sí conserva la pantalla completa: es lo primero que se ve y
+       quieres que ocupe todo. En móvil descuenta los 4rem del navbar sticky. -->
+  <section
+    id="hero"
+    class="relative flex min-h-[calc(100dvh-4rem)] items-center justify-center px-6 py-8 lg:min-h-screen lg:py-0"
+  >
+    <HeroSection />
+    <div
+      id="scroll-indicator"
+      class="absolute inset-x-0 bottom-6 flex justify-center text-2xl text-gray-500 transition-opacity duration-500 animate-bounce motion-reduce:animate-none"
+    >
+      <a href="#contenido" aria-label="Desliza hacia abajo">↓</a>
     </div>
-  </body>
+  </section>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const indicator = document.getElementById("scroll-indicator");
-      const target = document.getElementById("contenido");
+  <!-- Las dos secciones de abajo llevan espaciado fijo, no `min-h-screen`: con
+       el alto atado a la ventana el ritmo cambiaba según la pantalla, largo en
+       un portátil y con aire de sobra en un monitor grande.
 
-      if (!indicator || !target) return;
+       Aquí estuvo `lg:py-16` y no más, porque el esquema vertical medía 651 px
+       de contenido y con los 96 px de `lg:py-24` la sección se iba a 843 px,
+       treinta por encima de una ventana de 813 — justo lo que dejaba la última
+       caja cortada. Ese techo desapareció con la banda horizontal: el esquema
+       ronda ahora los 340 px, así que a `lg:py-24` la sección se queda en unos
+       530 y sobra sitio. El espaciado ya se puede elegir por ritmo y no por
+       aritmética. -->
+  <section id="contenido" class="px-6 py-16 lg:py-24">
+    <div class="mx-auto w-full max-w-4xl">
+      <EsquemaFlujo />
+    </div>
+  </section>
 
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            indicator.style.opacity = entry.isIntersecting ? "0" : "1";
-          });
-        },
-        { threshold: 0.1 }
-      );
+  <!-- El id era `decidir` cuando aquí vivían las guías de /erpnext; ahora la
+       sección es la petición de llamada y se llama por lo que hace.
 
-      observer.observe(target);
-    });
-  </script>
-</html>
+       Y va sobre banda propia, a sangre. Con las tres secciones sobre el mismo
+       blanco, el esquema y el CTA se leían como un solo bloque largo aunque
+       hubiera 128 px de aire entre ellos: sin frontera visual, el espacio en
+       blanco no separa, sólo se nota como hueco. Un cambio de fondo y una línea
+       arriba hacen el trabajo que el padding no podía hacer solo — y el
+       espaciado sube igualmente a `lg:py-24` en las dos.
+
+       El fondo va translúcido (`/80`) a propósito: `GridBackground` pinta la
+       rejilla del sitio detrás y un gris opaco la borraría justo en esta franja,
+       que es lo que delataría la banda como parche. Y las tarjetas de dentro son
+       `bg-white/70`, así que sobre el gris ganan contraste en vez de perderlo. -->
+  <section
+    id="hablamos"
+    class="border-t border-gray-200 bg-gray-50/80 px-6 py-16 lg:py-24"
+  >
+    <div class="mx-auto w-full max-w-4xl">
+      <HomeContenido />
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const indicator = document.getElementById("scroll-indicator");
+    const target = document.getElementById("contenido");
+
+    if (!indicator || !target) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const hidden = entry.isIntersecting;
+          indicator.style.opacity = hidden ? "0" : "1";
+          // Con sólo la opacidad a 0, la flecha seguía siendo clicable y
+          // enfocable con Tab estando invisible.
+          indicator.classList.toggle("pointer-events-none", hidden);
+          indicator.setAttribute("aria-hidden", String(hidden));
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(target);
+  });
+</script>

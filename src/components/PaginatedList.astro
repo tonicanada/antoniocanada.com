@@ -1,11 +1,20 @@
 ---
+// El listado metía las tarjetas y unos separadores `<div class="h-6">` sueltos
+// dentro de un `<ul>`, sin un solo `<li>`. Es HTML inválido y, en la práctica,
+// un lector de pantalla no anuncia "lista de 10 elementos" — que es justo la
+// información que hace navegable un índice. Ahora cada tarjeta es un `<li>` y
+// la separación la pone `space-y`, no un div vacío.
 import HorizontalCard from "./HorizontalCard.astro";
-import { getCollection } from "astro:content";
-import createSlug from "../lib/createSlug";
 
 export interface Props {
   urlPrefix: string;
   title?: string;
+  /** El nivel real del título dentro de la página: `h1` cuando el listado ES la
+      página (blog, cursos), `h2` cuando va bajo una cabecera propia
+      (integraciones). Al bajar las tarjetas de `h1` a `h2` —que es su nivel
+      correcto— los índices se quedaban sin ningún `h1`, que es el problema
+      contrario y igual de malo. */
+  titleTag?: "h1" | "h2";
   page: any;
   cardProps: (entry: any) => {
     title: string;
@@ -18,38 +27,55 @@ export interface Props {
   };
 }
 
-const { urlPrefix, title = "Entradas", page, cardProps } = Astro.props;
+const { title = "Entradas", titleTag: Titulo = "h2", page, cardProps } = Astro.props;
 ---
 
-<div class="mb-5">
-  <div class="text-3xl w-full font-bold">{title}</div>
-</div>
+<section>
+  <Titulo class="mb-5 text-3xl font-semibold text-gray-900">{title}</Titulo>
 
-{page.data.length === 0 ? (
-  <div class="bg-base-200 border-l-4 border-secondary w-full p-4 min-w-full">
-    <p class="font-bold">¡Lo siento!</p>
-    <p>Aún no hay contenido disponible. ¡Vuelve pronto!</p>
-  </div>
-) : (
-  <ul>
-    {page.data.map((entry) => {
-      const props = cardProps(entry);
-      return (
-        <>
-          <HorizontalCard {...props} />
-          <div class="h-6" />
-        </>
-      );
-    })}
-  </ul>
-)}
+  {
+    page.data.length === 0 ? (
+      <div class="w-full border-l-4 border-gray-400 bg-gray-50 p-4">
+        <p class="font-semibold text-gray-900">Todavía no hay nada aquí</p>
+        <p class="mt-1 text-sm text-gray-600">Vuelve pronto.</p>
+      </div>
+    ) : (
+      <ul class="space-y-6">
+        {page.data.map((entry) => (
+          <li>
+            <HorizontalCard {...cardProps(entry)} />
+          </li>
+        ))}
+      </ul>
+    )
+  }
 
-<div class="flex justify-between">
-  {page.url.prev ? (
-    <a href={page.url.prev} class="btn btn-ghost my-10 mx-5">← Anterior</a>
-  ) : <div />}
-
-  {page.url.next ? (
-    <a href={page.url.next} class="btn btn-ghost my-10 mx-5">Siguiente →</a>
-  ) : <div />}
-</div>
+  {
+    (page.url.prev || page.url.next) && (
+      <nav class="mt-10 flex items-center justify-between" aria-label="Paginación">
+        {page.url.prev ? (
+          <a
+            href={page.url.prev}
+            rel="prev"
+            class="text-sm font-semibold text-gray-700 underline underline-offset-4 hover:text-black"
+          >
+            ← Anterior
+          </a>
+        ) : (
+          <span />
+        )}
+        {page.url.next ? (
+          <a
+            href={page.url.next}
+            rel="next"
+            class="text-sm font-semibold text-gray-700 underline underline-offset-4 hover:text-black"
+          >
+            Siguiente →
+          </a>
+        ) : (
+          <span />
+        )}
+      </nav>
+    )
+  }
+</section>

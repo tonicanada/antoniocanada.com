@@ -6,3 +6,37 @@
 }
 
 
+
+/* El scroll suave lo tenía la home en una clase `scroll-smooth` sobre el <main>,
+   que desapareció al pasar el scroll al documento. Sin él, la flecha ↓ del hero
+   y cualquier enlace con ancla saltaban de golpe — el efecto más visible de
+   "scroll raro" al bajar por la home.
+   Va en el <html>, que es quien scrollea ahora, y respeta la preferencia del
+   sistema: la versión anterior no lo hacía. */
+html {
+    scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+}
+
+
+/* ---------------------------------------------------------------------------
+   Una sola medida
+
+   No hay ninguna regla aquí, y eso es la decisión: el ancho de una página lo
+   pone su contenedor (`max-w-wide`, 56rem, en `tailwind.config.cjs`) y TODO se
+   alinea con él — párrafos, títulos, paneles, tablas, rejillas de tarjetas y
+   vídeos. Un solo borde izquierdo y un solo borde derecho por página.
+
+   Lo que había antes no era eso: el contenedor iba a 56rem y cada párrafo
+   llevaba su propio `max-w-2xl` escrito a mano (42rem, que no es ninguno de los
+   dos anchos del sitio). En la misma pantalla el texto terminaba en un borde y
+   la tabla o el panel de al lado en otro, y el escalón se veía en /chile,
+   /espana, /services, /erpnext y /integraciones. Esos `max-w-*` sueltos se han
+   quitado; si vuelve a hacer falta estrechar un bloque, que sea con
+   `max-w-measure` y por una razón escrita, no por costumbre.
+--------------------------------------------------------------------------- */

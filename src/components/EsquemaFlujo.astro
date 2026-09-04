@@ -1,0 +1,280 @@
+---
+// Este esquema vivía en el hero y no funcionaba: ahí tenía que ser pequeño y
+// discreto para no competir con el botón de agendar, y un esquema pequeño y
+// discreto no sostiene un argumento. Aquí tiene sección propia.
+//
+// Y era vertical, que es de donde venía el problema real de la home: tres
+// niveles apilados más dos rejillas de cuatro cajas daban 651 px de contenido
+// inevitables, y el alto útil de un portátil de 768 px de pantalla ronda los
+// 640. Ninguna variante de scroll-snap podía arreglar eso, porque no era un
+// problema de scroll: era un problema de forma.
+//
+// Ahora el flujo de datos se lee de izquierda a derecha en una banda de tres
+// paneles —fuentes, núcleo, salidas— y el mismo argumento baja a unos 230 px
+// de banda. Desde `md` (768 px) los tres paneles caben en el ancho, se
+// reparten con `flex-1` y no hay nada que desplazar; por debajo, la banda es
+// scroll horizontal NATIVO con snap. El corte va en `md` y no en `lg` porque
+// con la barra lateral colapsada una ventana de ~1030 px ya tiene sitio para
+// los tres, y ahí ni el scroll ni el aviso de "desliza" tenían razón de ser.
+//
+// Nativo y no un efecto de scroll secuestrado, a propósito: así la rueda
+// horizontal, el arrastre táctil y las flechas del teclado funcionan sin
+// escribir una línea de JS, la banda no rompe Ctrl+F ni los anclajes de la
+// página, y en móvil el gesto es un swipe normal en vez de una excepción.
+// El movimiento lateral es un gesto dentro de un componente, no la física de
+// la página.
+//
+// La pregunta de la IA se queda ARRIBA y a todo el ancho, fuera de la banda:
+// es el gancho del argumento y lo primero que hay que leer, así que no puede
+// depender de que alguien desplace hasta él.
+//
+// La caja de IA no lista más marcas a propósito. Verificado en 2026-09:
+// Claude tiene soporte de primera clase y ChatGPT lo tiene vía Modo
+// Desarrollador; de Grok no hay constancia de soporte MCP, y "Copilot" es
+// engañoso para este público — GitHub Copilot en VS Code sí lo soporta, pero
+// el Microsoft Copilot de consumo y M365 no, y un director de administración
+// piensa en el segundo. "Cualquier asistente compatible" es además el
+// argumento más fuerte: MCP es estándar abierto, no hay atadura de proveedor.
+//
+// Las cajas se etiquetan por FUNCIÓN, no por organismo: "SII" no es que un
+// español no lo entienda, es que le dice que esto es de otro país. Los
+// organismos van debajo como prueba de conocimiento local. Los proveedores
+// concretos (Fintoc, Wherex) van en su página de integración, no aquí.
+//
+// "Remuneraciones" salió de este panel: su rótulo dice "se alimenta solo, sin
+// digitar nada", y eso afirmaba que la nómina entra automática cuando la
+// integración de RRHH está en curso. En su lugar entró "Documentos", que estaba
+// en el panel de salidas siendo una ENTRADA — la lectura de la casilla para los
+// XML del SII está construida y corriendo en producción.
+const fuentes = [
+  { nombre: "Facturación electrónica", detalle: "SII · AEAT · SUNAT · SAT" },
+  { nombre: "Banco", detalle: "Cartolas y movimientos" },
+  { nombre: "Compras", detalle: "Licitaciones y órdenes" },
+  { nombre: "Documentos", detalle: "XML por correo y Drive" },
+];
+
+// El tercer panel es otra categoría, no más de lo mismo. En el primero están
+// las fuentes de verdad —datos fiscales y financieros que tienen que ser
+// autoritativos— y aquí los canales por los que la empresa actúa hacia fuera.
+// Si fueran ocho filas bajo la misma etiqueta, el esquema volvería a leerse
+// como catálogo.
+//
+// Sólo entra lo que hay trabajo real detrás: el chatbot de WhatsApp, el vídeo
+// de ecommerce con Stripe y factura, y el flujo de XML por correo y Drive.
+const canales = [
+  { nombre: "WhatsApp", detalle: "Consultas y avisos" },
+  { nombre: "Ecommerce", detalle: "Pedidos y stock" },
+  { nombre: "Pagos", detalle: "Cobros conciliados" },
+];
+
+// Cuatro por panel es el techo, pero cuatro leído como lista cerrada era otro
+// problema: quien no viera su banco, su canal de venta o su organismo entre las
+// ocho filas concluía que no se podía, y el enlace de abajo llega tarde para
+// evitar esa conclusión —se lee después del esquema, no dentro de él.
+//
+// La fila de cierre no es un quinto elemento: no nombra nada, va en gris y sin
+// negrita, y por eso no convierte el panel en catálogo. Dice que la enumeración
+// para aquí, no que el sistema pare aquí. En la de salidas el texto es además
+// el enlace a /integraciones, que es donde está la respuesta larga.
+const cierres = {
+  fuentes: {
+    texto: "… y cualquier otra fuente con API",
+    href: null,
+  },
+  canales: {
+    texto: "… y cualquier otro canal que ya uses",
+    href: "/integraciones",
+  },
+};
+
+const cierreFilaClass =
+  "border-t border-gray-200 px-3 py-2 text-[11px] leading-snug text-gray-500";
+
+// Las filas van sin borde propio dentro de un panel que ya tiene borde: ocho
+// recuadros metidos dentro de dos recuadros convertían el esquema en
+// formulario. Separador fino entre filas y el borde reservado para lo que sí
+// es una unidad.
+const filaClass = "border-t border-gray-200 px-3 py-2 first:border-t-0";
+const panelClass =
+  "flex w-60 flex-none snap-center flex-col rounded-md border border-gray-300 bg-white/70 backdrop-blur-sm md:w-auto md:flex-1";
+const panelLabelClass =
+  "border-b border-gray-200 px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.15em] text-gray-500";
+
+// Toda la sección comparte un ancho y una centradura. Antes la cabecera y el
+// enlace iban a `max-w-3xl` mientras la banda ocupaba el `max-w-4xl` que le da
+// la sección de la home: el titular quedaba metido 64 px respecto al borde
+// izquierdo de la banda, y en una ventana estrecha eso no se lee como sangría
+// sino como descuadre. 3xl y no 4xl porque el párrafo de arriba es texto
+// corrido: a 896 px la línea se va a ~110 caracteres, demasiado para leer
+// cómodo.
+const anchoClass = "max-w-3xl mx-auto";
+---
+
+<section aria-labelledby="esquema-title" class={anchoClass}>
+  <div>
+    <p class="text-sm font-semibold uppercase tracking-[0.2em] text-gray-500">
+      Cómo funciona
+    </p>
+    <h2
+      id="esquema-title"
+      class="mt-2 text-2xl sm:text-3xl font-semibold text-gray-900"
+    >
+      Preguntas en tu idioma. Responde tu empresa.
+    </h2>
+    <p class="mt-3 text-base text-gray-600">
+      No es un ERP con integraciones pegadas por encima. Es un sistema donde la
+      información llega desde su origen y se puede preguntar en lenguaje normal,
+      porque por fin vive en un solo sitio.
+    </p>
+  </div>
+
+  <figure class="mt-8">
+    <!-- La descripción textual sigue el orden nuevo: quien la oiga en un lector
+         de pantalla no tiene por qué enterarse de que hay una banda, pero sí de
+         qué alimenta a qué y en qué dirección. -->
+    <figcaption class="sr-only">
+      La IA recibe la pregunta en lenguaje natural y la responde consultando
+      ERPNext mediante MCP. ERPNext es la única fuente de verdad: por la
+      izquierda se alimenta solo desde facturación electrónica, banco, compras y
+      los documentos que llegan por correo, y por la derecha opera hacia fuera
+      con WhatsApp, ecommerce y pagos. En ambos lados son ejemplos: caben
+      cualquier otra fuente con API y cualquier otro canal.
+    </figcaption>
+
+    <div>
+      <div
+        class="rounded-md border border-gray-300 bg-white/70 px-4 py-4 text-center backdrop-blur-sm"
+      >
+        <span class="block text-base font-bold leading-tight text-gray-900">
+          IA — Claude, ChatGPT y cualquier asistente compatible
+        </span>
+        <span class="mt-1 block text-sm leading-snug text-gray-600">
+          «¿Cuánto llevamos gastado en este proyecto y qué falta por facturar?»
+        </span>
+      </div>
+
+      <div class="py-3 text-center">
+        <span aria-hidden="true" class="block text-xl leading-none text-gray-400">↓</span>
+        <span class="mt-1 block text-xs text-gray-600">
+          Pregunta en lenguaje natural, vía MCP
+        </span>
+      </div>
+    </div>
+
+    <!-- `tabindex="0"` no es decorativo: una región con scroll necesita poder
+         recibir el foco para que las flechas del teclado la desplacen. El
+         `role="group"` con nombre hace que se anuncie como una unidad en vez de
+         como texto suelto, y `overscroll-x-contain` evita que al llegar al
+         final del arrastre se dispare el gesto de "atrás" del navegador. -->
+    <div
+      role="group"
+      tabindex="0"
+      aria-label="Flujo de datos, desplazable en horizontal: fuentes, ERPNext y salidas"
+      class="flex snap-x snap-mandatory gap-2 overflow-x-auto overscroll-x-contain pb-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-4 focus-visible:ring-offset-white md:gap-3 md:overflow-visible"
+    >
+      <div class={panelClass}>
+        <p class={panelLabelClass}>Se alimenta solo</p>
+        <ul>
+          {
+            fuentes.map(({ nombre, detalle }) => (
+              <li class={filaClass}>
+                <span class="block text-xs font-bold leading-snug text-gray-900">
+                  {nombre}
+                </span>
+                <span class="mt-0.5 block text-[11px] leading-snug text-gray-600">
+                  {detalle}
+                </span>
+              </li>
+            ))
+          }
+          <li class={cierreFilaClass}>{cierres.fuentes.texto}</li>
+        </ul>
+      </div>
+
+      <!-- Las flechas no llevan `snap-center`: los puntos de anclaje son los
+           paneles, y si la flecha fuera uno de ellos el swipe se detendría en
+           un separador de 16 px. -->
+      <span
+        aria-hidden="true"
+        class="flex-none self-center px-1 text-xl leading-none text-gray-400"
+        >→</span
+      >
+
+      <!-- El centro se distingue por relleno, fondo y tamaño de letra, no por
+           grosor de borde: un borde de 2px en una caja de tres parece un
+           descuido. `justify-center` porque este panel tiene una línea y las
+           vecinas cuatro, y sin centrar quedaba colgando arriba. -->
+      <div
+        class="flex w-60 flex-none snap-center flex-col justify-center rounded-md border border-gray-400 bg-gray-100 px-4 py-5 text-center md:w-auto md:flex-1"
+      >
+        <span class="block text-xl font-extrabold leading-tight text-gray-900">
+          ERPNext
+        </span>
+        <span class="mt-1 block text-sm leading-snug text-gray-600">
+          Una sola fuente de verdad — contabilidad, inventario, proyectos, personas
+        </span>
+      </div>
+
+      <span
+        aria-hidden="true"
+        class="flex-none self-center px-1 text-xl leading-none text-gray-400"
+        >→</span
+      >
+
+      <div class={panelClass}>
+        <p class={panelLabelClass}>Y opera hacia fuera</p>
+        <ul>
+          {
+            canales.map(({ nombre, detalle }) => (
+              <li class={filaClass}>
+                <span class="block text-xs font-bold leading-snug text-gray-900">
+                  {nombre}
+                </span>
+                <span class="mt-0.5 block text-[11px] leading-snug text-gray-600">
+                  {detalle}
+                </span>
+              </li>
+            ))
+          }
+          <li class={cierreFilaClass}>
+            <a
+              href={cierres.canales.href}
+              data-ev="service_cta_click"
+              data-ev-params={JSON.stringify({
+                service_name: "integraciones",
+                cta_text: cierres.canales.texto,
+                cta_location: "home_esquema_panel",
+              })}
+              class="underline underline-offset-2 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
+            >
+              {cierres.canales.texto}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Sólo donde la banda desborda de verdad. Desde `md` caben los tres
+         paneles y un "desliza" sería mentira. -->
+    <p aria-hidden="true" class="mt-2 text-xs text-gray-500 md:hidden">
+      Desliza para ver el flujo completo →
+    </p>
+  </figure>
+
+  <!-- La válvula de escape del esquema: quien no vea su herramienta entre las
+       ocho filas hace clic en vez de concluir que no se puede. -->
+  <p class="mt-6 text-sm">
+    <a
+      href="/integraciones"
+      data-ev="service_cta_click"
+      data-ev-params={JSON.stringify({
+        service_name: "integraciones",
+        cta_text: "Ver todas las integraciones",
+        cta_location: "home_esquema",
+      })}
+      class="font-semibold text-gray-900 underline underline-offset-2 hover:text-gray-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm"
+    >
+      Ver todas las integraciones →
+    </a>
+  </p>
+</section>
