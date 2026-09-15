@@ -1,4 +1,5 @@
 ---
+import { rutaInterna } from "../lib/urls";
 // El layout único de página. Sustituye a las dos familias que convivían:
 //
 //   A) `PostLayout`, para el contenido MDX: `main` sin padding, artículo con
@@ -138,7 +139,7 @@ const imagenClase =
           )}
           {tags.map((tag) => (
             <a
-              href={`/tags/${tag}`}
+              href={rutaInterna(`/tags/${tag}`)}
               class="badge badge-outline badge-sm max-w-full whitespace-normal break-words no-underline"
             >
               {tag}

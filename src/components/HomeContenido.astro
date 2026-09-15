@@ -1,11 +1,17 @@
 ---
+import { rutaInterna } from "../lib/urls";
 import Button from "./Button.astro";
 import Panel from "./Panel.astro";
 
-const agendarUrl =
+// `rutaInterna` porque el valor puede venir de una variable de entorno, que
+// está fuera del repositorio: si alguien la escribe sin barra final, la ruta
+// se normaliza igual en vez de romper la medición en silencio. Una URL
+// absoluta (la agenda externa de Google) pasa intacta.
+const agendarUrl = rutaInterna(
   import.meta.env.PUBLIC_AGENDAR_URL ||
-  import.meta.env.PUBLIC_GOOGLE_CALENDAR_BOOKING_URL ||
-  "/agendar";
+    import.meta.env.PUBLIC_GOOGLE_CALENDAR_BOOKING_URL ||
+    "/agendar/"
+);
 
 // Aquí vivía un bloque "Antes de decidir" con las guías de /erpnext. Fuera por
 // dos razones: la colección tiene dos entradas y el `.slice(0, 3)` prometía una

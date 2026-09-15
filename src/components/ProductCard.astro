@@ -1,4 +1,5 @@
 ---
+import { rutaInterna } from "../lib/urls";
 const {
   title,
   description,
@@ -10,7 +11,7 @@ const {
 ---
 
 <a
-  href={`/${slug}`}
+  href={rutaInterna(`/${slug}`)}
   class="relative z-0 block flex flex-col justify-between h-full border rounded-lg shadow p-6 bg-white hover:shadow-lg hover:scale-[1.01] transition overflow-hidden"
   data-ev="service_cta_click"
   data-ev-params={JSON.stringify({
