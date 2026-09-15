@@ -74,11 +74,9 @@ Visible en GA4 DebugView / informes
 | Lógica de Consent Mode / vanilla-cookieconsent | `src/lib/consent.ts` |
 | Tipos globales (`window.dataLayer`, `window.gtag`) | `src/types/analytics.d.ts` |
 
-Estos componentes se incluyen en **dos sitios** porque el sitio tiene dos raíces HTML independientes:
-- `src/layouts/BaseLayout.astro` (usado por la mayoría de páginas).
-- `src/pages/index.astro` (home), que define su propio `<html>` sin usar `BaseLayout`.
+Estos componentes se incluyen **una sola vez**, en `src/layouts/BaseLayout.astro`, que es la única raíz HTML del sitio: la home (`src/pages/index.astro`) tenía su propio `<html>` en paralelo y duplicaba ahí los cuatro componentes, pero desde la reorganización de septiembre de 2026 pasa por `BaseLayout` como el resto.
 
-Si en el futuro se añade una tercera raíz HTML independiente, hay que repetir la misma inclusión de los 4 componentes ahí también.
+Si en el futuro se añade una segunda raíz HTML independiente, hay que repetir la misma inclusión de los 4 componentes ahí también.
 
 ### Variables de entorno
 
@@ -131,9 +129,10 @@ El agendamiento final ocurre en **Google Calendar Appointment Scheduling**, un s
 
 ### `service_cta_click`
 
-- **Cuándo se dispara**: al pulsar un CTA comercial de navegación en la página de listado de servicios (tarjetas "Ver más →"). No se instrumenta el botón de envío de `ServiceLeadForm` (ese clic ya queda representado, de forma más precisa, por `generate_lead`/`booking_start` cuando el envío se confirma) — evita instrumentar dos veces la misma acción del usuario.
-- **Parámetros**: `service_name` (slug), `page_path` (automático), `cta_text` ("Ver más"), `cta_location` ("services_listing").
-- **Dónde está implementado**: `src/components/ProductCard.astro`, atributo `data-ev="service_cta_click"` con `data-ev-params` generado dinámicamente por tarjeta.
+- **Cuándo se dispara**: al pulsar cualquier CTA comercial de navegación del sitio. Empezó siendo solo las tarjetas "Ver más →" del listado de servicios; la reorganización de septiembre de 2026 lo extendió a los CTA de la home, `/erpnext`, `/integraciones` y el resto de secciones comerciales. No se instrumenta el botón de envío de `ServiceLeadForm` (ese clic ya queda representado, de forma más precisa, por `generate_lead`/`booking_start` cuando el envío se confirma) — evita instrumentar dos veces la misma acción del usuario.
+- **Parámetros**: `service_name` (slug, o `"agendar"` cuando el CTA lleva a la agenda), `page_path` (automático), `cta_text`, `cta_location`.
+- **⚠️ `cta_location` no es opcional**: es lo único que distingue un clic en el hero de la home de uno en una tarjeta de servicio. Sin desglosar por ese parámetro, el total de `service_cta_click` suma CTAs que no significan lo mismo y **no es comparable entre periodos** si en medio se ha añadido o quitado algún CTA. Al instrumentar uno nuevo, darle un `cta_location` propio y distinto.
+- **Dónde está implementado**: atributos `data-ev`/`data-ev-params` en `src/components/ProductCard.astro` (una por tarjeta, `services_listing`), `src/components/HeroSection.astro` (`home_hero`), `src/components/HomeContenido.astro` (`home_banda_cta`), `src/components/EsquemaFlujo.astro` (`home_esquema`, `home_esquema_panel`), `src/pages/services.astro` (`services_por_sector`, `services_precios_pais`, `services_cierre`), `src/pages/erpnext/[...page].astro` (`erpnext_cierre`), `src/pages/integraciones/[...page].astro` (`integraciones_cierre`), `src/pages/integraciones/[...slug].astro` (`integracion_detalle_cierre`) y `src/pages/services/hosting-soporte.astro` (`hosting_soporte_cierre`).
 
 ### `virtual_pageview` (plomería técnica, no es uno de los eventos de negocio pedidos)
 

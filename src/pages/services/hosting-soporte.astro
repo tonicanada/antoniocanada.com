@@ -174,7 +174,18 @@ const niveles = [
   </p>
 
   <div class="not-prose mt-6">
-    <Button href="/agendar/" variant="secondary">Agendar una llamada</Button>
+    <Button
+      href="/agendar/"
+      variant="secondary"
+      data-ev="service_cta_click"
+      data-ev-params={JSON.stringify({
+        service_name: "agendar",
+        cta_text: "Agendar una llamada",
+        cta_location: "hosting_soporte_cierre",
+      })}
+    >
+      Agendar una llamada
+    </Button>
   </div>
 
   <div class="not-prose mt-12">
